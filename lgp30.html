@@ -30,12 +30,14 @@
         <p>Address(ttss) order Address(ttss)</p>
         <textarea id="asm" rows="10" cols="80">
 0000 b 0010 #Bring constant from @10 into A
-0001 u 0005
+0001 p 0100
 0002 h 0011 #Move value of A into @11
 0003 y 0000
 0004 c 0012 #Move A into @12 and clear A
 0005 z      #STOP!
 0010 9999   #Store constant
+0020 2147483647 #THIS WILL BE HEX... SOON(tm)
+0021 1024
         </textarea>
 
         <table id="mem">
@@ -56,6 +58,26 @@
             }
 
             var running = false
+
+            const chars = [ //Thanks SIMH!
+                -1  , 'z', '0', ' ', '>', 'b', '1', '-',
+                '<' , 'y', '2', '+', '|', 'r', '3', ';',
+                '\r', 'i', '4', '/','\\', 'd', '5', '.',
+                '\t', 'n', '6', ',', -1 , 'm', '7', 'v',
+                '\'', 'p', '8', 'o', -1 , 'e', '9', 'x',
+                -1  , 'u', 'f', -1 , -1 , 't', 'g', -1 ,
+                -1  , 'h', 'j', -1 , -1 , 'c', 'k', -1 ,
+                -1  , 'a', 'q', -1 , -1 , 's', 'w', 0  ,
+
+                -1  , 'Z', ')', ' ', -1 , 'B', 'L', '_',
+                -1  , 'Y', '*', '=', '|', 'R', '"', ':',
+                '\r', 'I', '^', '?','\\', 'D', '%', ']',
+                '\t', 'N', '$', '[', -1 , 'M', '~', 'V',
+                '\'', 'P', '#', 'O', -1 , 'E', '(', 'X',
+                -1  , 'U', 'F', -1 , -1 , 'T', 'G', -1 ,
+                -1  , 'H', 'J', -1 , -1 , 'C', 'K', -1 ,
+                -1  , 'A', 'Q', -1 , -1 , 'S', 'W', 0
+            ]
 
             const orders = {
                 "0001": { //Bring
@@ -91,7 +113,7 @@
 
                         //a[18:28] -> mem[i][18:29]
                         const addr = regs.a.slice(18, 30)
-                        mem[i] = insertArrayAt(mem[i], 12, addr)
+                        mem[i] = insertArrayAt(mem[i], 19, addr)
 
                         return incAddr()
                     }
@@ -104,13 +126,46 @@
                         return track.concat(sector)
                     }
                 },
+                "0011": { //Return address
+                    name: "r",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+
+                        const addr = incAddr()
+                        mem[i] = insertArrayAt(mem[i], 19, addr)
+
+                        return addr
+                    }
+                },
+                "1011": { //Test
+                    name: "t",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+
+                        if(regs.a[0] == 1){
+                            return track.concat(sector)
+                        }
+
+                        return incAddr()
+                    }
+                },
                 "0000": { //Stop
                     name: "z",
                     eval: () => {
                         running = false
                         return 0
                     }
-                }
+                },
+                "1000": { //Print
+                    name: "p",
+                    eval: (order, track, sector) => {
+                        //I'll need to convert track -> character
+                        //  ...I'll need a map
+                        const c = chars[binToDec(track)]
+                        print(c)
+                        return incAddr()
+                    }
+                },
             }
 
             const orderMap = {}
@@ -130,6 +185,9 @@
             running = false
             $("#asm").val().split("\n").forEach(assembleLine)
 
+            showMem()
+            showRegs()
+
             while(running){
                 step()
             }
@@ -139,9 +197,10 @@
                 regs.c = runIns(w)
             }
 
-            //showRegs()
-            //runIns(mem[0])
-            
+            function print(c){
+                console.log(c)
+            }
+
             function showRegs(){
                 $("#c").text(regs.c.join(""))
                 $("#r").text(regs.r.join(""))
@@ -241,8 +300,10 @@
 
                     //Do we have an argument?
                     if(parts.length > 2 && !isNaN(Number(parts[2]))){
-                        const arg = decToBin(Number(parts[2]), 12)
-                        mem[addr] = insertArrayAt(mem[addr], 18, arg)
+                        const track = decToBin(Number(parts[2].slice(0, 2)), 6)
+                        const sector = decToBin(Number(parts[2].slice(2, 4)), 6)
+
+                        mem[addr] = insertArrayAt(mem[addr], 18, track.concat(sector))
                     }
                 }else{
                     //Otherwise, this is a constant
