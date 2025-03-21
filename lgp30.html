@@ -1,0 +1,263 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+        <style>
+            table {
+                font-family: monospace;
+            }
+
+            .ip {
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>C</td><td id="c"></td>
+            </tr>
+            <tr>
+                <td>R</td><td id="r"></td>
+            </tr>
+            <tr>
+                <td>A</td><td id="a"></td>
+            </tr>
+        </table>
+
+        <button onclick="step()">STEP</button>
+
+        <p>Address(ttss) order Address(ttss)</p>
+        <textarea id="asm" rows="10" cols="80">
+0000 b 0010 #Bring constant from @10 into A
+0001 u 0005
+0002 h 0011 #Move value of A into @11
+0003 y 0000
+0004 c 0012 #Move A into @12 and clear A
+0005 z      #STOP!
+0010 9999   #Store constant
+        </textarea>
+
+        <table id="mem">
+            
+        </table>
+
+        <script>
+            var mem = Array(6363).fill(
+                Array(31).fill(0)
+            )
+
+            var regs = {
+                c: Array(12).fill(0),   //Counter - Instruction Pointer
+                    //C is encoded as TRACK|SECTOR
+                    //  ...so I need to treat it... specially
+                r: Array(31).fill(0),    //Instruction
+                a: Array(31).fill(0)    //Accumulator
+            }
+
+            var running = false
+
+            const orders = {
+                "0001": { //Bring
+                    name: "b",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+                        regs.a = mem[i]
+                        return incAddr()
+                    }
+                },
+                "1100": { //Hold and Store
+                    name: "h",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+                        mem[i] = regs.a
+                        return incAddr()
+                    }
+                },
+                "1101": { //Clear and Store
+                    name: "c",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+                        mem[i] = regs.a
+                        regs.a = Array(31).fill(0)
+                        return incAddr()
+                    }
+                },
+                "0010": { //Store Address
+                    //Moves address part of A into address part of ARG
+                    name: "y",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+
+                        //a[18:28] -> mem[i][18:29]
+                        const addr = regs.a.slice(18, 30)
+                        mem[i] = insertArrayAt(mem[i], 12, addr)
+
+                        return incAddr()
+                    }
+                },
+                "1010": { //Unconditional transfer
+                    name: "u",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+
+                        return track.concat(sector)
+                    }
+                },
+                "0000": { //Stop
+                    name: "z",
+                    eval: () => {
+                        running = false
+                        return 0
+                    }
+                }
+            }
+
+            const orderMap = {}
+
+            Object.keys(orders).forEach((o) => {
+                orderMap[orders[o].name] = o
+            })
+
+            /**
+             * The loop is:
+             *  Load mem[regs.c] -> regs.r
+             *  Evaluate regs.r
+             *  Determine next regs.c
+             *  Back to top
+            **/
+
+            running = false
+            $("#asm").val().split("\n").forEach(assembleLine)
+
+            while(running){
+                step()
+            }
+
+            function step(){
+                const w = mem[binToDec(regs.c)]
+                regs.c = runIns(w)
+            }
+
+            //showRegs()
+            //runIns(mem[0])
+            
+            function showRegs(){
+                $("#c").text(regs.c.join(""))
+                $("#r").text(regs.r.join(""))
+                $("#a").text(regs.a.join(""))
+            }
+
+            function showMem(){
+                $("#mem").html("")
+                const addr = decodeAddr()
+
+                mem.forEach((m, i) => {
+                    if(i < 64){
+                        $("#mem").append($(
+                            "<tr" + (i == addr ? " class='ip'" : "") + "><td>" + i + "</td>" +
+                            "<td>" + m.join("") + "</td></tr>"
+                        ))
+                    }
+                })
+            }
+
+            function runIns(word){
+                regs.r = word //update the order register
+
+                //Extract fields
+                const order = word.slice(12, 16)
+                const track = word.slice(18, 24)
+                const sector = word.slice(24, 30)
+                
+                const orderId = order.join("")
+
+                console.log(orders[orderId].name, order, track, sector)
+                const ret = orders[orderId].eval(order, track, sector)
+                showRegs()
+                showMem()
+
+                return ret
+            }
+
+            function binToDec(b){
+                return parseInt(b.join(""), 2);
+            }
+
+            function decToBin(d, n){ //I'll need a hex equiv eventually
+                const bits = d.toString(2).split("").map(Number)
+
+                if(n == undefined){
+                    return bits
+                }
+
+                return Array(n - bits.length).fill(0).concat(bits)
+            }
+
+            //I love JS sometimes...
+            function composeAddr(track, sector){
+                return parseInt(binToDec(track) + "" + (binToDec(sector) < 10 ? "0" + binToDec(sector) : binToDec(sector)))
+            }
+
+            function incAddr(){
+                var track = binToDec(regs.c.slice(0, 6))
+                var sector = binToDec(regs.c.slice(6, 13))
+
+
+                sector++
+
+                if(sector > 63){
+                    sector = 0
+                    track++
+                }
+
+                return decToBin(track, 6).concat(decToBin(sector, 6))
+            }
+
+            function decodeAddr(){
+                return parseInt(regs.c.join(""), 2)
+            }
+
+            function inc(word){
+                var v = parseInt(word.join(""), 2)
+                v++
+
+                var result = v.toString(2).split("").map(parseInt)
+                console.log(result)
+                return Array(word.length - result.length).fill(0).concat(result)
+            }
+
+            function assembleLine(l){
+                const parts = l.split(" ")
+
+                //Get address
+                const addr = parseInt(parts[0])
+
+                //Test if this is an order
+                if(Object.hasOwn(orderMap, parts[1])){
+                    const order = orderMap[parts[1]].split("").map(Number)
+
+                    mem[addr] = insertArrayAt(mem[addr], 12, order)
+
+                    //Do we have an argument?
+                    if(parts.length > 2 && !isNaN(Number(parts[2]))){
+                        const arg = decToBin(Number(parts[2]), 12)
+                        mem[addr] = insertArrayAt(mem[addr], 18, arg)
+                    }
+                }else{
+                    //Otherwise, this is a constant
+                    mem[addr] = decToBin(Number(parts[1]), 31)
+                }
+            }
+
+            function insertArrayAt(array, index, arrayToInsert) {
+                var arr = array.slice() //Break the ref
+                for(var i = index; i < index + arrayToInsert.length; i++){
+                    arr[i] = arrayToInsert[i - index]
+                }
+
+                return arr
+            }
+        </script>
+    </body>
+</html>
