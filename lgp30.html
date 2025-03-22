@@ -2,6 +2,12 @@
     <head>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w==" crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js" integrity="sha512-2PRgAav8Os8vLcOAh1gSaDoNLe1fAyq8/G3QSdyjFFD+OqNjLeHE/8q4+S4MEZgPsuo+itHopj+hJvqS8XUQ8A==" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
         <style>
             table {
                 font-family: monospace;
@@ -10,44 +16,86 @@
             .ip {
                 background-color: red;
             }
+
+            textarea{
+                width: 100%;
+                height: 100%;
+            }
         </style>
     </head>
     <body>
-        <table>
-            <tr>
-                <td>C</td><td id="c"></td>
-            </tr>
-            <tr>
-                <td>R</td><td id="r"></td>
-            </tr>
-            <tr>
-                <td>A</td><td id="a"></td>
-            </tr>
-        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <table>
+                        <tr>
+                            <td>C</td><td id="c"></td><td id="c-dec"></td>
+                        </tr>
+                        <tr>
+                            <td>R</td><td id="r"></td><td id="r-dec"></td>
+                        </tr>
+                        <tr>
+                            <td>A</td><td id="a"></td><td id="a-dec"></td><td id="a-ins"></td>
+                        </tr>
+                        <tr>
+                            <td> </td><td>--------------|O--|T----|S----|</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
-        <button onclick="step()">STEP</button>
+            <div class="row">
+                <div class="col-md-12">
+                    <button onclick="step()">STEP</button>
+                    <button onclick="run()">RUN</button>
+                </div>
+            </div>
 
-        <p>Address(ttss) order Address(ttss)</p>
-        <textarea id="asm" rows="10" cols="80">
-0000 b 0010 #Bring constant from @10 into A
-0001 p 0100
-0002 h 0011 #Move value of A into @11
-0003 y 0000
-0004 c 0012 #Move A into @12 and clear A
-0005 z      #STOP!
-0010 9999   #Store constant
-0020 2147483647 #THIS WILL BE HEX... SOON(tm)
-0021 1024
-        </textarea>
+            <div class="row">
+                <div class="col-md-6">
+                    <textarea id="asm">
+0000 u 1000 #Jump to entry
+1000 p 0000
+1001 b 1000
+1002 a 2005 #Add up 1 to track
+1003 y 1000 #Modify p
 
-        <table id="mem">
-            
-        </table>
+1004 b 2002 #Sets A to (2002)
+1005 a 2001 #Adds (2001) to A
+1006 h 2002 #Saves results in (2002)
+1007 s 2003 #Subtracts 5 from A
+1008 t 1000 #Tests, and jumps to top of loop
+1009 z 0000 #Stop
+
+2001 1 #Counter start
+2003 63 #Counter stop
+2004 a 2010 #Example fails... so my packing is wrong?
+2005 128 #Track = 1. This is our incrementer
+                    </textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <div id="term"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="mem"></table>
+                </div>
+            </div>
+        </div>
 
         <script>
+            //Setup terminal
+            var term = new Terminal({cols: 40});
+            term.open(document.getElementById("term"));
+
             var mem = Array(6363).fill(
                 Array(31).fill(0)
             )
+
+            const coolAddresses = []
 
             var regs = {
                 c: Array(12).fill(0),   //Counter - Instruction Pointer
@@ -113,7 +161,8 @@
 
                         //a[18:28] -> mem[i][18:29]
                         const addr = regs.a.slice(18, 30)
-                        mem[i] = insertArrayAt(mem[i], 19, addr)
+                        console.log(addr)
+                        mem[i] = insertArrayAt(mem[i], 18, addr)
 
                         return incAddr()
                     }
@@ -166,6 +215,26 @@
                         return incAddr()
                     }
                 },
+                "1110": { //Add
+                    name: "a",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+
+                        regs.a = add(regs.a, mem[i])
+
+                        return incAddr()
+                    }
+                },
+                "1111": { //Subtract
+                    name: "s",
+                    eval: (order, track, sector) => {
+                        const i = composeAddr(track, sector)
+
+                        regs.a = sub(regs.a, mem[i])
+
+                        return incAddr()
+                    }
+                },
             }
 
             const orderMap = {}
@@ -188,37 +257,129 @@
             showMem()
             showRegs()
 
-            while(running){
-                step()
+            async function run(){
+                running = true
+                while(running){
+                    step()
+                    await delay()
+                }
+            }
+
+            //I can make this "realistic" using drum delay calculations
+            async function delay(){
+                return new Promise(resolve => setTimeout(resolve, 100))
+            }
+
+            //This is where I have to care about numeric representation
+            function add(x, y){
+                //Break refs
+                const a = unpackNum(x)
+                const b = unpackNum(y)
+
+                const ret = packNum(a + b)
+
+                return ret
+            }
+
+            function sub(x, y){
+                const a = unpackNum(x)
+                const b = unpackNum(y)
+
+                const ret = packNum(a - b)
+
+                return ret
+            }
+
+            function _sub(x, y){ //Switch to using unpack/pack
+                //Break refs
+                const a = x.slice()
+                const b = y.slice()
+
+                const aDec = binToDec(a)
+                const bDec = binToDec(b)
+
+                //console.log(aDec + " - " + bDec)
+
+                const val = aDec - bDec
+
+                const ret = decToBin(Math.abs(val), 31)
+
+                if(val < 0){
+                    ret[0] = 1 //Set sign bit
+                }
+
+                return ret
+            }
+
+            //Encode literal number
+            function packNum(d){
+                const w = decToBin(Math.abs(d), 31)
+
+                if(d < 0){
+                    w[0] = 1
+                }
+                
+                return w
+            }
+
+            //Decode literal number
+            function unpackNum(w){
+                return (w[0] == 1 ? -1 : 1) * binToDec(w.slice(1))
             }
 
             function step(){
-                const w = mem[binToDec(regs.c)]
+                const track = regs.c.slice(0, 6)
+                const sector = regs.c.slice(6, 13)
+                const addr = composeAddr(track, sector)
+
+                const w = mem[addr]
                 regs.c = runIns(w)
             }
 
             function print(c){
                 console.log(c)
+                term.write(c)
             }
 
             function showRegs(){
                 $("#c").text(regs.c.join(""))
                 $("#r").text(regs.r.join(""))
                 $("#a").text(regs.a.join(""))
+
+                $("#c-dec").text(decodeAddr())
+                //$("#r-dec").text(binToDec(regs.r))
+                $("#a-dec").text(unpackNum(regs.a))
+                $("#a-ins").text(decode(regs.a))
             }
 
+            //Write something to find relevant memory locations to display
             function showMem(){
                 $("#mem").html("")
                 const addr = decodeAddr()
 
                 mem.forEach((m, i) => {
-                    if(i < 64){
+                    if(
+                        coolAddresses.includes(i)
+                    ){
                         $("#mem").append($(
                             "<tr" + (i == addr ? " class='ip'" : "") + "><td>" + i + "</td>" +
-                            "<td>" + m.join("") + "</td></tr>"
+                            "<td>" + m.join("") + "</td>" +
+                            "<td>(" + binToDec(m) + ")</td>" +
+                            "<td>" + decode(m) + "</td>" +
+                            "</tr>"
                         ))
                     }
                 })
+            }
+
+            function decode(word){
+                const order = word.slice(12, 16)
+                const track = word.slice(18, 24)
+                const sector = word.slice(24, 30)
+                
+                const orderId = order.join("")
+
+                return orders[orderId].name + " " + binToDec(track) + ":" + binToDec(sector) //composeAddr(track, sector)
             }
 
             function runIns(word){
@@ -232,6 +393,9 @@
                 const orderId = order.join("")
 
                 console.log(orders[orderId].name, order, track, sector)
+
+                $("#r-dec").text(orders[orderId].name + ":" + composeAddr(track, sector))
+
                 const ret = orders[orderId].eval(order, track, sector)
                 showRegs()
                 showMem()
@@ -274,7 +438,10 @@
             }
 
             function decodeAddr(){
-                return parseInt(regs.c.join(""), 2)
+                const track = regs.c.slice(0, 6)
+                const sector = regs.c.slice(6, 13)
+                const addr = composeAddr(track, sector)
+                return addr
             }
 
             function inc(word){
@@ -291,6 +458,7 @@
 
                 //Get address
                 const addr = parseInt(parts[0])
+                coolAddresses.push(addr)
 
                 //Test if this is an order
                 if(Object.hasOwn(orderMap, parts[1])){
@@ -302,6 +470,8 @@
                     if(parts.length > 2 && !isNaN(Number(parts[2]))){
                         const track = decToBin(Number(parts[2].slice(0, 2)), 6)
                         const sector = decToBin(Number(parts[2].slice(2, 4)), 6)
+
+                        coolAddresses.push(composeAddr(track, sector))
 
                         mem[addr] = insertArrayAt(mem[addr], 18, track.concat(sector))
                     }
