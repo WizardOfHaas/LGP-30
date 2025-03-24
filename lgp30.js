@@ -9,6 +9,8 @@ class LGP30{
         this.WORD_SIZE = 31
         this.ADDR_SIZE = 12
 
+        this.mode = "NORMAL"
+
         this.orders = {
             "0001": { //Bring
                 name: "b",
@@ -159,13 +161,33 @@ class LGP30{
     async run(){
         this.running = true
 
-        while(this.running){
+        if(this.mode == "NORMAL"){
+            while(this.running){
+                this.step()
+                await this.delay()
+            }
+
+            if(this.config.onStep){
+                this.config.onStep()
+            }
+        }else if(this.mode == "STEP"){
             this.step()
-            await this.delay()
+        }
+    }
+
+    stop(){
+        this.running = false
+
+        if(this.config.onStep){
+            this.config.onStep()
         }
     }
 
     step(){
+        if(this.config.onStep){
+            this.config.onStep()
+        }
+        
         const track = this.regs.c.slice(0, 6)
         const sector = this.regs.c.slice(6, 13)
         const addr = this.composeAddr(track, sector)

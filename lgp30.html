@@ -20,16 +20,91 @@
                 background-color: red;
             }
 
+            .green {
+                background-color: green;
+            }
+
+            .red {
+                background-color: red;
+            }
+
             textarea{
                 width: 100%;
                 height: 100%;
+            }
+
+            .btn-on{
+                background-color: red;
+            }
+
+            .btn{
+                border: 1px solid black;
+                border-radius: 0px;
+            }
+
+            .toggle{
+                height: 100%;
+                width: 100%;
+            }
+
+            div:has(>button){
+                padding: 0px;
+                margin: 0px;
+            }
+
+            #run-btns button, #op-btns button{
+                font-size: 12;
+                height: 60px;
+            }
+
+            #op-btns button, #mode-btns button{
+                width: 100px;
+            }
+
+            #run-btns button{
+                margin-bottom: 15px;
             }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-7">
+                    <table id="run-btns">
+                        <tr>
+                            <th colspan="3">
+                                <button class="btn btn-block" id="stop">STOP</button>
+                            </td>
+                            <th colspan="3">
+                                <button class="btn btn-block" id="compute">COMPUTE</button>
+                            </td>
+                        </tr>
+
+                        <tr id="mode-btns">
+                            <td>
+                                <button class="btn btn-block toggle btn-on" id="normal">NORMAL</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-block toggle" id="one-op">ONE<br/>OP</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-block toggle" id="manual">MANUAL<br/>INPUT</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block toggle" id="stand-by">STAND<br/>BY</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-block toggle" id="opereate">OPERATE</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-block toggle" id="stand-by-to-operate">STAND BY<br/>TO OP</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-md-5">
                     <table>
                         <tr>
                             <td>C</td><td id="c"></td><td id="c-dec"></td>
@@ -48,9 +123,60 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
-                    <button id="step">STEP</button>
-                    <button id="run">RUN</button>
+                <div class="col-md-6">
+                    <table id="op-btns">
+                        <tr>
+                            <td>
+                                <button class="btn btn-block" id="start">START</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="clear-counter">CLEAR<br/>COUNTER</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="fill-ins">FILL<br/>INSTRUCTION</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="ex-ins">EXECUTE<br/>INSTRUCTION</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="power-on">POWER<br/>ON</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="power-off">POWER<br/>OFF</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <button class="btn btn-block" id="break-32">BREAK<br/>POINT<br/>32</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="break-16">BREAK<br/>POINT<br/>16</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="break-8">BREAK<br/>POINT<br/>8</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="break-4">BREAK<br/>POINT<br/>4</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="input-6b">6 BIT<br/>INPUT</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-block" id="xfer-ctrl">TRANSFER<br/>CONTROL</button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 
@@ -101,14 +227,44 @@
             const lgp30 = new LGP30({
                 memTarget: "#mem",
                 initialAsm: "#asm",
-                print: (c) => {flexo.print(c)}
+                print: (c) => {flexo.print(c)},
+                onStep: () => {
+                    if(lgp30.running == true){
+                        $("#compute").addClass("green")
+                        $("#stop").removeClass("red")
+                    }else{
+                        $("#compute").removeClass("green")
+                        $("#stop").addClass("red") 
+                    }
+                }
             })
 
-            $("#step").on("click", () => {
+            /*$("#step").on("click", () => {
                 lgp30.step()
             })
 
             $("#run").on("click", () => {
+                lgp30.run()
+            })*/
+
+            $("#stop").on("click", () => {
+                lgp30.stop()
+            })
+
+            $("#normal").on("click", () => {
+                lgp30.mode = "NORMAL"
+            })
+
+            $("#one-op").on("click", () => {
+                lgp30.mode = "STEP"
+            })
+
+            $("#one-op, #manual, #normal").on("click", (e) => {
+                $("#one-op, #manual, #normal").removeClass("btn-on")
+                $(e.target).addClass("btn-on")
+            })
+
+            $("#start").on("click", () => {
                 lgp30.run()
             })
         </script>
