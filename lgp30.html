@@ -64,6 +64,41 @@
             #run-btns button{
                 margin-bottom: 15px;
             }
+
+            #scope td{
+                display: inline-flex;
+            }
+
+            .bit-on, .bit-off{
+                width: 15px;
+                height: 15px;
+            }
+
+            #a-bin, #r-bin, #c-bin{
+                border: 1px solid black;
+            }
+
+            .bit-off{
+                border-bottom: 2px solid green;
+            }
+
+            .bit-on{
+                border-left: 2px solid green;
+                border-right: 2px solid green;
+                border-top: 2px solid green;
+            }
+
+            .bit-markers > span{
+                width: 15px;
+                font-size: 10;
+
+                border-left: 1px solid black;
+                border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
+            }
+
+            #r-bin .bit-12, #r-bin .bit-16, #r-bin .bit-18, #r-bin .bit-24, #r-bin .bit-30{
+                border-left: 1px solid black;
+            }
         </style>
     </head>
     <body>
@@ -105,6 +140,92 @@
                 </div>
 
                 <div class="col-md-5">
+                    <table id="scope">
+                        <tr>
+                            <td></td><td id="c-bin"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="bit-markers">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>ORDER</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>TRACK</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>SECTOR</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td><td id="r-bin"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="bit-markers">
+                                <span></span>
+                                <span>1</span>
+                                <span></span>
+                                <span></span>
+                                <span>4</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>8</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>12</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>16</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>20</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>24</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span>28</span>
+                                <span></span>
+                                <span>30</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td><td id="a-bin"></td>
+                        </tr>
+                    </table>
+
+                    <br/>
+
                     <table>
                         <tr>
                             <td>C</td><td id="c"></td><td id="c-dec"></td>

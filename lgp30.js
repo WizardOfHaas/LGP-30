@@ -119,6 +119,38 @@ class LGP30{
                     return this.incAddr()
                 }
             },
+            "0111": { //Multiply Upper
+                name: "m",
+                eval: (order, track, sector) => {
+                    const i = this.composeAddr(track, sector)
+    
+                    return this.incAddr()
+                }
+            },
+            "0110": { //Multiply Lower
+                name: "n",
+                eval: (order, track, sector) => {
+                    const i = this.composeAddr(track, sector)
+    
+                    return this.incAddr()
+                }
+            },
+            "0101": { //Divide
+                name: "d",
+                eval: (order, track, sector) => {
+                    const i = this.composeAddr(track, sector)
+    
+                    return this.incAddr()
+                }
+            },
+            "1001": { //Extract(AND)
+                name: "e",
+                eval: (order, track, sector) => {
+                    const i = this.composeAddr(track, sector)
+    
+                    return this.incAddr()
+                }
+            },
         }
 
         this.running = false //Global machine state
@@ -386,6 +418,10 @@ class LGP30{
         //$("#r-dec").text(binToDec(regs.r))
         $("#a-dec").text(this.unpackNum(this.regs.a))
         $("#a-ins").text(this.decode(this.regs.a))
+
+        $("#c-bin").html(this.regs.c.map((b, i) => ("<span class='bit-" + i + " bit-" + (b == 0 ? "off" : "on") + "'></span>")))
+        $("#r-bin").html(this.regs.r.map((b, i) => ("<span class='bit-" + i + " bit-" + (b == 0 ? "off" : "on") + "'></span>")))
+        $("#a-bin").html(this.regs.a.map((b, i) => ("<span class='bit-" + i + " bit-" + (b == 0 ? "off" : "on") + "'></span>")))
     }
 
     print(c){
