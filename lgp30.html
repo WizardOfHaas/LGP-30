@@ -65,6 +65,17 @@
                 margin-bottom: 15px;
             }
 
+            #flexo-btns button{
+                width: 50px;
+                height: 50px;
+                font-size: 10;
+            }
+
+            button#manual-light{
+                width: 120px;
+                margin-top: -20px;
+            }
+
             #scope td{
                 display: inline-flex;
             }
@@ -303,6 +314,60 @@
 
             <div class="row">
                 <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="term"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table>
+                                <tr id="flexo-btns">
+                                    <td>
+                                        <button class="btn btn-block toggle" id="cond-stop">COND<br/>STOP</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-block toggle" id="start-read">START<br/>READ</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-block toggle" id="stop-read">STOP<br/>READ</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-block toggle" id="punch-on">PUNCH<br/>ON</button>
+                                    </td>
+
+                                    <td>
+                                        <td>
+                                            <button class="btn btn-block toggle" id="manual-light">MANUAL</button>
+                                        </td>
+                                    </td>
+
+                                    <td>
+                                        <button class="btn btn-block toggle" id="tape-feed">TAPE<br/>FEED</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-block toggle" id="code-depete">CODE<br/>DELETE</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-block toggle" id="manual-input">MANUAL<br/>INPUT</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-block toggle" id="start">START<br/>COMP</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
                     <textarea id="asm">
 0000 u 1000 #Jump to entry
 1000 p 0000
@@ -325,12 +390,6 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div id="term"></div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
                     <table id="mem"></table>
                 </div>
             </div>

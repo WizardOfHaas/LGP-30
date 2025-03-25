@@ -99,6 +99,15 @@ class LGP30{
                     return this.incAddr()
                 }
             },
+            "0100": { //Input
+                //This is supposed to enter keyboard data into A "in same manner as from tape"
+                name: "i",
+                eval: (order, track, sector) => {
+                    const i = this.composeAddr(track, sector)
+    
+                    return this.incAddr()
+                }
+            },
             "1110": { //Add
                 name: "a",
                 eval: (order, track, sector) => {
