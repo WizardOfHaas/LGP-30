@@ -362,30 +362,22 @@
                 </div>
 
                 <div class="col-md-6">
-                    
+
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
                     <textarea id="asm">
-0000 u 1000 #Jump to entry
-1000 p 0000
-1001 b 1000
-1002 a 2005 #Add up 1 to track
-1003 y 1000 #Modify p
+0000 p 0000 #Setup input
+0001 i 0000 #Kick to input mode
+0002 h 1000 #Store A in memory
+0003 b 0002 #Put store ins into A
+0004 a 0049 #Increment
+0005 y 0002 #Update the store instruction
+0006 u 0000 #Loop
 
-1004 b 2002 #Sets A to (2002)
-1005 a 2001 #Adds (2001) to A
-1006 h 2002 #Saves results in (2002)
-1007 s 2003 #Subtracts 5 from A
-1008 t 1000 #Tests, and jumps to top of loop
-1009 z 0000 #Stop
-
-2001 1 #Counter start
-2003 63 #Counter stop
-2004 a 2010 #Example fails... so my packing is wrong?
-2005 128 #Track = 1. This is our incrementer
+0049 4 #Inc constant
                     </textarea>
                 </div>
 
@@ -439,6 +431,10 @@
                 lgp30.mode = "STEP"
             })
 
+            $("#manual").on("click", (e) => {
+                lgp30.mode = "MANUAL"
+            })
+
             $("#one-op, #manual, #normal").on("click", (e) => {
                 $("#one-op, #manual, #normal").removeClass("btn-on")
                 $(e.target).addClass("btn-on")
@@ -446,6 +442,11 @@
 
             $("#start").on("click", () => {
                 lgp30.run()
+            })
+
+            $("#fill-ins").on("click", () => {
+                lgp30.regs.r = lgp30.regs.a
+                lgp30.showRegs()
             })
         </script>
     </body>

@@ -22,8 +22,23 @@ class Flexo{
             -1  , 'A', 'Q', -1 , -1 , 'S', 'W', 0
         ]
 
+        this.charTo6Bit = {}
+        this.charTo4Bit = {}
+
+
+        this.codeToChar.forEach((c, i )=> {
+            if(c != -1){
+                this.charTo6Bit[c] = this.decToBin(i, 6)
+                this.charTo4Bit[c] = this.decToBin(i, 6).slice(0, 4)
+            }
+        })
+
         this.term = new Terminal({cols: 40});
-        this.term.open(document.getElementById(this.config.target));
+        this.term.open(document.getElementById(this.config.target))
+
+        this.term.onKey((d) => {
+            this.keybdIn(d.key)
+        })
     }
 
     print(code){
@@ -31,4 +46,48 @@ class Flexo{
         this.term.write(char)
     }
 
+    keybdIn(code){
+        console.log(code)
+
+        if(Object.hasOwn(this.charTo4Bit, code)){
+            console.log(this.charTo4Bit[code])
+        }
+    }
+
+    tapeIn(code){
+
+    }
+    
+    punch(code){
+
+    }
+
+    hexToDec(h){
+        if(Number(h) || h == 0){
+            return Number(h)
+        }
+
+        const chars = {"f": 10, "g": 11, "j": 12, "k": 13, "q": 14, "w": 15}
+
+        return chars[h]
+    }
+
+    hexToBin(h, n = 4){
+        const dec = this.hexToDec(h)
+        return this.decToBin(dec, n)
+    }
+
+    decToBin(d, n){
+        const bits = d.toString(2).split("").map(Number)
+
+        if(n == undefined){
+            return bits
+        }
+
+        if(n > bits.length){
+            return Array(n - bits.length).fill(0).concat(bits)
+        }else{
+            return bits//.slice(0, n)
+        }
+    }
 }

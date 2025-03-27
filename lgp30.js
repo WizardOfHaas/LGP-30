@@ -6,10 +6,10 @@ class LGP30{
     constructor(config){
         this.config = config
 
-        this.WORD_SIZE = 31
+        this.WORD_SIZE = 32
         this.ADDR_SIZE = 12
 
-        this.mode = "NORMAL"
+        this.mode = "NORMAL" //Enum: NORMAL | STEP | MANUAL
 
         this.orders = {
             "0001": { //Bring
@@ -33,7 +33,7 @@ class LGP30{
                 eval: (order, track, sector) => {
                     const i = this.composeAddr(track, sector)
                     this.mem[i] = this.regs.a
-                    this.regs.a = Array(31).fill(0)
+                    this.regs.a = Array(32).fill(0)
                     return this.incAddr()
                 }
             },
@@ -104,7 +104,8 @@ class LGP30{
                 name: "i",
                 eval: (order, track, sector) => {
                     const i = this.composeAddr(track, sector)
-    
+                    this.mode = "MANUAL"
+                    this.running = false
                     return this.incAddr()
                 }
             },
@@ -298,7 +299,7 @@ class LGP30{
             }
         }else{
             //Otherwise, this is a constant
-            this.mem[addr] = this.decToBin(Number(parts[1]), 31)
+            this.mem[addr] = this.decToBin(Number(parts[1]), 32)
         }
     }
 
@@ -350,6 +351,67 @@ class LGP30{
         return new Promise(resolve => setTimeout(resolve, 100))
     }
     
+    hexToDec(h){
+        if(Number(h) || h == 0){
+            return Number(h)
+        }
+
+        const chars = {"f": 10, "g": 11, "j": 12, "k": 13, "q": 14, "w": 15}
+
+        return chars[h]
+    }
+
+    hexToBin(h, n = 4){
+        const dec = this.hexToDec(h)
+        return this.decToBin(dec, n)
+    }
+
+    isHex(c){
+        return c == 0 || Number(c)|| ["f", "g", "j", "k", "q", "w"].includes(c)
+    }
+
+    /**
+     * Main I/O
+     */
+
+    //This is the main connection point.
+    //  It takes a 6-bit code (in LGP-30 hex) as input, composes it to a bit array...
+    //  ...and then acts according to this.mode
+    recv(c, n = 4){
+        if(this.mode == "MANUAL"){
+            //Read into accumulator (this chares about the spacer bit :/)
+            //In 6-bit mode into a[26:31]
+            //In 4-bit mode into a[28:31]
+            //Then shift
+            //It rotates once full
+            //When COND-STOP is read computer moves on to next op
+            //  What is the char code for a cond stop? (100000)
+
+            if(this.isHex(c)){
+                const bits = this.hexToBin(c, n)
+
+                this.shiftIntoA(bits)
+                this.showRegs()
+            }else if(c == "'"){ //COND-STOP
+                this.mode = "NORMAL"
+                this.run()
+            }
+        }
+    }
+
+    shiftIntoA(c){
+        this.regs.a = this.regs.a.concat(this.regs.a.splice(0, c.length))
+        this.regs.a = this.insertArrayAt(this.regs.a, this.regs.a.length - c.length, c)
+    }
+
+    setMode(mode){}
+
+    setA(v){}
+
+    setR(v){}
+
+    setC(v){}
+
     /**
      * Number encoding/decoding stuff
      */
@@ -358,7 +420,7 @@ class LGP30{
         return parseInt(b.join(""), 2);
     }
 
-    decToBin(d, n){ //I'll need a hex equiv eventually
+    decToBin(d, n){
         const bits = d.toString(2).split("").map(Number)
 
         if(n == undefined){
@@ -368,9 +430,10 @@ class LGP30{
         return Array(n - bits.length).fill(0).concat(bits)
     }
 
+    //These need to be updated to ignore the spacer bit (w[31])
     //Encode literal number
     packNum(d){
-        const w = this.decToBin(Math.abs(d), 31)
+        const w = this.decToBin(Math.abs(d), 32)
         if(d < 0){
             w[0] = 1
         }
