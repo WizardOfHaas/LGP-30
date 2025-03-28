@@ -362,22 +362,25 @@
                 </div>
 
                 <div class="col-md-6">
-
+                    <button id="upload">INSERT TAPE</button>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
                     <textarea id="asm">
-0000 p 0000 #Setup input
-0001 i 0000 #Kick to input mode
-0002 h 1000 #Store A in memory
-0003 b 0002 #Put store ins into A
-0004 a 0049 #Increment
-0005 y 0002 #Update the store instruction
-0006 u 0000 #Loop
-
-0049 4 #Inc constant
+0000 c 3w00
+0001 p 0000
+0002 c 3w04
+0003 i 0000
+0004 c 3w08
+0005 c 3wl4
+0006 c 3w0j
+0007 p 0000
+0008 c 3wl0
+0009 i 0000
+0010 u 3w00
+0011 z 0000
                     </textarea>
                 </div>
 
@@ -410,6 +413,8 @@
                     }
                 }
             })
+
+            flexo.connectOutput((c) => { lgp30.recv(c) })
 
             /*$("#step").on("click", () => {
                 lgp30.step()
@@ -447,6 +452,32 @@
             $("#fill-ins").on("click", () => {
                 lgp30.regs.r = lgp30.regs.a
                 lgp30.showRegs()
+            })
+
+            $("#ex-ins").on("click", () => {
+                lgp30.runIns(lgp30.regs.r)
+            })
+
+            $("#clear-counter").on("click", () => {
+                lgp30.regs.c = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                lgp30.showRegs()
+            })
+
+            $("#upload").on("click", (e) => {
+                var input = document.createElement('input')
+                input.type = 'file'
+
+                input.addEventListener("change", function(){
+                    var reader = new FileReader();
+
+                    reader.onload = function(e){
+                        flexo.tapeIn(reader.result)
+                    };
+
+                    reader.readAsText(this.files[0], "UTF-8");
+                }, true);                
+                
+                input.click()
             })
         </script>
     </body>

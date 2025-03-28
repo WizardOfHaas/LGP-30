@@ -25,6 +25,7 @@ class LGP30{
                 eval: (order, track, sector) => {
                     const i = this.composeAddr(track, sector)
                     this.mem[i] = this.regs.a
+                    this.coolAddresses.push(i)
                     return this.incAddr()
                 }
             },
@@ -92,10 +93,12 @@ class LGP30{
             "1000": { //Print
                 name: "p",
                 eval: (order, track, sector) => {
-                    //I'll need to convert track -> character
-                    //  ...I'll need a map
-                    //onst c = chars[this.binToDec(track)]
-                    this.print(this.binToDec(track))
+                    const c = this.binToDec(track)
+
+                    if(c != 0){
+                        this.print(c)
+                    }
+
                     return this.incAddr()
                 }
             },
@@ -106,6 +109,9 @@ class LGP30{
                     const i = this.composeAddr(track, sector)
                     this.mode = "MANUAL"
                     this.running = false
+
+                    //This seems to cause an infinite loop right now
+                    this.print(0) //Send START READ
                     return this.incAddr()
                 }
             },
@@ -200,7 +206,7 @@ class LGP30{
         return this
     }
 
-    async run(){
+     async run(){
         this.running = true
 
         if(this.mode == "NORMAL"){
@@ -236,6 +242,9 @@ class LGP30{
 
         this.regs.r = this.mem[addr] //Fetch
         this.regs.c = this.runIns(this.regs.r)
+
+        this.showRegs()
+        this.showMem()
     }
 
     runIns(word){
@@ -289,9 +298,9 @@ class LGP30{
             this.mem[addr] = this.insertArrayAt(this.mem[addr], 12, order)
 
             //Do we have an argument?
-            if(parts.length > 2 && !isNaN(Number(parts[2]))){
-                const track = this.decToBin(Number(parts[2].slice(0, 2)), 6)
-                const sector = this.decToBin(Number(parts[2].slice(2, 4)), 6)
+            if(parts.length > 2){
+                const track = this.hexToBin(parts[2].slice(0, 2), 6)
+                const sector = this.hexToBin(parts[2].slice(2, 4), 6)
 
                 this.coolAddresses.push(this.composeAddr(track, sector))
 
@@ -347,7 +356,7 @@ class LGP30{
     }
     
     //I can make this "realistic" using drum delay calculations
-    delay(){
+    async delay(){ ///UUUGGGHHH THIS NEEDS TO BE ASYNC.... :(
         return new Promise(resolve => setTimeout(resolve, 100))
     }
     
@@ -356,9 +365,11 @@ class LGP30{
             return Number(h)
         }
 
-        const chars = {"f": 10, "g": 11, "j": 12, "k": 13, "q": 14, "w": 15}
+        const chars = {"f": "a", "g": "b", "j": "c", "k": "d", "q": "e", "w": "f", "l": "1"}
 
-        return chars[h]
+        const realHex = h.split("").map((c) => (Object.hasOwn(chars, c) ? chars[c] : c)).join("")
+
+        return parseInt(realHex, 16)
     }
 
     hexToBin(h, n = 4){
@@ -377,7 +388,8 @@ class LGP30{
     //This is the main connection point.
     //  It takes a 6-bit code (in LGP-30 hex) as input, composes it to a bit array...
     //  ...and then acts according to this.mode
-    recv(c, n = 4){
+    //  ...in 4-bit mode it slices, in 6-bit mode it does not
+    async recv(bits){
         if(this.mode == "MANUAL"){
             //Read into accumulator (this chares about the spacer bit :/)
             //In 6-bit mode into a[26:31]
@@ -387,7 +399,7 @@ class LGP30{
             //When COND-STOP is read computer moves on to next op
             //  What is the char code for a cond stop? (100000)
 
-            if(this.isHex(c)){
+            /*if(this.isHex(c)){
                 const bits = this.hexToBin(c, n)
 
                 this.shiftIntoA(bits)
@@ -395,6 +407,17 @@ class LGP30{
             }else if(c == "'"){ //COND-STOP
                 this.mode = "NORMAL"
                 this.run()
+            }*/
+
+            console.log(bits)
+            
+            if(this.binToDec(bits) == 32){
+                console.log("COND-STOP")
+                this.mode = "NORMAL"
+                await this.run()
+            }else{
+                this.shiftIntoA(bits.slice(0, 4))
+                this.showRegs()
             }
         }
     }
@@ -496,12 +519,12 @@ class LGP30{
         $("#a-bin").html(this.regs.a.map((b, i) => ("<span class='bit-" + i + " bit-" + (b == 0 ? "off" : "on") + "'></span>")))
     }
 
-    print(c){
+    async print(c){
         //console.log(c)
         //this.flexo.print(c)
 
         if(this.config.print){
-            this.config.print(c)
+            await this.config.print(c)
         }
     }
 }
