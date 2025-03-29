@@ -87,9 +87,7 @@ class Flexo{
         })
     }
 
-    async print(code){
-        console.log(code)
-        
+    async print(code){        
         const char = this.codeToChar[code]
         this.term.write(char)
 

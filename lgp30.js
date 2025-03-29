@@ -14,7 +14,7 @@ class LGP30{
         this.orders = {
             "0001": { //Bring
                 name: "b",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
                     this.regs.a = this.mem[i]
                     return this.incAddr()
@@ -22,7 +22,7 @@ class LGP30{
             },
             "1100": { //Hold and Store
                 name: "h",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
                     this.mem[i] = this.regs.a
                     this.coolAddresses.push(i)
@@ -31,7 +31,7 @@ class LGP30{
             },
             "1101": { //Clear and Store
                 name: "c",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
                     this.mem[i] = this.regs.a
                     this.regs.a = Array(32).fill(0)
@@ -41,7 +41,7 @@ class LGP30{
             "0010": { //Store Address
                 //Moves address part of A into address part of ARG
                 name: "y",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     //a[18:28] -> mem[i][18:29]
@@ -54,7 +54,7 @@ class LGP30{
             },
             "1010": { //Unconditional transfer
                 name: "u",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     return track.concat(sector)
@@ -62,7 +62,7 @@ class LGP30{
             },
             "0011": { //Return address
                 name: "r",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     const addr = this.incAddr()
@@ -73,7 +73,7 @@ class LGP30{
             },
             "1011": { //Test
                 name: "t",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     if(this.regs.a[0] == 1){
@@ -85,18 +85,18 @@ class LGP30{
             },
             "0000": { //Stop
                 name: "z",
-                eval: () => {
+                eval: async() => {
                     this.running = false
                     return this.regs.c
                 }
             },
             "1000": { //Print
                 name: "p",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const c = this.binToDec(track)
 
                     if(c != 0){
-                        this.print(c)
+                        await this.print(c)
                     }
 
                     return this.incAddr()
@@ -105,19 +105,19 @@ class LGP30{
             "0100": { //Input
                 //This is supposed to enter keyboard data into A "in same manner as from tape"
                 name: "i",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
                     this.mode = "MANUAL"
                     this.running = false
 
                     //This seems to cause an infinite loop right now
-                    this.print(0) //Send START READ
+                    await this.print(0) //Send START READ
                     return this.incAddr()
                 }
             },
             "1110": { //Add
                 name: "a",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
 
                     this.regs.a = this.add(this.regs.a, this.mem[i])
@@ -127,7 +127,7 @@ class LGP30{
             },
             "1111": { //Subtract
                 name: "s",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     this.regs.a = this.sub(this.regs.a, this.mem[i])
@@ -137,7 +137,7 @@ class LGP30{
             },
             "0111": { //Multiply Upper
                 name: "m",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     return this.incAddr()
@@ -145,7 +145,7 @@ class LGP30{
             },
             "0110": { //Multiply Lower
                 name: "n",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     return this.incAddr()
@@ -153,7 +153,7 @@ class LGP30{
             },
             "0101": { //Divide
                 name: "d",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     return this.incAddr()
@@ -161,7 +161,7 @@ class LGP30{
             },
             "1001": { //Extract(AND)
                 name: "e",
-                eval: (order, track, sector) => {
+                eval: async(order, track, sector) => {
                     const i = this.composeAddr(track, sector)
     
                     return this.incAddr()
@@ -211,7 +211,7 @@ class LGP30{
 
         if(this.mode == "NORMAL"){
             while(this.running){
-                this.step()
+                await this.step()
                 await this.delay()
             }
 
@@ -219,7 +219,7 @@ class LGP30{
                 this.config.onStep()
             }
         }else if(this.mode == "STEP"){
-            this.step()
+            await this.step()
         }
     }
 
@@ -231,7 +231,7 @@ class LGP30{
         }
     }
 
-    step(){
+    async step(){
         if(this.config.onStep){
             this.config.onStep()
         }
@@ -241,13 +241,13 @@ class LGP30{
         const addr = this.composeAddr(track, sector)
 
         this.regs.r = this.mem[addr] //Fetch
-        this.regs.c = this.runIns(this.regs.r)
+        this.regs.c = await this.runIns(this.regs.r)
 
         this.showRegs()
         this.showMem()
     }
 
-    runIns(word){
+    async runIns(word){
         //Extract fields
         const order = word.slice(12, 16)
         const track = word.slice(18, 24)
@@ -259,7 +259,7 @@ class LGP30{
 
         $("#r-dec").text(this.orders[orderId].name + ":" + this.composeAddr(track, sector))
 
-        const ret = this.orders[orderId].eval(order, track, sector)
+        const ret = await this.orders[orderId].eval(order, track, sector)
         this.showRegs()
         this.showMem()
 
@@ -399,17 +399,7 @@ class LGP30{
             //When COND-STOP is read computer moves on to next op
             //  What is the char code for a cond stop? (100000)
 
-            /*if(this.isHex(c)){
-                const bits = this.hexToBin(c, n)
-
-                this.shiftIntoA(bits)
-                this.showRegs()
-            }else if(c == "'"){ //COND-STOP
-                this.mode = "NORMAL"
-                this.run()
-            }*/
-
-            console.log(bits)
+            //console.log(bits)
             
             if(this.binToDec(bits) == 32){
                 console.log("COND-STOP")

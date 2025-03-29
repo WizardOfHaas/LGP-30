@@ -369,13 +369,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <textarea id="asm">
-0000 c 3w00
-0001 p 0000
-0002 c 3w04
-0003 i 0000
-0004 c 3w08
-0005 c 3wl4
-0006 c 3w0j
+0000 c 3w00 #Set 63:00 to 0
+0001 p 0000 #Get ready to input
+0002 c 3w04 #Set 63:04 to 0
+0003 i 0000 #Input first 8 bytes
+0004 c 3w08 #Set 63:08 to input value
+0005 c 3wl4 #Set 63:14 to 0
+0006 c 3w0j #Set 63:11 to 0?
 0007 p 0000
 0008 c 3wl0
 0009 i 0000
@@ -402,7 +402,7 @@
             const lgp30 = new LGP30({
                 memTarget: "#mem",
                 initialAsm: "#asm",
-                print: (c) => {flexo.print(c)},
+                print: async (c) => {await flexo.print(c)},
                 onStep: () => {
                     if(lgp30.running == true){
                         $("#compute").addClass("green")
@@ -414,7 +414,7 @@
                 }
             })
 
-            flexo.connectOutput((c) => { lgp30.recv(c) })
+            flexo.connectOutput(async (c) => { await lgp30.recv(c) })
 
             /*$("#step").on("click", () => {
                 lgp30.step()

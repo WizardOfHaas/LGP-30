@@ -1,0 +1,14 @@
+{
+  "name": "lgp30",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "test": "tsx --tsconfig tsconfig.json index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "tsx": "^4.19.3"
+  }
+}
