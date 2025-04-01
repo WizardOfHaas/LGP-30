@@ -27,7 +27,10 @@ export class Memory{
     set(track: TrackNumber, sector: SectorNumber, val: BitArray, start = 0){
         const i = this.composeIndex(track, sector)
 
-        this.data[i].splice(32 - val.length, val.length, ...val)
+        //I need to do the copy thing here
+        const w = this.data[i].slice()
+        w.splice(32 - val.length, val.length, ...val)
+        this.data[i] = w
     }
 
     composeIndex(track: TrackNumber, sector: SectorNumber): number{

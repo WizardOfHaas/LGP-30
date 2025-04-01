@@ -1,7 +1,10 @@
 import { assembleLine } from "./asm"
+import { Flexowriter } from "./flexo"
 import { LGP30 } from "./lgp30"
+import { dumpRegs, hexToBin } from "./util"
 
 const lgp30 = new LGP30()
+const flexo = new Flexowriter()
 
 /*
 lgp30.state.memory.set("00", "00", [
@@ -15,15 +18,31 @@ lgp30.state.memory.set("00", "00", [
 ])
 
 lgp30.fetchOrder()
-lgp30.executeOrder()
+async lgp30.executeOrder()
 
 console.log(lgp30.state.registers.r.get())
 */
 
-assembleLine(lgp30.state.memory, "0000 b 0000")
-console.log(lgp30.state.memory.get("00", "00"))
+assembleLine(lgp30.state.memory, "0000 u 0002")
+assembleLine(lgp30.state.memory, "0002 b 0001")
+assembleLine(lgp30.state.memory, "0003 a 0010")
+assembleLine(lgp30.state.memory, "0004 h 0001")
+assembleLine(lgp30.state.memory, "0005 s 0009")
+assembleLine(lgp30.state.memory, "0006 t 0002")
 
-lgp30.fetchOrder()
-lgp30.executeOrder()
+assembleLine(lgp30.state.memory, "0009 5")
+assembleLine(lgp30.state.memory, "0010 1")
 
-console.log(lgp30.state.registers.a.get())
+//console.log(lgp30.state.memory.get("00", "02"))
+
+//lgp30.state.running = true
+//await lgp30.run()
+
+lgp30.state.setMode("MANUAL")
+
+"c3200'".split("").forEach(async (c) => {
+    await lgp30.rx(flexo.convert(c))
+})
+
+//lgp30.fillIns()
+//dumpRegs(lgp30.state)

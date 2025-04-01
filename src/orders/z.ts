@@ -7,7 +7,7 @@ export class OrderZ implements IOrder{
     name = "z"
     orderNumber = [0, 0, 0, 0] as BitArray
 
-    eval(state: IState, track: TrackNumber, sector: SectorNumber): IState {
+    async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
         state.running = false
         return state
     }

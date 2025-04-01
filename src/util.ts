@@ -1,3 +1,6 @@
+import { decodeOrder } from "./orders/orderMap";
+import type { IState } from "./types";
+
 /**
  * Number encoding/decoding stuff
  */
@@ -22,7 +25,7 @@ export function hexToDec(h){
 
     const chars = {"f": "a", "g": "b", "j": "c", "k": "d", "q": "e", "w": "f", "l": "1"}
 
-    const realHex = h.split("").map((c) => (Object.hasOwn(chars, c) ? chars[c] : c)).join("")
+    const realHex = h.split("").map((c) => (c in chars ? chars[c] : c)).join("")
 
     return parseInt(realHex, 16)
 }
@@ -30,7 +33,7 @@ export function hexToDec(h){
 export function toLGPHex(s){
     const chars = {"a": "f", "b": "g", "c": "j", "d": "k", "e": "q", "f": "w"}
 
-    const lgpHex = s.split("").map((c) => (Object.hasOwn(chars, c) ? chars[c] : c)).join("")
+    const lgpHex = s.split("").map((c) => (c in chars ? chars[c] : c)).join("")
 
     return lgpHex
 }
@@ -54,4 +57,50 @@ export function halfToHex(b){
 
 export function isHex(c){
     return c == 0 || Number(c)|| ["f", "g", "j", "k", "q", "w", "l"].includes(c)
+}
+
+//Encode literal number
+export function packNum(d){
+    const w = decToBin(Math.abs(d), 32)
+    if(d < 0){
+        w[0] = 1
+    }
+    
+    return w
+}
+
+//Decode literal number
+export function unpackNum(w){
+    return (w[0] == 1 ? -1 : 1) * binToDec(w.slice(1))
+}
+
+/**
+ * Generic timing functions
+ */
+
+export async function delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) )
+}
+
+export function insertArrayAt(array, index, arrayToInsert) {
+    var arr = array.slice() //Break the ref
+    for(var i = index; i < index + arrayToInsert.length; i++){
+        arr[i] = arrayToInsert[i - index]
+    }
+
+    return arr
+}
+
+/**
+ * Debug stuff
+ */
+
+export function dumpRegs(state: IState){
+    console.log(
+        decodeOrder(state.registers.r) +
+        " -> " +
+        state.registers.c.get().join("") + "(" + state.registers.c.getHexTrack() + ":" + state.registers.c.getHexSector() + ")" +
+        " " + 
+        state.registers.a.get().join("") + "(" + unpackNum(state.registers.a.get()) + ")"
+    )
 }

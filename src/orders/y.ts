@@ -7,7 +7,7 @@ export class OrderY implements IOrder{
     name = "y"
     orderNumber = [0, 0, 1, 0] as BitArray
 
-    eval(state: IState, track: TrackNumber, sector: SectorNumber): IState {
+    async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
         const binTrack = hexToBin(track, 6)
         const binSector = hexToBin(sector, 6)
 

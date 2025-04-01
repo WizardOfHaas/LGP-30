@@ -5,5 +5,5 @@ export interface IOrder{
     orderNumber: BitArray
     
     //Takes a state, adjust the state, then returns the new state
-    eval(state: IState, track: TrackNumber, sector: SectorNumber) : IState
+    eval(state: IState, track: TrackNumber, sector: SectorNumber) : Promise<IState>
 }

@@ -2,13 +2,20 @@
   "name": "lgp30",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "test": "tsx --tsconfig tsconfig.json index.ts"
+    "test": "tsx --tsconfig tsconfig.json index.ts",
+    "build": "esbuild --bundle web-entry.ts --outdir=dist --sourcemap --platform=browser --loader:.ts=ts"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "esbuild": "^0.25.1",
+    "jquery": "^3.7.1",
     "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.32"
   }
 }
