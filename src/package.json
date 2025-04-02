@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "tsx --tsconfig tsconfig.json index.ts",
-    "build": "esbuild --bundle web-entry.ts --outdir=dist --sourcemap --platform=browser --loader:.ts=ts"
+    "build": "esbuild --bundle web-entry.ts --outdir=dist --sourcemap --platform=browser"
   },
   "author": "",
   "license": "ISC",

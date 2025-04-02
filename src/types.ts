@@ -24,5 +24,7 @@ export interface IState{
 
     inputBits: 4 | 6
 
+    txBuffer: Array<BitArray>
+
     setMode(m: ExecMode): void
 }

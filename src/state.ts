@@ -2,7 +2,7 @@ import { Memory } from "./mem/mem";
 import { RegisterA } from "./regs/a";
 import { RegisterC } from "./regs/c";
 import { RegisterR } from "./regs/r";
-import type { ExecMode, IState } from "./types";
+import type { BitArray, ExecMode, IState } from "./types";
 
 export class State implements IState{
     memory: Memory
@@ -19,6 +19,8 @@ export class State implements IState{
 
     inputBits: 4 | 6
 
+    txBuffer: BitArray[]
+
     //Initialize state, see ops manual for details
     constructor(){
         this.memory = new Memory()
@@ -34,6 +36,8 @@ export class State implements IState{
         this.mode = "NORMAL"
 
         this.inputBits = 4
+
+        this.txBuffer = []
     }
 
     setMode(m: ExecMode){

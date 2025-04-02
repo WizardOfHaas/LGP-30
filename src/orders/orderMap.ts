@@ -1,17 +1,17 @@
-import { RegisterR } from "../regs/r";
-import { halfToHex } from "../util";
-import { OrderA } from "./a";
-
-import { OrderB } from "./b";
-import { OrderC } from "./c";
-import { OrderH } from "./h";
-import { IOrder } from "./order";
-import { OrderR } from "./r";
-import { OrderS } from "./s";
-import { OrderT } from "./t";
-import { OrderU } from "./u";
-import { OrderY } from "./y";
-import { OrderZ } from "./z";
+import { RegisterR } from "../regs/r"
+import { OrderA } from "./a"
+import { OrderB } from "./b"
+import { OrderC } from "./c"
+import { OrderH } from "./h"
+import { IOrder } from "./order"
+import { OrderR } from "./r"
+import { OrderS } from "./s"
+import { OrderT } from "./t"
+import { OrderU } from "./u"
+import { OrderY } from "./y"
+import { OrderZ } from "./z"
+import { OrderP } from "./p"
+import { OrderI } from "./i"
 
 const orders = [
     new OrderB(),
@@ -23,7 +23,9 @@ const orders = [
     new OrderY(),
     new OrderZ(),
     new OrderA(),
-    new OrderS()
+    new OrderS(),
+    new OrderP(),
+    new OrderI()
 ]
 
 export const orderIdMap: {[id: string]: IOrder} = {}
