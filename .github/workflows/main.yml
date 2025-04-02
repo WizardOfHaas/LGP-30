@@ -1,5 +1,8 @@
 name: deploy-web
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
   check-bats-version:
     runs-on: 
