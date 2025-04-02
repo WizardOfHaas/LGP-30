@@ -9,24 +9,4 @@ export class RegisterR extends Register{
 	constructor(){
 		super(32)
 	}
-
-    getOrder(){
-        return this.get(12, 16)
-    }
-
-    getTrack(){
-        return this.get(18, 24)
-    }
-
-    getSector(){
-        return this.get(24, 30)
-    }
-
-	getHexTrack(){
-		return halfToHex(this.getTrack())
-	}
-
-	getHexSector(){
-		return halfToHex(this.getSector())
-	}
 }

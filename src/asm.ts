@@ -13,6 +13,10 @@ import { hexToBin } from "./util";
 export function assembleLine(memory: Memory, l){
     const parts = l.split(" ") //Break into parts
 
+    if(parts.length < 2){
+        return
+    }
+
     const track = parts[0].substring(0, 2)
     const sector = parts[0].substring(2, 4)
 

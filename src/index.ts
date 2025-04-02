@@ -23,10 +23,22 @@ assembleLine(lgp30.state.memory, "0009 5")
 assembleLine(lgp30.state.memory, "0010 1")
 */
 
-assembleLine(lgp30.state.memory, "0000 p 0000")
-assembleLine(lgp30.state.memory, "0001 i 0000")
+/*
+const asm = `0000 p 0000 #Setup input
+0001 i 0000 #Kick to input mode
+0002 h 1000 #Store A in memory
+0003 b 0002 #Put store ins into A
+0004 a 0049 #Increment
+0005 y 0002 #Update the store instruction
+0006 u 0000 #Loop
 
-lgp30.state.running = true
+0049 1 #Inc constant`
+
+asm.split("\n").forEach((l) => {
+    assembleLine(lgp30.state.memory, l)
+})
+*/
+
 await lgp30.run()
 
 //lgp30.state.setMode("MANUAL")
@@ -35,5 +47,4 @@ await lgp30.run()
     await lgp30.rx(flexo.convert(c))
 })
 
-//lgp30.fillIns()
-//dumpRegs(lgp30.state)
+console.log(lgp30.state.memory.get("10", "00"))

@@ -8,7 +8,7 @@ export class OrderP implements IOrder{
     orderNumber = [1, 0, 0, 0] as BitArray
 
     async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
-        if(track == "00"){ //Ignore p 0000
+        if(track != "00"){ //Ignore p 0000
             state.txBuffer.push(hexToBin(track, 6))
         }
 

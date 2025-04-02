@@ -3,6 +3,7 @@
  */
 
 import type { BitArray, HexVal } from "../types"
+import { halfToHex } from "../util"
 
 export abstract class Register{
 	bits: number
@@ -27,5 +28,25 @@ export abstract class Register{
 
 	clear(){
 		this.data = new Array<1 | 0>(this.bits).fill(0)
+	}
+
+	getOrder(){
+        return this.get(12, 16)
+    }
+
+    getTrack(){
+        return this.get(18, 24)
+    }
+
+    getSector(){
+        return this.get(24, 30)
+    }
+
+	getHexTrack(){
+		return halfToHex(this.getTrack())
+	}
+
+	getHexSector(){
+		return halfToHex(this.getSector())
 	}
 }

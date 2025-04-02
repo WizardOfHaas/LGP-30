@@ -97,7 +97,7 @@ export function insertArrayAt(array, index, arrayToInsert) {
 
 export function dumpRegs(state: IState){
     console.log(
-        decodeOrder(state.registers.r) +
+        decodeOrder(state.registers.r.get()) +
         " -> " +
         state.registers.c.get().join("") + "(" + state.registers.c.getHexTrack() + ":" + state.registers.c.getHexSector() + ")" +
         " " + 

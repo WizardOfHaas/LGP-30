@@ -1,4 +1,3 @@
-import { RegisterR } from "../regs/r"
 import { OrderA } from "./a"
 import { OrderB } from "./b"
 import { OrderC } from "./c"
@@ -12,6 +11,9 @@ import { OrderY } from "./y"
 import { OrderZ } from "./z"
 import { OrderP } from "./p"
 import { OrderI } from "./i"
+import { Register } from "../regs/register"
+import { BitArray } from "../types"
+import { halfToHex } from "../util"
 
 const orders = [
     new OrderB(),
@@ -38,10 +40,10 @@ orders.forEach((o) => {
     orderNameMap[o.name] = o
 })
 
-export function decodeOrder(r: RegisterR){
-    const orderId = r.getOrder().join("")
-    const track = r.getHexTrack()
-    const sector = r.getHexSector()
+export function decodeOrder(r: BitArray){
+    const orderId = r.slice(12, 16).join("")
+    const track = halfToHex(r.slice(18, 24))
+    const sector = halfToHex(r.slice(24, 30))
 
     if(orderId in orderIdMap){
         return orderIdMap[orderId].name + " " + track + sector

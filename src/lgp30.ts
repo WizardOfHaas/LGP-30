@@ -46,6 +46,10 @@ export class LGP30{
     }
 
     async run(){
+        if(this.state.running == true){
+            return
+        }
+
         this.state.running = true
 
         while(this.state.running == true){

@@ -10,6 +10,7 @@ export class OrderI implements IOrder{
     async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
         state.txBuffer.push([0, 0, 0, 0, 0, 0]) //We need to send out the input signal for the flexo
         state.mode = "MANUAL" //Switch to manual mode
+        state.running = false //...and stop execution
 
         state.registers.c.inc()
         return state
