@@ -1,0 +1,13 @@
+name: deploy-web
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: 
+      group: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+      - run: npm install
+      - run: npm run build

@@ -8,6 +8,7 @@ export type HexVal = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" |
 export type TrackNumber = `${HexVal}${HexVal}`
 export type SectorNumber = TrackNumber
 export type ExecMode = "NORMAL" | "ONE-OP" | "MANUAL"
+export type Char = string & {length: 1}
 
 export interface IState{
     memory: Memory
@@ -25,6 +26,7 @@ export interface IState{
     inputBits: 4 | 6
 
     txBuffer: Array<BitArray>
+    rxBuffer: Array<BitArray>
 
     setMode(m: ExecMode): void
 }

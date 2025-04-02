@@ -20,6 +20,7 @@ export class State implements IState{
     inputBits: 4 | 6
 
     txBuffer: BitArray[]
+    rxBuffer: BitArray[]
 
     //Initialize state, see ops manual for details
     constructor(){
@@ -38,6 +39,7 @@ export class State implements IState{
         this.inputBits = 4
 
         this.txBuffer = []
+        this.rxBuffer = []
     }
 
     setMode(m: ExecMode){

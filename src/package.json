@@ -12,10 +12,12 @@
   "description": "",
   "dependencies": {
     "esbuild": "^0.25.1",
+    "fs": "^0.0.1-security",
     "jquery": "^3.7.1",
     "tsx": "^4.19.3"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.32"
+    "@types/jquery": "^3.5.32",
+    "@types/node": "^22.13.17"
   }
 }

@@ -1,3 +1,10 @@
+import { BitArray } from "./types"
+
+type TConfig = {
+    onTx?: (b: BitArray) => Promise<BitArray>
+    onRx?: () => Promise<void>
+}
+
 export class Flexowriter{
     codeToChar = [ //Thanks SIMH!
         -1  , 'z', '0', ' ', '>', 'b', '1', '-',
@@ -70,12 +77,56 @@ export class Flexowriter{
         "x": [1, 0, 0, 1, 1, 1]
     }
 
+    config: TConfig
+
+    tapeBuffer: string[]
+    tapeRunning: boolean
+
+    constructor(config?: TConfig){
+        if(typeof config !== "undefined"){
+            this.config = config
+        }else{
+            this.config = {}
+        }
+
+        this.tapeBuffer = []
+        this.tapeRunning = false
+    }
+
     convert(c: string){
         if(c in this.charMapLC){
-            console.log(c, this.charMapLC[c])
+            //console.log("FLEXO:", c, this.charMapLC[c])
             return this.charMapLC[c]
         }else{
             return [0, 0, 0, 0, 0, 0]
         }
+    }
+
+    //Send a character(to LGP-30)
+    async tx(s: string){
+        s.split("").forEach(async (c) => {
+            const bits = this.convert(c)
+
+            if(typeof this.config.onTx !== "undefined"){
+                await this.config.onTx(bits)
+            }
+        })
+    }
+
+    //Recieve a character(from LGP-30)
+    async rx(){}
+
+    async sendTape(){
+        while(this.tapeBuffer.length > 0){
+            const c = this.tapeBuffer.shift()
+
+            if(c){
+                await this.tx(c)
+            }
+        }
+    }
+
+    loadTape(t: string){
+        this.tapeBuffer = this.tapeBuffer.concat(t.split(""))
     }
 }

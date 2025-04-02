@@ -1,5 +1,4 @@
 import type { BitArray, SectorNumber, IState, TrackNumber } from "../types";
-import { hexToBin } from "../util";
 import { IOrder } from "./order";
 
 //Input: ...please just read the docs...
