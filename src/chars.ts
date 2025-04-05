@@ -1,3 +1,6 @@
+import { BitArray } from "./types"
+import { binToDec } from "./util"
+
 const codeToChar = [ //Thanks SIMH!
     -1  , 'z', '0', ' ', '>', 'b', '1', '-',
     '<' , 'y', '2', '+', '|', 'r', '3', ';',
@@ -76,4 +79,14 @@ export function charToBits(c: string){
     }else{
         return [0, 0, 0, 0, 0, 0]
     }
+}
+
+export function bitsToChar(b: BitArray){
+    const code = binToDec(b)
+    
+    if(typeof codeToChar[code] !== "undefined"){
+        return codeToChar[code]
+    }
+
+    return ""
 }

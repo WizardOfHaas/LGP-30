@@ -7,6 +7,7 @@ import { decodeOrder } from "./orders/orderMap"
 import { dumpRegs } from "./util"
 import { Flexowriter } from "./flexo"
 import { Terminal } from "@xterm/xterm"
+import { bitsToChar } from "./chars"
 
 window.jQuery = window.$ = $
 window.LGP30 = LGP30
@@ -35,6 +36,7 @@ $(window).bind('load', async () => {
         },
         onTx: async (b) => {
             console.log(b)
+            term.write(bitsToChar(b))
         }
     })
 

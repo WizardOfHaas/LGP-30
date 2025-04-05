@@ -44,6 +44,16 @@ export class LGP30{
 
             await delay(100)
         }
+
+        //Do I have anything in the tx buffer? Then we better send it out!
+        while(this.state.txBuffer.length > 0){
+            //It's a FIFO buffer, so grab the first entry
+            const txBits = this.state.txBuffer.shift()
+
+            if(txBits){ //Make sure we get a return, since shift is (T | undefined)
+                await this.tx(txBits) //Handle transmit logic
+            }
+        }
     }
 
     async step(){
@@ -71,16 +81,6 @@ export class LGP30{
                 this.fetchOrder()
                 await this.step()
                 this.state.running = false //STOP IT!
-            }
-
-            //Do I have anything in the tx buffer? Then we better send it out!
-            while(this.state.txBuffer.length > 0){
-                //It's a FIFO buffer, so grab the first entry
-                const txBits = this.state.txBuffer.shift()
-
-                if(txBits){ //Make sure we get a return, since shift is (T | undefined)
-                    await this.tx(txBits) //Handle transmit logic
-                }
             }
 
             /*if(this.state.mode == "MANUAL"){ //This works... but data has to be pre-buffered
