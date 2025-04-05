@@ -13,6 +13,10 @@ export class Memory{
 
     constructor(){
         //Initiate memory
+        this.clear()
+    }
+
+    clear(){
         this.data = Array(6363).fill(
             Array(32).fill(0)
         )

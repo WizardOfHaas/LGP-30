@@ -75,6 +75,15 @@ $(window).bind('load', async () => {
         assembleLine(lgp30.state.memory, l)
     })
 
+    $("#assemble").on("click", () => {
+        lgp30.state.memory.clear()
+        $("#asm").val().split("\n").forEach((l) => {
+            assembleLine(lgp30.state.memory, l)
+        })
+
+        displayMem(lgp30.state)
+    })
+
     $("#upload").on("click", async (e) => {
         var input = document.createElement('input')
         input.type = 'file'
