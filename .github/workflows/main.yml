@@ -12,4 +12,6 @@ jobs:
         with:
           node-version: '14'
       - run: npm install
+        working-directory: ./src
       - run: npm run build
+        working-directory: ./src
