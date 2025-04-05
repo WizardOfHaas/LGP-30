@@ -1,4 +1,4 @@
-import { binToDec, halfToHex, decToBin } from "../util"
+import { binToDec, halfToHex, decToBin, hexToDec } from "../util"
 import { Register} from "./register"
 
 export class RegisterC extends Register{
@@ -27,5 +27,12 @@ export class RegisterC extends Register{
 
     getHexSector(){
         return halfToHex(this.data.slice(6, 13))
+    }
+
+    toDec(){
+        const track = hexToDec(this.getHexTrack())
+        const sector = hexToDec(this.getHexSector())
+
+        return parseInt(track.toString() + (sector < 10 ? "0" : "") + sector.toString())
     }
 }

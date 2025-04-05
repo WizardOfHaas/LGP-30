@@ -5,6 +5,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w==" crossorigin="anonymous" />
+        
         <script src="dist/web-entry.js"></script>
 
         <style>
@@ -313,7 +315,7 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="term"></div>
+                            <div id="terminal"></div>
                         </div>
                     </div>
 
@@ -366,18 +368,24 @@
             <div class="row">
                 <div class="col-md-6">
                     <textarea id="asm">
-0000 c 3w00 #Set 63:00 to 0
-0001 p 0000 #Get ready to input
-0002 c 3w04 #Set 63:04 to 0
-0003 i 0000 #Input first 8 bytes
-0004 c 3w08 #Set 63:08 to input value
-0005 c 3wl4 #Set 63:14 to 0
-0006 c 3w0j #Set 63:11 to 0?
-0007 p 0000
-0008 c 3wl0
-0009 i 0000
-0010 u 3w00
-0011 z 0000
+0000 u 3w07 #<-- Jump to Entry point
+
+3w06 u 3w00
+3w07 p 0000 #<--Entry point
+3w08 i 0000 #Input
+3w09 c 0000 #Clear and store in 00:00
+3w0f b 3w2q #Bring `c 0000` into A
+3w0g s 3w1f #Subtract `s 3w3w`
+3w0j u 3w16 #Jump to test
+3w0k z 0000 #STOP. This must be used as a counter?
+3w0q u 0000 #Jump to start of memory?
+3w16 t 3w0k #Test STOP instruction.
+3w17 h 3w09 #Move clear ins into A
+3w18 c 3w2q #Save that ins into var after end of prog
+3w19 u 3w07 #Jump to entry point
+
+3w1f s 3w3w
+3w2q c 0000
                     </textarea>
                 </div>
 

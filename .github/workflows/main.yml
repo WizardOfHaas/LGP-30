@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  check-bats-version:
+  build-emulator:
     runs-on: 
       group: self-hosted
     steps:

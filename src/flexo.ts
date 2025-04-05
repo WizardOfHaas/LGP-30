@@ -1,4 +1,5 @@
 import { BitArray } from "./types"
+import { binToDec } from "./util"
 
 type TConfig = {
     onTx?: (b: BitArray) => Promise<BitArray>
@@ -95,7 +96,7 @@ export class Flexowriter{
 
     convert(c: string){
         if(c in this.charMapLC){
-            //console.log("FLEXO:", c, this.charMapLC[c])
+            console.log("FLEXO:", c, this.charMapLC[c])
             return this.charMapLC[c]
         }else{
             return [0, 0, 0, 0, 0, 0]
@@ -114,15 +115,29 @@ export class Flexowriter{
     }
 
     //Recieve a character(from LGP-30)
-    async rx(){}
+    async rx(b: BitArray){
+        console.log("FLEXO", b)
+
+        if(binToDec(b) == 0){ //i 0000
+            await this.sendTape()
+        }
+    }
 
     async sendTape(){
-        while(this.tapeBuffer.length > 0){
+        //This needs to send out until COND-STOP, then terminate and send run signal to LGP-30
+        /*while(this.tapeBuffer.length > 0){
             const c = this.tapeBuffer.shift()
 
             if(c){
                 await this.tx(c)
             }
+        }*/
+
+        const n = this.tapeBuffer.findIndex((d) => (d == "'")) //Find next COND-STOP
+        
+        if(n){
+            //Slice it off
+            //Send it
         }
     }
 

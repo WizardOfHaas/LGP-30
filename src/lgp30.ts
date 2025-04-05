@@ -2,6 +2,7 @@ import { State } from "./state"
 import { decodeOrder, orderIdMap } from "./orders/orderMap"
 import { binToDec, delay, dumpRegs } from "./util"
 import { BitArray } from "./types"
+import { charToBits } from "./chars"
 
 type TConfig = {
     onStep?: () => void
@@ -64,15 +65,21 @@ export class LGP30{
                 this.fetchOrder() //Fetch ins into R
 
                 await this.step()
+            }
 
-                //Do I have anything in the tx buffer? Then we better send it out!
-                while(this.state.txBuffer.length > 0){
-                    //It's a FIFO buffer, so grab the first entry
-                    const txBits = this.state.txBuffer.shift()
+            if(this.state.mode == "ONE-OP"){
+                this.fetchOrder()
+                await this.step()
+                this.state.running = false //STOP IT!
+            }
 
-                    if(txBits){ //Make sure we get a return, since shift is (T | undefined)
-                        await this.tx(txBits) //Handle transmit logic
-                    }
+            //Do I have anything in the tx buffer? Then we better send it out!
+            while(this.state.txBuffer.length > 0){
+                //It's a FIFO buffer, so grab the first entry
+                const txBits = this.state.txBuffer.shift()
+
+                if(txBits){ //Make sure we get a return, since shift is (T | undefined)
+                    await this.tx(txBits) //Handle transmit logic
                 }
             }
 
@@ -103,6 +110,13 @@ export class LGP30{
         //}
     }
 
+    /**
+     * I'm going to move the conversion stuff into here
+     * It will put the data into the rxBuffer in this.state
+     * Then the I 0000 instruction will read from the buffer until it reaches a COND-STOP or the end of the buffer
+     *      Will I need to implement something like a loop for waiting?
+     */
+
     async rx(b: BitArray): Promise<BitArray>{
         //Check mode
         //If manual: handle manual input to A
@@ -120,6 +134,11 @@ export class LGP30{
         return [0, 0, 0, 0, 0, 0]
     }
 
+    async rxChar(c: string){
+        const b = charToBits(c)
+        await this.rx(b)
+    }
+    
     async tx(b: BitArray){
         if(typeof this.config.onTx !== "undefined"){
             await this.config.onTx(b)

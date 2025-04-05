@@ -2,7 +2,7 @@ import { assembleLine } from "./asm"
 import { Flexowriter } from "./flexo"
 import { LGP30 } from "./lgp30"
 import { decodeOrder } from "./orders/orderMap"
-import { dumpRegs, hexToBin } from "./util"
+import { decToBin, dumpRegs, halfToHex, hexToBin } from "./util"
 import fs from "fs"
 
 const lgp30 = new LGP30({
@@ -72,13 +72,14 @@ u3wlj''
  * 3w09 c 0000 #Clear and store in 00:00
  * 3w0f b 3w2q #Bring `c 0000` into A
  * 3w0g s 3w1f #Subtract `s 3w3w`
- * 3w0j u 3w16
- * 3w0k z 0000
- * 3w0q u 0000
- * 3w16 t 3w0k
- * 3w17 h 3w09
- * 3w18 c 3w2q
- * 3w19 u 3w07
+ * 3w0j u 3w16 #Jump to test
+ * 3w0k z 0000 #STOP. This must be used as a counter?
+ * 3w0q u 0000 #Jump to start of memory?
+ * 3w16 t 3w0k #Test STOP instruction.
+ * 3w17 h 3w09 #Move clear ins into A
+ * 3w18 c 3w2q #Save that ins into var after end of prog
+ * 3w19 u 3w07 #Jump to entry point
+ * 
  * 3w1f s 3w3w
  * 3w2q c 0000
  * 
@@ -103,6 +104,11 @@ c3w68'000wwwwj'
 c3wg8'0gwc0000'
 u3wlj''`)
 
+for(let i = 0; i < 63; i++){
+    const sector = halfToHex(decToBin(i, 6))
+    console.log("3w", sector, decodeOrder(lgp30.state.memory.get("3w", sector)))
+}
+
 lgp30.state.mode = "NORMAL"
 //await lgp30.run() //THis hangs... but it should bail
 
@@ -113,8 +119,8 @@ lgp30.state.mode = "NORMAL"
     await flexo.tx(c)
 })*/
 
-flexo.loadTape(fs.readFileSync("./p104.tx").toString())
-await flexo.sendTape()
+//flexo.loadTape(fs.readFileSync("./p104.tx").toString())
+//await flexo.sendTape()
 
 //console.log(lgp30.state.memory.get("10", "00"))
 
