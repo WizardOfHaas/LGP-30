@@ -15,3 +15,5 @@ jobs:
         working-directory: ./src
       - run: npm run build
         working-directory: ./src
+      - run: cp ./src/test.html /var/www/html/index.html
+      - run: cp -r ./src/dist /var/www/html/dist
