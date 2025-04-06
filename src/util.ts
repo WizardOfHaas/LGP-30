@@ -1,5 +1,5 @@
 import { decodeOrder } from "./orders/orderMap";
-import type { IState } from "./types";
+import type { IState, SectorNumber, TrackNumber } from "./types";
 
 /**
  * Number encoding/decoding stuff
@@ -19,15 +19,22 @@ export function decToBin(d, n){
 }
 
 export function hexToDec(h){
-    if(Number(h) || h == 0){
+    if(h == 0){
         return Number(h)
     }
 
-    const chars = {"f": "a", "g": "b", "j": "c", "k": "d", "q": "e", "w": "f", "l": "1"}
-
-    const realHex = h.split("").map((c) => (c in chars ? chars[c] : c)).join("")
+    const realHex = toStdHex(h)
 
     return parseInt(realHex, 16)
+}
+
+export function decToHex(d){
+    return toLGPHex(d.toString(16))
+}
+
+export function toStdHex(h){
+    const chars = {"f": "a", "g": "b", "j": "c", "k": "d", "q": "e", "w": "f", "l": "1"}
+    return h.split("").map((c) => (c in chars ? chars[c] : c)).join("")
 }
 
 export function toLGPHex(s){
@@ -74,6 +81,12 @@ export function unpackNum(w){
     return (w[0] == 1 ? -1 : 1) * binToDec(w.slice(1))
 }
 
+export function addrToHex(d: number){
+    const s = String(d).padStart(4, '0')
+
+    return halfToHex(decToBin(parseInt(s.substring(0, 2)), 6)) + halfToHex(decToBin(parseInt(s.substring(2, 4)), 6))
+}
+
 /**
  * Generic timing functions
  */
@@ -99,7 +112,7 @@ export function dumpRegs(state: IState){
     console.log(
         decodeOrder(state.registers.r.get()) +
         " -> " +
-        state.registers.c.get().join("") + "(" + state.registers.c.getHexTrack() + ":" + state.registers.c.getHexSector() + ")" +
+        state.registers.c.get(0, 6).join("") + " " + state.registers.c.get(6, 12).join("") + "(" + state.registers.c.getHexTrack() + ":" + state.registers.c.getHexSector() + ")" +
         " " + 
         state.registers.a.get().join("") + "(" + unpackNum(state.registers.a.get()) + ")"
     )

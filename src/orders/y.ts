@@ -1,17 +1,15 @@
 import type { BitArray, SectorNumber, IState, TrackNumber } from "../types";
-import { hexToBin } from "../util";
 import { IOrder } from "./order";
 
-//Store Address: regs.a = mem[track:sector]
+//Set Address Part:  mem[track:sector].addr = regs.a.addr
 export class OrderY implements IOrder{
     name = "y"
     orderNumber = [0, 0, 1, 0] as BitArray
 
     async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
-        const binTrack = hexToBin(track, 6)
-        const binSector = hexToBin(sector, 6)
+        const addr = state.registers.a.get(18, 31)
 
-        state.memory.set(track, sector, binTrack.concat(binSector), 18)
+        state.memory.set(track, sector, addr, 18)
         
         state.registers.c.inc()
         return state

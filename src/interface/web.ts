@@ -2,7 +2,7 @@ import { LGP30 } from "../lgp30"
 import { decodeOrder } from "../orders/orderMap"
 import { State } from "../state"
 import { BitArray, ExecMode } from "../types"
-import { binToDec, unpackNum } from "../util"
+import { addrToHex, binToDec, halfToHex, unpackNum } from "../util"
 
 export function displayRegs(state: State){
     $("#c").text(state.registers.c.get().join(""))
@@ -10,7 +10,7 @@ export function displayRegs(state: State){
     $("#a").text(state.registers.a.get().join(""))
 
     $("#c-dec").text(state.registers.c.toDec())
-    //$("#r-dec").text(binToDec(regs.r))
+    $("#r-dec").text(decodeOrder(state.registers.r.get()))
     $("#a-dec").text(unpackNum(state.registers.a.get()))
     $("#a-ins").text(decodeOrder(state.registers.a.get()))
 
@@ -28,7 +28,7 @@ export function displayMem(state: State){
             binToDec(m) != 0
         ){
             $("#mem").append($(
-                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + i + "</td>" +
+                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + addrToHex(i) + "</td>" +
                 "<td>" + m.join("") + "</td>" +
                 "<td>(" + binToDec(m) + ")</td>" +
                 "<td>" + decodeOrder(m) + "</td>" +

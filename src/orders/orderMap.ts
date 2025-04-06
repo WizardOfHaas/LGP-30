@@ -13,7 +13,7 @@ import { OrderP } from "./p"
 import { OrderI } from "./i"
 import { Register } from "../regs/register"
 import { BitArray } from "../types"
-import { halfToHex } from "../util"
+import { addrToHex, binToDec, halfToHex } from "../util"
 
 const orders = [
     new OrderB(),
@@ -44,6 +44,8 @@ export function decodeOrder(r: BitArray){
     const orderId = r.slice(12, 16).join("")
     const track = halfToHex(r.slice(18, 24))
     const sector = halfToHex(r.slice(24, 30))
+
+    const addr = r.slice(18, 30)
 
     if(orderId in orderIdMap){
         return orderIdMap[orderId].name + " " + track + sector
