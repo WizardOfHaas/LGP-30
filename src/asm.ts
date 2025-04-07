@@ -35,14 +35,7 @@ export function assembleLine(memory: Memory, l){
             .concat([0, 0])     //Spacer
         memory.set(track, sector, ins)
     }else if(track != "" && sector != ""){ //This is a constant
-        //Decode as 4-bit hex
-        /*const w = parts[1].split("").map((h) => {
-            return hexToBin(h, 4)
-        }).flat()//.concat([0, 0]) //Add spacer?
-        */
-
-        const w = hexToBin(parts[1], 31) //Is this part wrong?
-        //console.log(track, sector, w)
+        const w = hexToBin(parts[1], 31)
 
         memory.set(track, sector, w)
     }

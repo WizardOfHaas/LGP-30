@@ -28,7 +28,6 @@
 
             textarea{
                 width: 100%;
-                height: 100%;
             }
 
             .btn-on{
@@ -71,7 +70,8 @@
 
             button#manual-light{
                 width: 120px;
-                margin-top: -20px;
+                margin-left: 30px;
+                margin-right: 30px;
             }
 
             #scope td{
@@ -108,13 +108,46 @@
             #r-bin .bit-12, #r-bin .bit-16, #r-bin .bit-18, #r-bin .bit-24, #r-bin .bit-30{
                 border-left: 1px solid black;
             }
+
+            .keybd.staggered{
+                margin-left: 30px;
+            }
+
+            .keybd td{
+                width: 40px;
+                height: 40px;
+                border-radius: 5px;
+                text-align: center;
+                font-weight: bolder;
+                margin: 5px;
+                display: inline-flex;
+                justify-content: center;
+            }
+
+            .key-brn, #flexo-btns button{
+                background: #3b2112;
+                color: #f2e0ab;
+            }
+
+            .key-wht{
+                background-color: #f2e0ab;
+                color: #3b2112;
+            }
+
+            .keybd .key-blank, .key-half-blank{
+                border: none;
+            }
+
+            .keybd td.key-half-blank{
+                width: 15px;
+            }
         </style>
     </head>
 
     <body>
-        <div class="container">
+        <div class="container-lg">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-6">
                     <table id="run-btns">
                         <tr>
                             <th colspan="3">
@@ -312,7 +345,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="row">
                         <div class="col-md-12">
                             <div id="terminal"></div>
@@ -360,14 +393,12 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <table id="mem"></table>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <textarea id="asm">
+                <div class="col-md-4">
+                    <textarea id="asm" rows="15">
 0000 u 1000 #Jump to entry
 1000 p 0000
 1001 b 1000
@@ -387,7 +418,89 @@
                     </textarea>
                     <button id="assemble" class="btn">ASSEMBLE ME!</button>
                 </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-10">
+                    <table class="keybd">
+                        <tr>
+                            <td class="key-brn" id="tab">TAB</td>
+                            <td class="key-blank"></td>
+                            <td class="key-brn" id="2">*<br/>2</td>
+                            <td class="key-brn" id="3">"<br/>3</td>
+                            <td class="key-brn" id="4">&Delta;<br/>4</td>
+                            <td class="key-brn" id="5">%<br/>5</td>
+                            <td class="key-brn" id="6">$<br/>6</td>
+                            <td class="key-brn" id="7">&pi;<br/>7</td>
+                            <td class="key-brn" id="8">&Sigma;<br/>8</td>
+                            <td class="key-brn" id="9">(<br/>9</td>
+                            <td class="key-brn" id="0">)<br/>0</td>
+                            <td class="key-brn" id="dash">_<br/>-</td>
+                            <td class="key-brn" id="color-shift">COLOR<br/>SHIFT</td>
+                            <td class="key-brn" id="backspace">BACK<br/>SPACE</td>
+                        </tr>
+                    </table>
+
+                    <table class="keybd staggered">
+                        <tr>
+                            <td class="key-blank"></td>
+                            <td class="key-brn" id="Q">Q</td>
+                            <td class="key-brn" id="W">W</td>
+                            <td class="key-wht" id="E">E</td>
+                            <td class="key-wht" id="R">R</td>
+                            <td class="key-wht" id="T">T</td>
+                            <td class="key-wht" id="Y">Y</td>
+                            <td class="key-wht" id="U">U</td>
+                            <td class="key-wht" id="I">I</td>
+                            <td class="key-brn" id="O">O</td>
+                            <td class="key-wht" id="P">P</td>
+                            <td class="key-brn" id="plus">=<br/>+</td>
+                            <td class="key-brn" id="car-ret">CAR<br/>RET</td>
+                        </tr>
+                    </table>
+
+                    <table class="keybd">
+                        <tr>
+                            <td class="key-brn" id="lower-case">LOWER<br/>CASE</td>
+                            <td class="key-blank"></td>
+                            <td class="key-wht" id="A">A</td>
+                            <td class="key-wht" id="S">S</td>
+                            <td class="key-wht" id="D">D</td>
+                            <td class="key-brn" id="F">F</td>
+                            <td class="key-brn" id="G">G</td>
+                            <td class="key-wht" id="H">H</td>
+                            <td class="key-brn" id="J">J</td>
+                            <td class="key-brn" id="K">K</td>
+                            <td class="key-brn" id="L">L</td>
+                            <td class="key-brn" id="colon">:<br/>;</td>
+                            <td class="key-brn" id="sto?">STO?</td>
+                            <td class="key-brn" id="lower-case">LOWER<br/>CASE</td>
+                        </tr>
+                    </table>
+
+                    <table class="keybd">
+                        <tr>
+                            <td class="key-brn" id="upper-case">UPPER<br/>CASE</td>
+                            <td class="key-blank"></td>
+                            <td class="key-half-blank"></td>
+                            <td class="key-wht" id="Z">Z</td>
+                            <td class="key-brn" id="X">X</td>
+                            <td class="key-wht" id="C">C</td>
+                            <td class="key-brn" id="V">V</td>
+                            <td class="key-wht" id="B">B</td>
+                            <td class="key-wht" id="N">N</td>
+                            <td class="key-wht" id="M">M</td>
+                            <td class="key-brn" id="period">[<br/>.</td>
+                            <td class="key-brn" id="comma">]<br/>,</td>
+                            <td class="key-brn" id="slash">?<br/>/</td>
+                            <td class="key-half-blank"></td>
+                            <td class="key-brn" id="upper-case">UPPER<br/>CASE</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-6">
                     <button id="upload">INSERT TAPE</button>
                 </div>
