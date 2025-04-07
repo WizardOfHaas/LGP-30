@@ -14,6 +14,10 @@ import { OrderI } from "./i"
 import { Register } from "../regs/register"
 import { BitArray } from "../types"
 import { addrToHex, binToDec, halfToHex } from "../util"
+import { OrderE } from "./e"
+import { OrderD } from "./d"
+import { OrderM } from "./m"
+import { OrderN } from "./n"
 
 const orders = [
     new OrderB(),
@@ -27,7 +31,11 @@ const orders = [
     new OrderA(),
     new OrderS(),
     new OrderP(),
-    new OrderI()
+    new OrderI(),
+    new OrderE(),
+    new OrderD(),
+    new OrderM(),
+    new OrderN()
 ]
 
 export const orderIdMap: {[id: string]: IOrder} = {}

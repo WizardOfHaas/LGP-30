@@ -20,7 +20,7 @@ export function assembleLine(memory: Memory, l){
     const track = parts[0].substring(0, 2)
     const sector = parts[0].substring(2, 4)
 
-    if(parts[1] in orderNameMap){ //This is an order
+    if(parts[1] in orderNameMap && parts.length > 2){ //This is an order
 
         //This part is interpreted wring(IE: 10 -> 0f instead of 10)
         const trackArg = hexToBin(parts[2].substring(0, 2), 6)

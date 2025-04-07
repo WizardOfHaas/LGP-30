@@ -69,6 +69,7 @@ export function isHex(c){
 //Encode literal number
 export function packNum(d){
     const w = decToBin(Math.abs(d), 32)
+    
     if(d < 0){
         w[0] = 1
     }
