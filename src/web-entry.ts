@@ -1,13 +1,13 @@
 import { assembleLine } from "./asm"
 import { LGP30 } from "./lgp30"
-import { bindModeButtons, bindOpButtons, displayMem, displayMode, displayRegs } from "./interface/web"
+import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, displayRegs } from "./interface/web"
 
 import $ from "jquery"
 import { decodeOrder } from "./orders/orderMap"
-import { dumpRegs } from "./util"
+import { binToDec, dumpRegs } from "./util"
 import { Flexowriter } from "./flexo"
 import { Terminal } from "@xterm/xterm"
-import { bitsToChar } from "./chars"
+import { bitsToChar, charMapLC } from "./chars"
 
 window.jQuery = window.$ = $
 window.LGP30 = LGP30
@@ -25,7 +25,7 @@ assembleLine(lgp30.state.memory, "0010 1")
 */
 
 $(window).bind('load', async () => {
-    const term = new Terminal()
+    const term = new Terminal({cols: 40, rows: 25})
     term.open(document.getElementById('terminal'));
 
     const lgp30 = new LGP30({
@@ -35,13 +35,16 @@ $(window).bind('load', async () => {
             displayMode(lgp30.state)
         },
         onTx: async (b) => {
-            console.log(b)
+            console.log(b, bitsToChar(b))
             term.write(bitsToChar(b))
         }
     })
 
     term.onKey(async (d) => {
         term.write(d.key)
+
+        //This is where I need to show depressed keys
+
         await lgp30.rxChar(d.key)
         displayRegs(lgp30.state)
     })
@@ -54,24 +57,11 @@ $(window).bind('load', async () => {
 
     bindModeButtons(lgp30.state)
     bindOpButtons(lgp30)
+    bindKeybd(lgp30)
 
-    //Load in bootstrap for p104.tx
-    /*await manualScript(`000c3wl8'000u3w00'
-    c3wlj'p0000'
-    c3w20'i0000'
-    c3w24'0gwc0000'
-    c3w28'b3wg8'
-    c3w2j's3w68'
-    c3w30'u3w58'
-    c3w34'z0000'
-    c3w38'u0000'
-    c3w58't3w34'
-    c3w5j'h3w24'
-    c3w60'c3wg8'
-    c3w64'u3wlj'
-    c3w68'000wwwwj'
-    c3wg8'0gwc0000'
-    u3wlj''`)*/
+    $("#vis-mode").on("click", () => {
+        $("#dev-scope, #mem-holder, #asm-holder, #logo").toggleClass("hidden");
+    })
 
     $("#asm").val().split("\n").forEach((l) => {
         assembleLine(lgp30.state.memory, l)
@@ -94,7 +84,27 @@ $(window).bind('load', async () => {
             var reader = new FileReader();
 
             reader.onload = async (e) => {
-                await flexo.loadTape(reader.result as string)
+                lgp30.toRxBuffer(reader.result as string)
+            };
+
+            if(this.files != null && this.files.length > 0){
+                reader.readAsText(this.files[0], "UTF-8");
+            }
+        }, true);                
+        
+        input.click()
+    })
+
+    $("#load-image").on("click", async (e) => {
+        var input = document.createElement('input')
+        input.type = 'file'
+
+        input.addEventListener("change", function(){
+            var reader = new FileReader();
+
+            reader.onload = async (e) => {
+                lgp30.loadMemoryImage(reader.result as string)
+                displayMem(lgp30.state)
             };
 
             if(this.files != null && this.files.length > 0){

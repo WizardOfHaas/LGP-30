@@ -138,10 +138,60 @@ export class LGP30{
         const b = charToBits(c)
         await this.rx(b)
     }
-    
+
+    toRxBuffer(s: string){ //Then I need a hook to process the next block in buffer
+        const data = s.split("").map((c) => (charToBits(c)))
+        this.state.rxBuffer = this.state.rxBuffer.concat(data)
+    }
+
+    //This will rx from buffer until it's empty
+    async rxFromBuffer(){
+        while(this.state.rxBuffer.length > 0){
+            const b = this.state.rxBuffer.shift()
+
+            if(b){
+                const res = await this.rx(b)
+
+                if(binToDec(res) == 32){
+                    //break; //I break for COND-STOP
+                }
+            }else{
+                break;
+            }
+        }
+    }
+
     async tx(b: BitArray){
         if(typeof this.config.onTx !== "undefined"){
             await this.config.onTx(b)
         }
+    }
+
+    /**
+     * Tricky debug/save state stuff
+     */
+
+    /**
+     * Load memory image into current state
+     * @param s string formatted as list of bit arrays
+     */
+    loadMemoryImage(s: string){
+        s.split("\n").forEach((d) => {
+            const [id, val] = d.split(":")
+
+            this.state.memory.data[id] = val.split("").map((n) => (parseInt(n, 2)))
+        })
+    }
+
+    dumpMemoryImage(){
+        const dump: string[] = []
+
+        this.state.memory.data.forEach((d, i) => {
+            if(binToDec(d) != 0){
+                dump.push(i + ":" + d.join(""))
+            }
+        })
+
+        return dump.join("\n")
     }
 }

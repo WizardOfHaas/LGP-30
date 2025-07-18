@@ -2,7 +2,7 @@ import { BitArray } from "./types"
 import { binToDec } from "./util"
 
 const codeToChar = [ //Thanks SIMH!
-    -1  , 'z', '0', ' ', '>', 'b', '1', '-',
+    -1  , 'z', '0', ' ', '>', 'b', 'l', '-',
     '<' , 'y', '2', '+', '|', 'r', '3', ';',
     '\r\n', 'i', '4', '/','\\', 'd', '5', '.',
     '\t', 'n', '6', ',', -1 , 'm', '7', 'v',
@@ -21,7 +21,73 @@ const codeToChar = [ //Thanks SIMH!
     -1  , 'A', 'Q', -1 , -1 , 'S', 'W', 0
 ]
 
-const charMapLC = {
+const codeMapLC = [
+    null,
+    "z",
+    "0",
+    " ",
+    null,
+    "b",
+    "l",
+    null,
+    null,
+    "y",
+    "2",
+    null,
+    null,
+    "r",
+    "3",
+    ";",
+    null,
+    "i",
+    "4",
+    "/",
+    null,
+    "d",
+    "5",
+    ".",
+    null,
+    "n",
+    "6",
+    null,
+    null,
+    "m",
+    "7",
+    "v",
+    "'",
+    "p",
+    "8",
+    "o",
+    null,
+    "e",
+    "9",
+    "x",
+    null,
+    "u",
+    "f",
+    null,
+    null,
+    "t",
+    "g",
+    null,
+    null,
+    "h",
+    "j",
+    null,
+    null,
+    "c",
+    "k",
+    null,
+    null,
+    "a",
+    "q",
+    null,
+    null,
+    "s",
+    "w"
+]
+
+export const charMapLC = {
     //Numerical
     "0": [0, 0, 0, 0, 1, 0],
     "l": [0, 0, 0, 1, 1, 0],
@@ -74,7 +140,7 @@ const charMapLC = {
 
 export function charToBits(c: string){
     if(c in charMapLC){
-        console.log(c, charMapLC[c])
+        //console.log(c, charMapLC[c])
         return charMapLC[c]
     }else{
         return [0, 0, 0, 0, 0, 0]
@@ -84,8 +150,8 @@ export function charToBits(c: string){
 export function bitsToChar(b: BitArray){
     const code = binToDec(b)
     
-    if(typeof codeToChar[code] !== "undefined"){
-        return codeToChar[code]
+    if(typeof codeMapLC[code] !== "undefined" && codeMapLC[code] != null){
+        return codeMapLC[code]
     }
 
     return ""

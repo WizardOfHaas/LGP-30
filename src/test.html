@@ -1,510 +1,637 @@
 <html>
-    <head>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css"
+        integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w=="
+        crossorigin="anonymous" />
+
+    <script src="dist/web-entry.js"></script>
+
+    <style>
+        .hidden{
+            display:none;
+        }
+
+        table {
+            font-family: monospace;
+        }
+
+        .ip {
+            background-color: red;
+        }
+
+        .green, #compute.btn-green {
+            background-color: green;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        #stop.btn-on {
+            background-color: red;
+        }
+
+        .btn {
+            border: 1px solid black;
+            border-radius: 0px;
+        }
+
+        .toggle {
+            height: 100%;
+            width: 100%;
+        }
+
+        div:has(>button) {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #button-holder{
+            background-color: #af967b;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent 0px, #000000 1px, transparent 1px, transparent 10px),
+                repeating-linear-gradient(-45deg, transparent 0px, #000000 1px, transparent 1px, transparent 10px);
+        }
+
+        #top-buttons, #bottom-buttons{
+            padding-left: 50px;
+        }
+
+        #bottom-buttons, #logo-holder{
+            background-color: silver;
+        }
+
+        #logo-holder{
+            height: 124px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 124px;
+        }
+
+        #button-holder{
+            border: 20px solid silver;
+            border-top-left-radius: 90px 200px;
+            border-top-right-radius: 90px 200px;
+            overflow: hidden;
+        }
+
+        #buttons{
+        }
+
+        #run-btns button,
+        #op-btns button {
+            font-size: 12;
+            height: 60px;
+            background-color: #ac9c8c;
+            color: #efdfc5;
+        }
+
+        #op-btns button,
+        #mode-btns button {
+            width: 100px;
+            background-color: #a48e65;
+            color: #efdfc5;
+        }
+
+        #run-btns{
+            margin-top: 25px;
+        }
+
+        #run-btns button {
+            margin-bottom: 15px;
+        }
+
+        #flexo-btns button {
+            width: 70px;
+            height: 50px;
+            font-size: 10;
+        }
+
+        button#manual-light {
+            width: 120px;
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+
+        #scope{
+            margin-top: 10px;
+            background: #af967b;
+        }
+
+        #scope-holder{
+            height: 179px;
+        }
+
+        #scope td {
+            display: inline-flex;
+        }
+
+        .bit-on,
+        .bit-off {
+            width: 14px;
+            height: 15px;
+            background: black;
+        }
+
+        #a-bin,
+        #r-bin,
+        #c-bin {
+            border: 1px solid black;
+        }
+
+        #c-bin{
+            float: right;
+            margin-right: 14px;
+        }
+
+        .bit-off {
+            border-bottom: 2px solid green;
+        }
+
+        .bit-on {
+            border-left: 2px solid green;
+            border-right: 2px solid green;
+            border-top: 2px solid green;
+            background: green;
+        }
+
+        .bit-markers>span {
+            width: 15px;
+            font-size: 10;
+
+            border-left: 1px solid black;
+            border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
+        }
+
+        #r-bin .bit-12,
+        #r-bin .bit-16,
+        #r-bin .bit-18,
+        #r-bin .bit-24,
+        #r-bin .bit-30 {
+            border-left: 1px solid black;
+        }
+
+        .keybd.staggered {
+            margin-left: 30px;
+        }
+
+        .keybd td {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bolder;
+            margin: 5px;
+            display: inline-flex;
+            justify-content: center;
+        }
+
+        .key-brn,
+        #flexo-btns button {
+            background: #3b2112;
+            color: #f2e0ab;
+        }
+
+        .key-wht {
+            background-color: #f2e0ab;
+            color: #3b2112;
+        }
+
+        .keybd .key-blank,
+        .key-half-blank {
+            border: none;
+        }
+
+        .keybd td.key-half-blank {
+            width: 15px;
+        }
+
+        #mem-holder {
+            overflow-y: scroll;
+            height: 512px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-md">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row" id="button-holder">
+                    <div class="col-md-7" id="buttons">
+                        <div class="row" id="top-buttons">
+                            <div class="col-md-4">
+                                <table id="run-btns">
+                                    <tr>
+                                        <th colspan="3">
+                                            <button class="btn btn-block" id="stop">STOP</button>
+                                            </td>
+                                        <th colspan="3">
+                                            <button class="btn btn-block" id="compute">COMPUTE</button>
+                                            </td>
+                                    </tr>
         
-        <script src="dist/web-entry.js"></script>
+                                    <tr id="mode-btns">
+                                        <td>
+                                            <button class="btn btn-block toggle btn-on" id="normal">NORMAL</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-block toggle" id="one-op">ONE<br />OP</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-block toggle" id="manual">MANUAL<br />INPUT</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block toggle" id="stand-by">STAND<br />BY</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-block toggle" id="opereate">OPERATE</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-block toggle" id="stand-by-to-operate">STAND BY<br />TO
+                                                OP</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+        
+                        <div class="row" id="bottom-buttons">
+                            <div class="col-md-6">
+                                <table id="op-btns">
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-block" id="start">START</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="clear-counter">CLEAR<br />COUNTER</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="fill-ins">FILL<br />INSTRUCTION</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="ex-ins">EXECUTE<br />INSTRUCTION</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="power-on">POWER<br />ON</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="power-off">POWER<br />OFF</button>
+                                        </td>
+                                    </tr>
+        
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-block" id="break-32">BREAK<br />POINT<br />32</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="break-16">BREAK<br />POINT<br />16</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="break-8">BREAK<br />POINT<br />8</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="break-4">BREAK<br />POINT<br />4</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="input-6b">6 BIT<br />INPUT</button>
+                                        </td>
+        
+                                        <td>
+                                            <button class="btn btn-block" id="xfer-ctrl">TRANSFER<br />CONTROL</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
 
-        <style>
-            table {
-                font-family: monospace;
-            }
+                            <div class="col-md-6">
 
-            .ip {
-                background-color: red;
-            }
-
-            .green {
-                background-color: green;
-            }
-
-            .red {
-                background-color: red;
-            }
-
-            textarea{
-                width: 100%;
-            }
-
-            .btn-on{
-                background-color: red;
-            }
-
-            .btn{
-                border: 1px solid black;
-                border-radius: 0px;
-            }
-
-            .toggle{
-                height: 100%;
-                width: 100%;
-            }
-
-            div:has(>button){
-                padding: 0px;
-                margin: 0px;
-            }
-
-            #run-btns button, #op-btns button{
-                font-size: 12;
-                height: 60px;
-            }
-
-            #op-btns button, #mode-btns button{
-                width: 100px;
-            }
-
-            #run-btns button{
-                margin-bottom: 15px;
-            }
-
-            #flexo-btns button{
-                width: 50px;
-                height: 50px;
-                font-size: 10;
-            }
-
-            button#manual-light{
-                width: 120px;
-                margin-left: 30px;
-                margin-right: 30px;
-            }
-
-            #scope td{
-                display: inline-flex;
-            }
-
-            .bit-on, .bit-off{
-                width: 15px;
-                height: 15px;
-            }
-
-            #a-bin, #r-bin, #c-bin{
-                border: 1px solid black;
-            }
-
-            .bit-off{
-                border-bottom: 2px solid green;
-            }
-
-            .bit-on{
-                border-left: 2px solid green;
-                border-right: 2px solid green;
-                border-top: 2px solid green;
-            }
-
-            .bit-markers > span{
-                width: 15px;
-                font-size: 10;
-
-                border-left: 1px solid black;
-                border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
-            }
-
-            #r-bin .bit-12, #r-bin .bit-16, #r-bin .bit-18, #r-bin .bit-24, #r-bin .bit-30{
-                border-left: 1px solid black;
-            }
-
-            .keybd.staggered{
-                margin-left: 30px;
-            }
-
-            .keybd td{
-                width: 40px;
-                height: 40px;
-                border-radius: 5px;
-                text-align: center;
-                font-weight: bolder;
-                margin: 5px;
-                display: inline-flex;
-                justify-content: center;
-            }
-
-            .key-brn, #flexo-btns button{
-                background: #3b2112;
-                color: #f2e0ab;
-            }
-
-            .key-wht{
-                background-color: #f2e0ab;
-                color: #3b2112;
-            }
-
-            .keybd .key-blank, .key-half-blank{
-                border: none;
-            }
-
-            .keybd td.key-half-blank{
-                width: 15px;
-            }
-        </style>
-    </head>
-
-    <body>
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-md-4">
-                    <table id="run-btns">
-                        <tr>
-                            <th colspan="3">
-                                <button class="btn btn-block" id="stop">STOP</button>
-                            </td>
-                            <th colspan="3">
-                                <button class="btn btn-block" id="compute">COMPUTE</button>
-                            </td>
-                        </tr>
-
-                        <tr id="mode-btns">
-                            <td>
-                                <button class="btn btn-block toggle btn-on" id="normal">NORMAL</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-block toggle" id="one-op">ONE<br/>OP</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-block toggle" id="manual">MANUAL<br/>INPUT</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block toggle" id="stand-by">STAND<br/>BY</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-block toggle" id="opereate">OPERATE</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-block toggle" id="stand-by-to-operate">STAND BY<br/>TO OP</button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="col-md-5">
-                    <table id="scope">
-                        <tr>
-                            <td></td><td id="c-bin"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="bit-markers">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>ORDER</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>TRACK</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>SECTOR</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td><td id="r-bin"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="bit-markers">
-                                <span></span>
-                                <span>1</span>
-                                <span></span>
-                                <span></span>
-                                <span>4</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>8</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>12</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>16</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>20</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>24</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span>28</span>
-                                <span></span>
-                                <span>30</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td><td id="a-bin"></td>
-                        </tr>
-                    </table>
-
-                    <br/>
-
-                    <table>
-                        <tr>
-                            <td>C</td><td id="c"></td><td id="c-dec"></td>
-                        </tr>
-                        <tr>
-                            <td>R</td><td id="r"></td><td id="r-dec"></td>
-                        </tr>
-                        <tr>
-                            <td>A</td><td id="a"></td><td id="a-dec"></td><td id="a-ins"></td>
-                        </tr>
-                        <tr>
-                            <td> </td><td>--------------|O--|T----|S----|</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <table id="op-btns">
-                        <tr>
-                            <td>
-                                <button class="btn btn-block" id="start">START</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="clear-counter">CLEAR<br/>COUNTER</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="fill-ins">FILL<br/>INSTRUCTION</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="ex-ins">EXECUTE<br/>INSTRUCTION</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="power-on">POWER<br/>ON</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="power-off">POWER<br/>OFF</button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <button class="btn btn-block" id="break-32">BREAK<br/>POINT<br/>32</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="break-16">BREAK<br/>POINT<br/>16</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="break-8">BREAK<br/>POINT<br/>8</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="break-4">BREAK<br/>POINT<br/>4</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="input-6b">6 BIT<br/>INPUT</button>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-block" id="xfer-ctrl">TRANSFER<br/>CONTROL</button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="terminal"></div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <table>
-                                <tr id="flexo-btns">
-                                    <td>
-                                        <button class="btn btn-block toggle" id="cond-stop">COND<br/>STOP</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-block toggle" id="start-read">START<br/>READ</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-block toggle" id="stop-read">STOP<br/>READ</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-block toggle" id="punch-on">PUNCH<br/>ON</button>
-                                    </td>
-
-                                    <td>
-                                        <td>
-                                            <button class="btn btn-block toggle" id="manual-light">MANUAL</button>
+        
+                    <div class="col-md-5">
+                        <div class="row" id="scope-holder">
+                            <div class="col-md-6">
+                                <table id="scope">
+                                    <tr>
+                                        <td></td>
+                                        <td id="c-bin"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="bit-markers">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>ORDER</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>TRACK</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>SECTOR</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
                                         </td>
-                                    </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td id="r-bin"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="bit-markers">
+                                            <span></span>
+                                            <span>1</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>4</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>8</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>12</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>16</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>20</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>24</span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span>28</span>
+                                            <span></span>
+                                            <span>30</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td id="a-bin"></td>
+                                    </tr>
+                                </table>
+                
+                                <br />
+                            </div>
+                        </div>
 
-                                    <td>
-                                        <button class="btn btn-block toggle" id="tape-feed">TAPE<br/>FEED</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-block toggle" id="code-depete">CODE<br/>DELETE</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-block toggle" id="manual-input">MANUAL<br/>INPUT</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-block toggle" id="start">START<br/>COMP</button>
-                                    </td>
+                        <div class="row" id="logo-holder">
+                            <p id="logo">ROYAL PRECISION</p>
+
+                            <table id="dev-scope" class="hidden">
+                                <tr>
+                                    <td>C</td>
+                                    <td id="c"></td>
+                                    <td id="c-dec"></td>
+                                </tr>
+                                <tr>
+                                    <td>R</td>
+                                    <td id="r"></td>
+                                    <td id="r-dec"></td>
+                                </tr>
+                                <tr>
+                                    <td>A</td>
+                                    <td id="a"></td>
+                                    <td id="a-dec"></td>
+                                    <td id="a-ins"></td>
+                                </tr>
+                                <tr>
+                                    <td> </td>
+                                    <td>--------------|O--|T----|S----|</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-md-3">
-                    <table id="mem"></table>
-                </div>
+        </div>
 
-                <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-4 hidden" id="mem-holder">
+                <table id="mem"></table>
+            </div>
+
+            <div class="col-md-4 hidden" id="asm-holder">
+                <!--<textarea id="loader-asm" rows="15">
+0000 u6300
+6300 p0000
+6301 i0000
+6302 c6305
+6303 p0000
+6304 i0000
+                    </textarea>-->
                     <textarea id="asm" rows="15">
-0000 u 1000 #Jump to entry
-1000 p 0000
-1001 b 1000
-1002 a 2005 #Add up 1 to track
-1003 y 1000 #Modify p
-
-1004 b 2002 #Sets A to (2002)
-1005 a 2001 #Adds (2001) to A
-1006 h 2002 #Saves results in (2002)
-1007 s 2003 #Subtracts 5 from A
-1008 t 1000 #Tests, and jumps to top of loop
-1009 z 0000 #Stop
-
+0000 u1000 #Jump to entry
+1000 p0000
+1001 b1000
+1002 a2005 #Add up 1 to track
+1003 y1000 #Modify p
+1004 b2002 #Sets A to (2002)
+1005 a2001 #Adds (2001) to A
+1006 h2002 #Saves results in (2002)
+1007 s2003 #Subtracts 5 from A
+1008 t1000 #Tests, and jumps to top of loop
+1009 z0000 #Stop
 2001 1 #Counter start
-2003 63 #Counter stop
-2005 100 #Track = 1. This is our incrementer
+2003 64 #Counter stop
+2005 256 #Track = 1. This is our incrementer
                     </textarea>
-                    <button id="assemble" class="btn">ASSEMBLE ME!</button>
-                </div>
+                <button id="assemble" class="btn">ASSEMBLE ME!</button>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-md-10">
-                    <table class="keybd">
-                        <tr>
-                            <td class="key-brn" id="tab">TAB</td>
-                            <td class="key-blank"></td>
-                            <td class="key-brn" id="2">*<br/>2</td>
-                            <td class="key-brn" id="3">"<br/>3</td>
-                            <td class="key-brn" id="4">&Delta;<br/>4</td>
-                            <td class="key-brn" id="5">%<br/>5</td>
-                            <td class="key-brn" id="6">$<br/>6</td>
-                            <td class="key-brn" id="7">&pi;<br/>7</td>
-                            <td class="key-brn" id="8">&Sigma;<br/>8</td>
-                            <td class="key-brn" id="9">(<br/>9</td>
-                            <td class="key-brn" id="0">)<br/>0</td>
-                            <td class="key-brn" id="dash">_<br/>-</td>
-                            <td class="key-brn" id="color-shift">COLOR<br/>SHIFT</td>
-                            <td class="key-brn" id="backspace">BACK<br/>SPACE</td>
-                        </tr>
-                    </table>
-
-                    <table class="keybd staggered">
-                        <tr>
-                            <td class="key-blank"></td>
-                            <td class="key-brn" id="Q">Q</td>
-                            <td class="key-brn" id="W">W</td>
-                            <td class="key-wht" id="E">E</td>
-                            <td class="key-wht" id="R">R</td>
-                            <td class="key-wht" id="T">T</td>
-                            <td class="key-wht" id="Y">Y</td>
-                            <td class="key-wht" id="U">U</td>
-                            <td class="key-wht" id="I">I</td>
-                            <td class="key-brn" id="O">O</td>
-                            <td class="key-wht" id="P">P</td>
-                            <td class="key-brn" id="plus">=<br/>+</td>
-                            <td class="key-brn" id="car-ret">CAR<br/>RET</td>
-                        </tr>
-                    </table>
-
-                    <table class="keybd">
-                        <tr>
-                            <td class="key-brn" id="lower-case">LOWER<br/>CASE</td>
-                            <td class="key-blank"></td>
-                            <td class="key-wht" id="A">A</td>
-                            <td class="key-wht" id="S">S</td>
-                            <td class="key-wht" id="D">D</td>
-                            <td class="key-brn" id="F">F</td>
-                            <td class="key-brn" id="G">G</td>
-                            <td class="key-wht" id="H">H</td>
-                            <td class="key-brn" id="J">J</td>
-                            <td class="key-brn" id="K">K</td>
-                            <td class="key-brn" id="L">L</td>
-                            <td class="key-brn" id="colon">:<br/>;</td>
-                            <td class="key-brn" id="sto?">STO?</td>
-                            <td class="key-brn" id="lower-case">LOWER<br/>CASE</td>
-                        </tr>
-                    </table>
-
-                    <table class="keybd">
-                        <tr>
-                            <td class="key-brn" id="upper-case">UPPER<br/>CASE</td>
-                            <td class="key-blank"></td>
-                            <td class="key-half-blank"></td>
-                            <td class="key-wht" id="Z">Z</td>
-                            <td class="key-brn" id="X">X</td>
-                            <td class="key-wht" id="C">C</td>
-                            <td class="key-brn" id="V">V</td>
-                            <td class="key-wht" id="B">B</td>
-                            <td class="key-wht" id="N">N</td>
-                            <td class="key-wht" id="M">M</td>
-                            <td class="key-brn" id="period">[<br/>.</td>
-                            <td class="key-brn" id="comma">]<br/>,</td>
-                            <td class="key-brn" id="slash">?<br/>/</td>
-                            <td class="key-half-blank"></td>
-                            <td class="key-brn" id="upper-case">UPPER<br/>CASE</td>
-                        </tr>
-                    </table>
+        <div class="row" id="flexo-holder">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="terminal"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <button id="upload">INSERT TAPE</button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tr id="flexo-btns">
+                                <td>
+                                    <button class="btn btn-block toggle" id="cond-stop">COND<br />STOP</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-block toggle" id="start-read">START<br />READ</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-block toggle" id="stop-read">STOP<br />READ</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-block toggle" id="punch-on">PUNCH<br />ON</button>
+                                </td>
+
+                                <td>
+                                <td>
+                                    <button class="btn btn-block toggle" id="manual-light">MANUAL</button>
+                                </td>
+                                </td>
+
+                                <td>
+                                    <button class="btn btn-block toggle" id="tape-feed">TAPE<br />FEED</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-block toggle" id="code-depete">CODE<br />DELETE</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-block toggle" id="manual-input">MANUAL<br />INPUT</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-block toggle" id="start">START<br />COMP</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
+
+        <div class="row">
+            <div class="col-md-10">
+                <table class="keybd">
+                    <tr>
+                        <td class="key-brn" id="tab">TAB</td>
+                        <td class="key-blank"></td>
+                        <td class="key-brn" id="2">*<br />2</td>
+                        <td class="key-brn" id="3">"<br />3</td>
+                        <td class="key-brn" id="4">&Delta;<br />4</td>
+                        <td class="key-brn" id="5">%<br />5</td>
+                        <td class="key-brn" id="6">$<br />6</td>
+                        <td class="key-brn" id="7">&pi;<br />7</td>
+                        <td class="key-brn" id="8">&Sigma;<br />8</td>
+                        <td class="key-brn" id="9">(<br />9</td>
+                        <td class="key-brn" id="0">)<br />0</td>
+                        <td class="key-brn" id="dash">_<br />-</td>
+                        <td class="key-brn" id="color-shift">COLOR<br />SHIFT</td>
+                        <td class="key-brn" id="backspace">BACK<br />SPACE</td>
+                    </tr>
+                </table>
+
+                <table class="keybd staggered">
+                    <tr>
+                        <td class="key-blank"></td>
+                        <td class="key-brn" id="Q">Q</td>
+                        <td class="key-brn" id="W">W</td>
+                        <td class="key-wht" id="E">E</td>
+                        <td class="key-wht" id="R">R</td>
+                        <td class="key-wht" id="T">T</td>
+                        <td class="key-wht" id="Y">Y</td>
+                        <td class="key-wht" id="U">U</td>
+                        <td class="key-wht" id="I">I</td>
+                        <td class="key-brn" id="O">O</td>
+                        <td class="key-wht" id="P">P</td>
+                        <td class="key-brn" id="plus">=<br />+</td>
+                        <td class="key-brn" id="car-ret">CAR<br />RET</td>
+                    </tr>
+                </table>
+
+                <table class="keybd">
+                    <tr>
+                        <td class="key-brn" id="lower-case">LOWER<br />CASE</td>
+                        <td class="key-blank"></td>
+                        <td class="key-wht" id="A">A</td>
+                        <td class="key-wht" id="S">S</td>
+                        <td class="key-wht" id="D">D</td>
+                        <td class="key-brn" id="F">F</td>
+                        <td class="key-brn" id="G">G</td>
+                        <td class="key-wht" id="H">H</td>
+                        <td class="key-brn" id="J">J</td>
+                        <td class="key-brn" id="K">K</td>
+                        <td class="key-brn" id="L">L</td>
+                        <td class="key-brn" id="colon">:<br />;</td>
+                        <td class="key-brn" id="cond-stop">COND<br />STOP</td>
+                        <td class="key-brn" id="lower-case">LOWER<br />CASE</td>
+                    </tr>
+                </table>
+
+                <table class="keybd">
+                    <tr>
+                        <td class="key-brn" id="upper-case">UPPER<br />CASE</td>
+                        <td class="key-blank"></td>
+                        <td class="key-half-blank"></td>
+                        <td class="key-wht" id="Z">Z</td>
+                        <td class="key-brn" id="X">X</td>
+                        <td class="key-wht" id="C">C</td>
+                        <td class="key-brn" id="V">V</td>
+                        <td class="key-wht" id="B">B</td>
+                        <td class="key-wht" id="N">N</td>
+                        <td class="key-wht" id="M">M</td>
+                        <td class="key-brn" id="period">[<br />.</td>
+                        <td class="key-brn" id="comma">]<br />,</td>
+                        <td class="key-brn" id="slash">?<br />/</td>
+                        <td class="key-half-blank"></td>
+                        <td class="key-brn" id="upper-case">UPPER<br />CASE</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <button id="upload">INSERT TAPE</button>
+                <button id="load-image">LOAD IMAGE</button>
+                <button id="vis-mode">SWITCH MODE</button>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>

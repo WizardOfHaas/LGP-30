@@ -29,6 +29,10 @@ export function hexToDec(h){
 }
 
 export function decToHex(d){
+    if(typeof d === "string"){ //I guess this is techincally my fault
+        d = parseInt(d)
+    }
+
     return toLGPHex(d.toString(16))
 }
 

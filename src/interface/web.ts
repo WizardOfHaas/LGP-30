@@ -28,8 +28,16 @@ export function displayMem(state: State){
             binToDec(m) != 0
         ){
             $("#mem").append($(
-                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + addrToHex(i) + "</td>" +
-                "<td>" + m.join("") + "</td>" +
+                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + addrToHex(i) + ":</td>" +
+                //"<td>" + m.join("") + "</td>" +
+                "<td>" + 
+                    m.slice(0, 12).join("") + "|" +
+                    m.slice(12, 16).join("") + "|" +
+                    m.slice(16, 18).join("") + "|" +
+                    m.slice(18, 24).join("") + "|" +
+                    m.slice(24, 30).join("") + "|" +
+                    m.slice(30, 32).join("") +
+                "</td>" +
                 "<td>(" + binToDec(m) + ")</td>" +
                 "<td>" + decodeOrder(m) + "</td>" +
                 "</tr>"
@@ -58,6 +66,33 @@ export function bindModeButtons(state: State){
     })
 }
 
+export function bindKeybd(lgp30: LGP30){
+    const keyMapping = { //These are functions to handle shifts
+        "COND STOP": () => "'",
+        "TAB": () => "\t",
+        "CAR RET": () => "\r",
+        "BACK SPACE": () => ""
+    }
+
+    $(".keybd td").on("click", async (e) => {
+        const vals = e.target.innerHTML.split("<br>")
+
+        const id = vals.join(" ")
+
+        let key = ""
+
+        if(typeof keyMapping[id] !== "undefined"){ //Handle special keys
+            key = keyMapping[id]()
+        }else if(vals.length == 2){ //Handle upper/lower case keys
+            key = vals[1]
+        }else{ //Handle normal keys
+            key = vals[0]
+        }
+
+        console.log(key)
+    })
+}
+
 export function bindOpButtons(lgp30: LGP30){
     $("#start").on("click", async () => {
         await lgp30.run()
@@ -79,6 +114,10 @@ export function bindOpButtons(lgp30: LGP30){
     $("#clear-counter").on("click", () => {
         lgp30.state.registers.c.clear()
         displayRegs(lgp30.state)
+    })
+
+    $("#start-read").on("click", async () => {
+        await lgp30.rxFromBuffer()
     })
 }
 

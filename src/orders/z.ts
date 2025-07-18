@@ -1,5 +1,4 @@
 import type { BitArray, SectorNumber, IState, TrackNumber } from "../types";
-import { hexToBin } from "../util";
 import { IOrder } from "./order";
 
 //Stop
@@ -8,7 +7,13 @@ export class OrderZ implements IOrder{
     orderNumber = [0, 0, 0, 0] as BitArray
 
     async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
-        state.running = false
+        //Breakpoints not currently implemented, so treat breaking-stop as a NOP
+        if(track == "00" && sector == "00"){
+            state.running = false
+        }
+
+        state.registers.c.inc()
+
         return state
     }
 }
