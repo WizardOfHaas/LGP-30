@@ -1,0 +1,11 @@
+<SYNTAX> ::= <line> | <line> <CRLF> <SYNTAX>
+<line> ::= <label> <sep> <exp> | <exp> | <label> <set> | <set>
+
+<op> ::= "x" | "+" | "-" | "/"
+<const> ::= <DIGITS>
+<symb> ::= <ALPHA> | <ALPHA> <symb>
+<arg> ::= <const> | <symb>
+<label> ::= "s" <DIGITS>
+<sep> ::= " "
+<exp> ::= <arg> <sep> <op> <sep> <arg> | <arg>
+<set> ::= <exp> <sep> ":" <sep> <symb>

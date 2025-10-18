@@ -1,0 +1,390 @@
+
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+        <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"></link>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/abbott.min.css"></link>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        
+        <style>
+            .feed-hole div{
+                background-color: black;
+                width: 10px;
+                height: 10px;
+                margin: 5px;
+                border-radius: 30px;
+            }
+
+            .baudot-bit div{
+                width: 20px;
+                height: 20px;
+                margin: 2px;
+                border-radius: 30px;
+            }
+
+            .bit-on > div, .on{
+                background-color: black;
+            }
+
+            .bit-off > div, .off {
+                background-color: white;
+                border: 1px solid black;
+            }
+
+            #output-tape{
+                overflow-x: scroll;
+            }
+
+            #act-form td{
+                border: 1px solid black;
+                padding: 5px;
+            }
+
+            .raw-code, .fmt-code{
+                width: 250px;
+            }
+
+            .fmt-code > span{
+                border: 1px solid black;
+                width: 5px;
+            }
+
+            #formatted-script{
+                font-family:'Lucida Console', monospace;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div>        
+                <textarea id="script" class="numbered" rows="25">
+dim arr 10
+index i
+0 : i
+s1 i : arr i
+i + 1 : i
+trn i less 10 s1
+
+0 : i
+s2 0 print arr i cr
+i + 1 : i
+trn i less 10 s2
+stop
+                </textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="output-tape">
+                        <table>
+                            <tr class="char"></tr>
+                            <tr class="baudot-bit bit-0"></tr>
+                            <tr class="baudot-bit bit-1"></tr>
+                            <tr class="baudot-bit bit-2"></tr>
+                            <tr class="feed-hole"></tr>
+                            <tr class="baudot-bit bit-3"></tr>
+                            <tr class="baudot-bit bit-4"></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-9">
+                    <div id="formatted-script"></div>
+
+                    <table id="act-form">
+                    </table>
+                </div>
+            </div>
+
+            <textarea id="output" rows="25" readonly></textarea>
+
+            <button id="run" onclick="run()">RUN!</button>
+        </div>
+
+        <script>
+            var editor = CodeMirror.fromTextArea(document.getElementById('script'), {
+                lineNumbers: true,
+                mode: 'text/x-perl',
+                theme: 'abbott',
+            });
+
+            var regions = {}
+            var symbols = {}
+            var labels = {}
+            var indecies = {}
+
+            var lines = []
+
+            /**
+             * Eval always returns [ip, value]
+             * (i: number, exp: string, ...groups): [ip: number, value: number | null]
+             */
+            var patterns = [{
+                "name": "set",
+                "pattern": /^([0-9a-zA-Z\-\+\/ ]+) \: ([a-zA-Z]+)(\.[a-zA-Z]+)?$/g,
+                "eval": (i, exp, lh, s, idx) => {
+                    if(idx == undefined){
+                        symbols[s] = evaluate(i, lh)[1]
+                    }else{
+                        idx = idx.replace(".", "")
+
+                        if(Object.hasOwn(indecies, idx) && Object.hasOwn(regions, s)){
+                            var idxVal = evaluate(i, idx)[1]
+                            var val = evaluate(i, lh)[1]
+
+                            regions[s][idxVal] = val
+                        }
+                    }
+
+                    return [i + 1, null]
+                }
+            },{
+                "name": "region",
+                "pattern": /^dim ([a-zA-Z]+) ([0-9]+)$/g,
+                "eval": (i, exp, d, c) => {
+                    regions[d] = Array(Number(c)).fill(0) //IDK why this isn't working...
+                    return [i + 1, null]
+                }
+            },/*{
+                "name": "index",
+                "patetrn": /^index ([a-zA-Z]+)$/g,
+                "eval": (i, exp, s) => {
+                    //NOP for now
+                    //indecies[s] = 1 //Initialize so it's marked as truthy
+                    return [i + 1, null]
+                }
+            },*/{
+                "name": "iter",
+                "pattern": /iter ([a-zA-Z\.]+) ([0-9]+) ([0-9]+) (s[0-9]+)/g,
+                "eval": (i, exp, s, step, stop, l) => {
+                    while(symbols[s] < stop){
+                        evaluate(labels[l], lines[labels[l]])
+                        symbols[s] += Number(step)
+                    }
+
+                    return [i + 1, null]
+                }
+            },{
+                "name": "unconditional transfer",
+                "pattern": /(trn|use) (s[0-9]+)/g,
+                "eval": (i, exp, kind, l) => {
+                    return [labels[l], null]
+                }
+            },{
+                "name": "conditional transfer",
+                "pattern": /^trn ([a-zA-Z0-9\.]+) (less|gtr|equal) ([a-zA-Z0-9\.]+) (s[0-9]+)$/g,
+                "eval": (i, exp, lh, cmp, rh, l) => {
+                    const lhv = evaluate(i, lh)[1]
+                    const rhv = evaluate(i, rh)[1]
+
+                    var check = false
+
+                    if(cmp == "less"){
+                        check = lhv < rhv
+                    }
+
+                    if(cmp == "gtr"){
+                        check = lhv > rhv
+                    }
+
+                    if(cmp == "equal"){
+                        check = lhv == rhv
+                    }
+
+                    if(check){
+                        return [labels[l], null]
+                    }
+
+                    return [i + 1, null]
+                }
+            },{
+                "name": "print",
+                "pattern": /^([0-9]+) print ([a-zA-Z0-9 \.]+)$/g,
+                "eval": (i, exp, n, args) => {
+                    args.split(" ").forEach((s) => {
+                        if(s == "cr"){
+                            print("\r\n")
+                        }else if(s == "tab"){
+                            print("\t")
+                        }else{
+                            var val = evaluate(i, s)[1].toFixed(n)
+                            print(val)
+                        }
+                    })
+
+                    return [i + 1, null]
+                }
+            },{
+                "name": "expression",
+                "pattern": /^([0-9a-zA-Z\-\+\/ \.]+)$/g,
+                "eval": (i, exp, lh, s) => {
+                    //Replace symbols with their values
+                    var ts = lh.split(" ")
+                    ts = ts.map((t, j) => {
+                        if(t.match(/[0-9\+\-\/]/)){
+                            return t
+                        }
+
+                        if(t == "x"){
+                            return "*"
+                        }
+
+                        //Get symb value
+                        if(Object.hasOwn(symbols, t)){
+                            return symbols[t]
+                        }
+
+                        //Get region value
+                        const parts = t.split(".")
+
+                        if(parts.length > 1){
+                            if(Object.hasOwn(regions, parts[0])){
+                                var idxVal = evaluate(i, parts[1])[1]
+                                return regions[parts[0]][idxVal]
+                            }
+                        }
+                    })
+
+                    //Use JS evaluate
+                    return [i + 1, eval(ts.join(""))]
+                }
+            }]
+
+            //evaluate(0, "s1 1 : a")
+
+            run()
+
+            function print(msg){
+                document.getElementById("output").value += msg
+            }
+
+            function printForm(l){
+                var entry = $('<tr><td class="fmt-code"></td><td class="line-num"></td><td class="raw-code">' + l + '</td></tr>')
+
+                l.split("").forEach((c) => {
+                    entry.find(".fmt-code").append($("<span>" + c +"</span>"))
+                })                
+
+                $('#act-form').append(entry)
+            }
+
+            function printBit(c){
+                const code = c.charCodeAt(0).toString(2).split("").slice(0, 5)
+
+                $("#output-tape .char").append($("<td>" + c + "</td>"))
+                $("#output-tape .feed-hole").append($("<td><div></div></td>"))
+
+                if(code.length == 4){
+                    code.push('0')
+                }
+
+                code.forEach((b, i) => {
+                    $("#output-tape .bit-" + i).append($("<td><div class='" + (b == 1 ? "on" : "off") + "'></div></td>"))
+                })
+            }
+
+            function lgpFormat(data){
+                //Make fake formatted output
+                return data.split("\n").map((l) => {
+                    return l.replace(" ", "'") + "'"
+                }).join("\n")
+            }
+
+            function run(){
+                document.getElementById("output").value = ""
+
+                regions = {}
+                indecies = {}
+                symbols = {}
+                labels = {}
+
+                //Split
+                const rawCode = editor.getValue() //document.getElementById("script").value
+                lines = rawCode.split("\n") //This is hoisted to global
+
+                formattedData = lgpFormat(rawCode)
+
+                formattedData.split("").forEach((c) => {
+                    printBit(c)
+                })
+
+                document.getElementById("formatted-script").innerHTML = formattedData.replace(/\n/g, "<br/>")
+
+                //Build labels table, strip out labels
+                //This also marks indecies and regions
+                lines = lines.map((l, i) => {
+                    const is = /^index ([a-zA-Z\ ]+)/g.exec(l)
+
+                    if(is != null && is.length > 0){
+                        is[1].split(" ").forEach((i) => {
+                            indecies[i] = 1
+                        })
+                    }
+
+                    const dim = /^dim ([a-zA-Z]+)/g.exec(l)
+
+                    if(dim != null && dim.length > 0){
+                        regions[dim[1]] = []
+                    }
+
+                    const ts = /(s[0-9]+) (.*)/g.exec(l)
+
+                    if(ts != null && ts.length > 0){
+                        labels[ts[1]] = i
+                        return ts[2]
+                    }
+
+                    return l
+                })
+
+                //I need to mark all array accesses, change syntax so they are a single token
+                const idxPatterns = []
+
+                Object.keys(regions).forEach((r) => {
+                    Object.keys(indecies).forEach((idx) => {
+                        idxPatterns.push([r + " " + idx, r + "." + idx])
+                    })
+                })
+
+                lines = lines.map((l, i) => {
+                    idxPatterns.forEach((p) => {
+                        if(l.match(p[0])){
+                            l = l.replace(p[0], p[1])
+                        }
+                    })
+
+                    return l
+                })
+
+                var i = 0;
+
+                while(i < lines.length){
+                    const ret = evaluate(i, lines[i])
+                    i = ret[0]
+                }
+            }
+
+            function evaluate(i, s){
+                for(const p of patterns){
+                    const tokens = [...s.matchAll(p.pattern)]
+
+                    if(tokens.length > 0){
+                        console.log("(" + (i + 1) + ") " + p.name + " -> " + s)
+                        return p.eval(i, ...tokens[0])
+                    }
+                }
+
+                return [i + 1, null]
+
+                console.log("Error: " + s)
+            }
+        </script>
+    </body>
+</html>
