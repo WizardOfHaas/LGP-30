@@ -8,9 +8,10 @@
 
 ## Release Summary
 
-| Version | Date     | Summary                 |
-|---------|----------|-------------------------|
-| 1.0.0   | 20250401 | Sean's original source. |
+| Version | Date     | Summary                         |
+|---------|----------|---------------------------------|
+| 1.0.0   | 20250724 | Fork of Sean's original source. |
+| 1.0.0   | 20250724 | Sean's original source.         |
 
 ## Version 1.0.0
 
