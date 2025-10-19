@@ -11,11 +11,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - name: Install
-        run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Deploy to web server
-        run: |
-          cp ./src/public/test.html /var/www/html/index.html
-          cp -r ./dist /var/www/html/
+      - run: npm install
+        working-directory: .
+      - run: npm run build
+        working-directory: .
+      - run: cp ./src/public/test.html /var/www/html/index.html
+      - run: cp -r ./dist /var/www/html/
