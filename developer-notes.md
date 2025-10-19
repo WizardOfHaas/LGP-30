@@ -6,6 +6,25 @@
 * [Release Notes](./release-notes.md)
 * [Developer Notes](./developer-notes.md)
 
+## Build and Run
+
+```shell
+## Change to the project directory
+cd ts-lgp-30
+
+## Install tools
+npm ci
+
+## Run tests
+npm test
+
+## Build dist
+npm run build
+
+## Run webpage (should invoke browser)
+./src/public/test.html
+```
+
 ## TODO
 
 Categories are:
@@ -26,9 +45,9 @@ Newest items at top
 
 ## Suggested TS Project Layout
 
-Only the basics of this is implements so far.
+Only the basics of this is implemented so far.
 
-Suggested minimal directory layout for a TypeScript + HTML project (placed under LGP-30/ts-lgp30):
+Suggested minimal directory layout for a TypeScript + HTML project (placed under LGP-30/ts-lgp-30):
 
 * package.json
 * package-lock.json
