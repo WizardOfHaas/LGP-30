@@ -7,19 +7,14 @@
     "test": "tsx --tsconfig tsconfig.json src/index.ts",
     "build": "esbuild --bundle web-entry.ts --outdir=dist --sourcemap --platform=browser"
   },
-  "author": "",
+  "author": "Sean Haas",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@xterm/xterm": "^5.5.0",
-    "esbuild": "^0.25.1",
-    "fs": "^0.0.1-security",
-    "jquery": "^3.7.1",
-    "tsx": "^4.19.3",
-    "xterm": "^5.3.0"
-  },
+  "description": "Sean's very own LGP-30 emulator!",
   "devDependencies": {
-    "@types/jquery": "^3.5.32",
-    "@types/node": "^22.13.17"
+    "@types/jquery": "^3.5.33",
+    "@types/node": "^24.9.2",
+    "@xterm/xterm": "^5.5.0",
+    "jquery": "^3.7.1",
+    "tsx": "^4.20.6"
   }
 }
