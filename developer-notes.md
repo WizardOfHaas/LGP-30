@@ -13,6 +13,7 @@
 cd ts-lgp-30
 
 ## Install tools
+npm i
 npm ci
 
 ## Run tests
@@ -36,8 +37,14 @@ Categories are:
 
 Newest items at top
 
+Status are:
+
+* progress
+* done
+
 | Item                                    | Category | Status   | Note                  |
 |-----------------------------------------|----------|----------|-----------------------|
+| use Vite tooling                        | feature  | progress |                       |
 | compile and test with new folder layout | tidy     | done     | works as per original |
 | restructure folder layout               | tidy     | done     |                       |
 | act1 in it's own folder                 | tidy     | done     |                       |
