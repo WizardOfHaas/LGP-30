@@ -21,6 +21,9 @@
 * Using Vite as a bundler.
 * Is just a platform and config change, so only considered an edition.
 * Development to be done on a copy in ts-lgp-30-vite
+* Vite is working
+* Added favicon from advent of computing
+* Basic Vitest is working
 
 ## Version 1.0.0
 

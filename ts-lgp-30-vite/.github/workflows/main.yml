@@ -15,4 +15,5 @@ jobs:
       - run: npm ci
       - run: npm run vite:build
       - run: cp ./dist/index.html /var/www/html/index.html
+      - run: cp ./dist/favicon.ico /var/www/html/favicon.ico
       - run: cp -r ./dist/assets /var/www/html/assets

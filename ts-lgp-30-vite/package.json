@@ -8,7 +8,9 @@
     "build": "esbuild --bundle web-entry.ts --outdir=dist --sourcemap --platform=browser",
     "vite:build": "vite build",
     "vite:dev": "vite",
-    "vite:preview": "vite preview"
+    "vite:preview": "vite preview",
+    "vite:serve-dist": "http-server dist",
+    "vite:test": "vitest"
   },
   "author": "Sean Haas",
   "license": "ISC",
@@ -17,8 +19,10 @@
     "@types/jquery": "^3.5.33",
     "@types/node": "^24.9.2",
     "@xterm/xterm": "^5.5.0",
+    "http-server": "^14.1.1",
     "jquery": "^3.7.1",
     "tsx": "^4.20.6",
-    "vite": "^7.1.12"
+    "vite": "^7.1.12",
+    "vitest": "^4.0.6"
   }
 }
