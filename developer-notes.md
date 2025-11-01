@@ -6,7 +6,28 @@
 * [Release Notes](./release-notes.md)
 * [Developer Notes](./developer-notes.md)
 
-## Build and Run
+## Build and Run (Vite)
+
+```shell
+## Change to the project directory
+cd ts-lgp-30-vite
+
+## Install tools
+npm i
+npm ci
+
+## Run tests
+npm test
+
+## Build dist
+npm run vite:build
+
+## Run webpage
+npm run vite:dev
+# o + enter to open page in browser
+```
+
+## Build and Run (Sean)
 
 ```shell
 ## Change to the project directory
