@@ -71,15 +71,17 @@ Status are:
 
 * progress
 * done
+* todo
 
-| Item                                    | Category | Status   | Note                        |
-|-----------------------------------------|----------|----------|-----------------------------|
-| write vitest tests                      | feature  | progress | index.test.ts underway      |
-| use Vite tooling                        | feature  | done     | vite and vitest works       |
-| compile and test with new folder layout | tidy     | done     | works as per original       |
-| restructure folder layout               | tidy     | done     |                             |
-| act1 in it's own folder                 | tidy     | done     |                             |
-| original js version in its own folder   | tidy     | done     |                             |
+| Item                                    | Category | Status   | Note                               |
+|-----------------------------------------|----------|----------|------------------------------------|
+| write pure html5 version                | wish     | todo     | remove all css and js dependencies |
+| write vitest tests                      | feature  | progress | index.test.ts comlete              |
+| use Vite tooling                        | feature  | done     | vite and vitest works              |
+| compile and test with new folder layout | tidy     | done     | works as per original              |
+| restructure folder layout               | tidy     | done     |                                    |
+| act1 in it's own folder                 | tidy     | done     |                                    |
+| original js version in its own folder   | tidy     | done     |                                    |
 
 ## TS Project Layout (Vite)
 
