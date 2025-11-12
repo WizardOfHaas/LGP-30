@@ -124,7 +124,11 @@ lgp30.state.mode = "NORMAL"
 
 //console.log(lgp30.state.memory.get("10", "00"))
 
-async function manualScript(s: string){
+/**
+ * Make this function available to the test suite
+ * @param s the script to execute
+ */
+export async function manualScript(s: string){
     const ins = s.split("\n")
     console.log(ins)
 
