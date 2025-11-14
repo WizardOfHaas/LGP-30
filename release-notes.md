@@ -10,12 +10,20 @@
 
 | Version | Date     | Summary                          |
 |---------|----------|----------------------------------|
+| 1.1.0   | 20251114 | Pure HTML5 version               |
 | 1.0.1   | 20251112 | Merged Vite version to ts-lgp-30 |
 | 1.0.1   | 20251101 | Vite version.                    |
 | 1.0.0   | 20251031 | Tidy up node dependencies.       |
 | 1.0.0   | 20251019 | Tidy project and folder layout.  |
 | 1.0.0   | 20250920 | Fork of Sean's original source.  |
 | 1.0.0   | 20250724 | Sean's original source.          |
+
+## Version 1.1.0
+
+* Pure HTML5 version
+  * eliminate jquery
+  * eliminate xterm
+  * eliminate bootstrap
 
 ## Version 1.0.1
 
