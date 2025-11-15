@@ -10,6 +10,8 @@
   "scripts": {
     "test": "tsx --tsconfig tsconfig.json src/index.ts",
     "build": "esbuild --bundle web-entry.ts --outdir=dist --sourcemap --platform=browser",
+		"cf:dev": "wrangler dev",
+		"cf:deploy": "vite build && wrangler deploy",
     "vite:build": "vite build",
     "vite:dev": "vite",
     "vite:preview": "vite preview",
@@ -27,6 +29,7 @@
     "jquery": "^3.7.1",
     "tsx": "^4.20.6",
     "vite": "^7.1.12",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.6",
+		"wrangler": "^4.47.0"
   }
 }

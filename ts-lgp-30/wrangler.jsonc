@@ -1,0 +1,16 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "lgp30",
+	"compatibility_date": "2025-11-13",
+	"assets": {
+		// The path to the directory containing the `index.html` file to be served at `/`
+		"directory": "./dist"
+	},
+	"observability": {
+		"enabled": true
+	}
+}

@@ -10,7 +10,7 @@
 
 | Version | Date     | Summary                          |
 |---------|----------|----------------------------------|
-| 1.1.0   | 20251114 | Pure HTML5 version               |
+| 1.1.0   | 20251114 | Working on pure HTML5 version    |
 | 1.0.1   | 20251112 | Merged Vite version to ts-lgp-30 |
 | 1.0.1   | 20251101 | Vite version.                    |
 | 1.0.0   | 20251031 | Tidy up node dependencies.       |
@@ -20,10 +20,11 @@
 
 ## Version 1.1.0
 
-* Pure HTML5 version
+* Working on pure HTML5 version
   * eliminate jquery
   * eliminate xterm
   * eliminate bootstrap
+* Deploy "dev" version to cloudflare
 
 ## Version 1.0.1
 
