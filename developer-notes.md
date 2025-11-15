@@ -40,7 +40,8 @@ npm run vite:test
 
 ```shell
 npm run cf:deploy
-# navigate to https://lgp30.marccand.workers.dev/
+# navigate to https://lgp30.marccand.workers.dev/ this is Sean's original version
+# navigate to https://lgp30.marccand.workers.dev/proto for the html5 version
 ```
 
 ## Build and Run (Sean)
