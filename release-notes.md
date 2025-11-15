@@ -25,6 +25,9 @@
   * eliminate xterm
   * eliminate bootstrap
 * Deploy "dev" version to cloudflare
+* Added eslint
+* Added unit test for RegisterC before fixing issues raised by lint.
+* Added unit test for util before fixing issues raised by lint.
 
 ## Version 1.0.1
 
