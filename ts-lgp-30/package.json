@@ -10,6 +10,7 @@
   "scripts": {
     "test": "tsx --tsconfig tsconfig.json src/index.ts",
     "build": "esbuild --bundle web-entry.ts --outdir=dist --sourcemap --platform=browser",
+    "lint": "eslint",
     "cf:dev": "wrangler dev",
     "cf:deploy": "vite build && wrangler deploy",
     "vite:build": "vite build",
@@ -22,12 +23,17 @@
   "license": "ISC",
   "description": "Sean's very own LGP-30 emulator!",
   "devDependencies": {
+    "@eslint/css": "^0.14.1",
+    "@eslint/markdown": "^7.5.1",
     "@types/jquery": "^3.5.33",
     "@types/node": "^24.10.1",
     "@xterm/xterm": "^5.5.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
     "http-server": "^14.1.1",
     "jquery": "^3.7.1",
     "tsx": "^4.20.6",
+    "typescript-eslint": "^8.46.4",
     "vite": "^7.2.2",
     "vitest": "^4.0.6",
     "wrangler": "^4.47.0"
