@@ -77,11 +77,11 @@ $(window).bind('load', async () => {
     })
 
     $("#upload").on("click", async (e) => {
-        var input = document.createElement('input')
+        const input = document.createElement('input')
         input.type = 'file'
 
         input.addEventListener("change", function(){
-            var reader = new FileReader();
+            const reader = new FileReader();
 
             reader.onload = async (e) => {
                 lgp30.toRxBuffer(reader.result as string)
@@ -96,11 +96,11 @@ $(window).bind('load', async () => {
     })
 
     $("#load-image").on("click", async (e) => {
-        var input = document.createElement('input')
+        const input = document.createElement('input')
         input.type = 'file'
 
         input.addEventListener("change", function(){
-            var reader = new FileReader();
+            const reader = new FileReader();
 
             reader.onload = async (e) => {
                 lgp30.loadMemoryImage(reader.result as string)
