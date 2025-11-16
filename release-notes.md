@@ -28,7 +28,8 @@
 * Added eslint
 * Added unit test for RegisterC before fixing issues raised by lint.
 * Added unit test for util before fixing issues raised by lint.
-* Added proto.html for html5 development
+* Added proto.html, main.css, main.ts for independant html5 development.
+* Fixed issues raised by lighthouse.
 
 ## Version 1.0.1
 

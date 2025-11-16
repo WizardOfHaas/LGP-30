@@ -5,6 +5,9 @@ import css from "@eslint/css";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
+  {
+    ignores: ["dist/**"], // exclude everything under dist
+  },
   { files: ["**/*.{js,mjs,cjs,ts,mts,cts}"], languageOptions: { globals: globals.browser } },
   tseslint.configs.recommended,
   { files: ["**/*.md"], plugins: { markdown }, language: "markdown/gfm" },
