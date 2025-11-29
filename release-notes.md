@@ -10,12 +10,26 @@
 
 | Version | Date     | Summary                          |
 |---------|----------|----------------------------------|
+| 1.1.0   | 20251114 | Working on pure HTML5 version    |
 | 1.0.1   | 20251112 | Merged Vite version to ts-lgp-30 |
 | 1.0.1   | 20251101 | Vite version.                    |
 | 1.0.0   | 20251031 | Tidy up node dependencies.       |
 | 1.0.0   | 20251019 | Tidy project and folder layout.  |
 | 1.0.0   | 20250920 | Fork of Sean's original source.  |
 | 1.0.0   | 20250724 | Sean's original source.          |
+
+## Version 1.1.0
+
+* Working on pure HTML5 version
+  * eliminate jquery
+  * eliminate xterm
+  * eliminate bootstrap
+* Deploy "dev" version to cloudflare
+* Added eslint
+* Added unit test for RegisterC before fixing issues raised by lint.
+* Added unit test for util before fixing issues raised by lint.
+* Added proto.html, main.css, main.ts for independant html5 development.
+* Fixed issues raised by lighthouse.
 
 ## Version 1.0.1
 
