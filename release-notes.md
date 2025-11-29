@@ -4,12 +4,13 @@
 
 * [Read Me](./README.md)
 * [Release Notes](./release-notes.md)
-* [Developer Notes](./developer-notes.md)
+* [Developer Notes](./ts-lgp-30/developer-notes.md)
 
 ## Release Summary
 
 | Version | Date     | Summary                          |
 |---------|----------|----------------------------------|
+| 1.1.0   | 20251130 | Working ts-lgp-30-html5 project  |
 | 1.1.0   | 20251114 | Working on pure HTML5 version    |
 | 1.0.1   | 20251112 | Merged Vite version to ts-lgp-30 |
 | 1.0.1   | 20251101 | Vite version.                    |
@@ -20,7 +21,10 @@
 
 ## Version 1.1.0
 
-* Working on pure HTML5 version
+* 20251130 Working ts-lgp-30-html5 project
+  * added ts-lgp-30-html
+
+* 20251114 Working on pure HTML5 version
   * eliminate jquery
   * eliminate xterm
   * eliminate bootstrap

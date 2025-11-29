@@ -1,0 +1,19 @@
+name: deploy-web
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-emulator:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm i
+      - run: npm ci
+      - run: npm run vite:build
+      - run: cp ./dist/index.html /var/www/html/index.html
+      - run: cp ./dist/favicon.ico /var/www/html/favicon.ico
+      - run: cp -r ./dist/assets /var/www/html/assets
