@@ -12,18 +12,6 @@ import { bitsToChar, charMapLC } from "./chars"
 window.jQuery = window.$ = $
 window.LGP30 = LGP30
 
-/*
-assembleLine(lgp30.state.memory, "0000 u 0002")
-assembleLine(lgp30.state.memory, "0002 b 0001")
-assembleLine(lgp30.state.memory, "0003 a 0010")
-assembleLine(lgp30.state.memory, "0004 h 0001")
-assembleLine(lgp30.state.memory, "0005 s 0009")
-assembleLine(lgp30.state.memory, "0006 t 0002")
-
-assembleLine(lgp30.state.memory, "0009 5")
-assembleLine(lgp30.state.memory, "0010 1")
-*/
-
 $(window).bind('load', async () => {
     const term = new Terminal({cols: 40, rows: 25})
     term.open(document.getElementById('terminal'));

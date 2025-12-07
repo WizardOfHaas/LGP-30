@@ -10,7 +10,7 @@
 
 ```shell
 ## Change to the project directory
-cd ts-lgp-30
+cd ts-lgp-30-html5
 
 ## Install tools
 npm i
@@ -95,7 +95,7 @@ Status are:
 ## TS Project Layout
 
 ```text
-ts-lgp-30/
+ts-lgp-30-html5/
 ├── .github/
 │   └── workflows/
 │       └── main.yml
