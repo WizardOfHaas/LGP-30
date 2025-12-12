@@ -1,4 +1,3 @@
-import { assembleLine } from "./asm"
 import { Flexowriter } from "./flexo"
 import { LGP30 } from "./lgp30"
 import { decodeOrder } from "./orders/orderMap"
@@ -16,18 +15,6 @@ const flexo = new Flexowriter({
         return await lgp30.rx(b)
     }
 })
-
-/*
-assembleLine(lgp30.state.memory, "0000 u 0002")
-assembleLine(lgp30.state.memory, "0002 b 0001")
-assembleLine(lgp30.state.memory, "0003 a 0010")
-assembleLine(lgp30.state.memory, "0004 h 0001")
-assembleLine(lgp30.state.memory, "0005 s 0009")
-assembleLine(lgp30.state.memory, "0006 t 0002")
-
-assembleLine(lgp30.state.memory, "0009 5")
-assembleLine(lgp30.state.memory, "0010 1")
-*/
 
 /*
 const asm = `0000 p 0000 #Setup input

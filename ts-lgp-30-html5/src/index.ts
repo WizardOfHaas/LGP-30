@@ -1,4 +1,3 @@
-import { assembleLine } from "./asm"
 import { Flexowriter } from "./flexo"
 import { LGP30 } from "./lgp30"
 import { decodeOrder } from "./orders/orderMap"
