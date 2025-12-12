@@ -1,5 +1,5 @@
 import { State } from "./state"
-import { decodeOrder, orderIdMap } from "./orders/orderMap"
+import { orderIdMap } from "./orders/orderMap"
 import { binToDec, delay, dumpRegs } from "./util"
 import { BitArray } from "./types"
 import { charToBits } from "./chars"
