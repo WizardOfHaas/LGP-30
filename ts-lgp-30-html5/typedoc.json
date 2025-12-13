@@ -1,0 +1,14 @@
+{
+    "entryPoints": [
+        "src/**/*.ts"
+    ],
+    "out": "docs",
+    "name": "LPG30 Project",
+    "tsconfig": "tsconfig.json",
+    "excludePrivate": true,
+    "excludeExternals": true,
+    "theme": "default",
+    "exclude": [
+        "src/**/*.test.ts"
+    ]
+}

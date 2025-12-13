@@ -1,8 +1,7 @@
 import { Flexowriter } from "./flexo"
 import { LGP30 } from "./lgp30"
 import { decodeOrder } from "./orders/orderMap"
-import { decToBin, dumpRegs, halfToHex, hexToBin } from "./util"
-import fs from "fs"
+import { decToBin, dumpRegs, halfToHex } from "./util"
 
 const lgp30 = new LGP30({
     onTx: async (b) => {

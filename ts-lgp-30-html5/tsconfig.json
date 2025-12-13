@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "strict": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "declaration": true,
+    "module": "ES2022",
+    "baseUrl": "src",
+    "outDir": "dist/",
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
+    "jsx": "react",
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "**/*.test.ts"
+  ]
+}
