@@ -2,7 +2,6 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { LGP30 } from './lgp30'
 import { Flexowriter } from './flexo'
-import { decodeOrder } from './orders/orderMap'
 import { manualScript } from './index'
 
 describe('LGP30 Emulator', () => {
@@ -79,49 +78,4 @@ describe('LGP30 Emulator', () => {
 // })
   })
 
-
-
-// FAIL  src/index.test.ts > LGP30 Emulator > memory sector access
-// AssertionError: expected [ +0, +0, +0, +0, +0, +0, +0, …(25) ] to be '1234567890' // Object.is equality
-// - Expected:
-// "1234567890"
-// + Received:
-// [
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   0,
-//   "1",
-//   "2",
-//   "3",
-//   "4",
-//   "5",
-//   "6",
-//   "7",
-//   "8",
-//   "9",
-//   "0",
-// ]
-//   test('memory sector access', () => {
-//     lgp30.state.memory.set('3w', '00', '1234567890')
-//     expect(lgp30.state.memory.get('3w', '00')).toBe('1234567890')
-//   })
 })

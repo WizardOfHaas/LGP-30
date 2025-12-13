@@ -3,18 +3,23 @@ import { LGP30 } from "./lgp30"
 import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, displayRegs } from "./interface/web"
 
 import $ from "jquery"
-import { decodeOrder } from "./orders/orderMap"
-import { binToDec, dumpRegs } from "./util"
-import { Flexowriter } from "./flexo"
 import { Terminal } from "@xterm/xterm"
-import { bitsToChar, charMapLC } from "./chars"
+import { bitsToChar } from "./chars"
 
-window.jQuery = window.$ = $
+(window as any).jQuery = (window as any).$ = $
 window.LGP30 = LGP30
 
 $(window).bind('load', async () => {
     const term = new Terminal({cols: 40, rows: 25})
-    term.open(document.getElementById('terminal'));
+    // Check if the element was successfully found (i.e., it is NOT null)
+    const terminalElement = document.getElementById('terminal');
+    if (terminalElement) {
+        term.open(terminalElement);
+    } else {
+        const msg = "The element with ID 'terminal' was not found in the DOM."
+        console.error(msg);
+        throw new Error(msg)
+    }
 
     const lgp30 = new LGP30({
         onStep: () => {
@@ -51,13 +56,18 @@ $(window).bind('load', async () => {
         $("#dev-scope, #mem-holder, #asm-holder, #logo").toggleClass("hidden");
     })
 
-    $("#asm").val().split("\n").forEach((l) => {
+    
+    const rawVal = $("#asm").val() ?? ""
+    const asmVal = rawVal as string
+    asmVal.split("\n").forEach((l) => {
         assembleLine(lgp30.state.memory, l)
     })
 
     $("#assemble").on("click", () => {
         lgp30.state.memory.clear()
-        $("#asm").val().split("\n").forEach((l) => {
+        const rawVal = $("#asm").val() ?? ""
+        const asmVal = rawVal as string
+        asmVal.split("\n").forEach((l) => {
             assembleLine(lgp30.state.memory, l)
         })
 
@@ -107,27 +117,3 @@ $(window).bind('load', async () => {
     displayMem(lgp30.state)
     displayMem(lgp30.state)
 })
-
-async function manualScript(s: string){
-    const ins = s.split("\n")
-
-    lgp30.state.mode = "MANUAL"
-
-    for(const i in ins){
-        const [sto, ord] = ins[i].split("'")
-
-            await flexo.tx(sto) //Send over storage part
-            //console.log(sto, '->', decodeOrder(lgp30.state.registers.a.get()))
-
-            lgp30.fillIns() //Setup to run sto
-
-        if(ord && ord.length > 0){ //We have a store order, and an instruction order
-
-            await flexo.tx(ord) //Load in next part
-            //console.log(ord, '->', decodeOrder(lgp30.state.registers.a.get()))
-            //dumpRegs(lgp30.state)
-        }
-
-        await lgp30.step() //Run the ins
-    }
-}

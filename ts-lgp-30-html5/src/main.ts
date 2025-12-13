@@ -3,15 +3,24 @@ import { LGP30 } from "./lgp30"
 import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, displayRegs } from "./interface/web"
 
 import $ from "jquery"
+
 import { Terminal } from "@xterm/xterm"
 import { bitsToChar } from "./chars"
 
-window.jQuery = window.$ = $
+(window as any).jQuery = (window as any).$ = $
 window.LGP30 = LGP30
 
 $(window).bind('load', async () => {
     const term = new Terminal({ cols: 40, rows: 25 })
-    term.open(document.getElementById('terminal'));
+    // Check if the element was successfully found (i.e., it is NOT null)
+    const terminalElement = document.getElementById('terminal');
+    if (terminalElement) {
+        term.open(terminalElement);
+    } else {
+        const msg = "The element with ID 'terminal' was not found in the DOM."
+        console.error(msg);
+        throw new Error(msg)
+    }
 
     const lgp30 = new LGP30({
         onStep: () => {
@@ -48,13 +57,17 @@ $(window).bind('load', async () => {
         $("#dev-scope, #mem-holder, #asm-holder, #logo").toggleClass("hidden");
     })
 
-    $("#asm").val().split("\n").forEach((l) => {
+    const rawVal = $("#asm").val() ?? ""
+    const asmVal = rawVal as string
+    asmVal.split("\n").forEach((l) => {
         assembleLine(lgp30.state.memory, l)
     })
 
     $("#assemble").on("click", () => {
         lgp30.state.memory.clear()
-        $("#asm").val().split("\n").forEach((l) => {
+        const rawVal = $("#asm").val() ?? ""
+        const asmVal = rawVal as string
+        asmVal.split("\n").forEach((l) => {
             assembleLine(lgp30.state.memory, l)
         })
 

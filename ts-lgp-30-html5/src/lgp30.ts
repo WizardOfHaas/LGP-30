@@ -9,11 +9,19 @@ type TConfig = {
     onTx?: (b: BitArray) => Promise<void>
 }
 
+/**
+ * Represents an LGP30 computer. Excluding the Flexowriter which is a separate I/O device.
+ * @public
+ */
 export class LGP30{
     state: State
     
     config: TConfig
 
+    /**
+     * Create and initialise a new instance of an LGP30
+     * @param config the object that hooks onStep and onTx methods
+     */
     constructor(config?: TConfig){
         this.state = new State()
 

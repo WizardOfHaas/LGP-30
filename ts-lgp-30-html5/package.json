@@ -17,7 +17,10 @@
     "vite:dev": "vite",
     "vite:preview": "vite preview",
     "vite:serve-dist": "http-server dist",
-    "vite:test": "vitest"
+    "vite:test": "vitest",
+    "docs:clean": "rm -rf docs",
+    "docs": "typedoc",
+    "prepublish": "vite build && typedoc"
   },
   "author": "Sean Haas",
   "license": "ISC",
@@ -33,6 +36,7 @@
     "http-server": "^14.1.1",
     "jquery": "^3.7.1",
     "tsx": "^4.20.6",
+    "typedoc": "^0.28.15",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.2",
     "vitest": "^4.0.6",
