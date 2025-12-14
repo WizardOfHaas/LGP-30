@@ -1,8 +1,9 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
-            "name": "Launch via NPM",
+            "name": "run asm.test.ts",
             "request": "launch",
             "runtimeArgs": [
                 "run",

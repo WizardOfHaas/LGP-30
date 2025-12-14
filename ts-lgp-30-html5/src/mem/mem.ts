@@ -7,14 +7,14 @@ import { hexToDec } from "../util"
  *  Access is exposed in terms of track and sector numbers, not integer addresses
  */
 
-export class Memory{
+export class Memory {
     data: Array<BitArray>
-    locations : number = 6363 //Wastes space, but makes TTSS addressing easier
+    locations: number = 6363 //Wastes space, but makes TTSS addressing easier
 
     /**
      * Construct and initialise an instance of Memory
      */
-    constructor(){
+    constructor() {
         //Initiate memory
         this.clear()
     }
@@ -30,16 +30,15 @@ export class Memory{
         return this.data[i].slice(start, end)
     }
 
-    set(track: TrackNumber, sector: SectorNumber, val: BitArray, start?: number){
+    set(track: TrackNumber, sector: SectorNumber, val: BitArray, start?: number) {
+        // console.debug(`track: ${track} sector: ${sector} val: ${val} start: ${start}`)
         const i = this.composeIndex(track, sector)
 
         //I need to do the copy thing here
         const w = this.data[i].slice()
 
         w.splice(
-            typeof start !== "undefined" ? start : 32 - val.length, 
-            val.length,
-            ...val
+            typeof start !== "undefined" ? start : 32 - val.length, val.length, ...val
         )
 
         this.data[i] = w
