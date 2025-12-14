@@ -1,5 +1,5 @@
 import type { BitArray, TrackNumber, SectorNumber } from "../types"
-import { binToDec, hexToDec } from "../util"
+import { hexToDec } from "../util"
 
 /**
  * Memory emulation class
@@ -11,6 +11,9 @@ export class Memory{
     data: Array<BitArray>
     locations : number = 6363 //Wastes space, but makes TTSS addressing easier
 
+    /**
+     * Construct and initialise an instance of Memory
+     */
     constructor(){
         //Initiate memory
         this.clear()
@@ -24,7 +27,6 @@ export class Memory{
 
     get(track: TrackNumber, sector: SectorNumber, start = 0, end = 32){
         const i = this.composeIndex(track, sector)
-        
         return this.data[i].slice(start, end)
     }
 

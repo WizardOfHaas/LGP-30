@@ -34,6 +34,10 @@ npm run vite:serve-dist
 ## Test using vitest
 npm run vite:test
 # a work in progress ...
+
+# Create documentation
+npm run docs
+# open docs/index.html in your browser
 ```
 
 ## Deploy to cloudflare (Development Phase Only)

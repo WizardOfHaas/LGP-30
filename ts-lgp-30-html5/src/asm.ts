@@ -3,18 +3,19 @@ import { Memory } from "./mem/mem";
 import { orderNameMap } from "./orders/orderMap";
 import { decToHex, hexToBin } from "./util";
 
-/**
- * Assembles code in the format:
- *  TTSS Ord TTSS
- *  TTSS Const
- * 
- * Places results into memory class provided
- */
-
 //I want to change this to be more... dumb
 //It should just take an address followed by a hexidecimal value to shift into that address
 //This will be closer to how LGP-30 programming sheets are laid out
 
+/**
+ * Assemble a line of source code into memory using the format:
+ *  TTSS Ord TTSS
+ *  TTSS Const
+ *
+ * Place the result into the memory object provided.
+ * @param memory The memory that takes the object code.
+ * @param l The line of source code to assemble.
+ */
 export function assembleLine(memory: Memory, l) {
     const insTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([a-z]+)([0-9fgjkqwl]{2})([0-9fgjkqwl]{2})/g)]
     const constTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([0-9fgjkqwl]+)/g)]
