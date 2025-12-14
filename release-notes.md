@@ -10,6 +10,7 @@
 
 | Version | Date     | Summary                                 |
 |---------|----------|-----------------------------------------|
+| 1.1.1   | 20251214 | Fix issues with asm                     |
 | 1.1.0   | 20251212 | Isolating LGP30 class with its own test |
 | 1.1.0   | 20251130 | Working ts-lgp-30-html5 project         |
 | 1.1.0   | 20251114 | Working on pure HTML5 version           |
@@ -19,6 +20,16 @@
 | 1.0.0   | 20251019 | Tidy project and folder layout.         |
 | 1.0.0   | 20250920 | Fork of Sean's original source.         |
 | 1.0.0   | 20250724 | Sean's original source.                 |
+
+## Version 1.1.1
+
+Fix issues with asm
+
+assembleLine breaks when you change the `l` parameter type from `any` to `string`
+The root cause is that the type of Track and Sector is expected to be 2 digit `hexadecimal` strings.
+The better approach is that Track and Sector are `number` and provide conversion methods to encode and decode the `hex` string to the numeric type.
+Track and Sector touch lots of places in the codebase, hopefully most of it is transparent.
+Unit test will be written to cover the refactor needed to address this issue.
 
 ## Version 1.1.0
 
