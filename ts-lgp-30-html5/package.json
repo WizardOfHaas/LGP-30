@@ -20,7 +20,7 @@
     "vite:test": "vitest",
     "docs:clean": "rm -rf docs",
     "docs": "typedoc",
-    "prepublish": "vite build && typedoc"
+    "xprepublish": "vite build && typedoc"
   },
   "author": "Sean Haas",
   "license": "ISC",

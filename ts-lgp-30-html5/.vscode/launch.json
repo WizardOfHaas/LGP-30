@@ -15,6 +15,20 @@
                 "<node_internals>/**"
             ],
             "type": "node"
+        },
+        {
+            "name": "run mem/mem.test.ts",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "vite:test",
+                "src/mem/mem.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         }
     ]
 }
