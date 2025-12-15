@@ -1,13 +1,28 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
-            "name": "Launch via NPM",
+            "name": "run asm.test.ts",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "vite:test",
                 "src/asm.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "run mem/mem.test.ts",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "vite:test",
+                "src/mem/mem.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [
