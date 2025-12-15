@@ -58,6 +58,12 @@ export function assembleLine(memory: Memory, l: string) {
         const val = hexToBin(hexConstant, 32)
         memory.set(hexTrack, hexSector, val)
     }
+
+    // empty lines are valid, ignore them.
+    if (!l || l.trim().length === 0){
+        return
+    }
+
     const insTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([a-z]+) ([0-9fgjkqwl]{2})([0-9fgjkqwl]{2})/g)]
     const constTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([0-9fgjkqwl]+)/g)]
     //This is an instruction
@@ -69,9 +75,8 @@ export function assembleLine(memory: Memory, l: string) {
         assembleConstant(memory, constTokens[0])
         return
     }
-    throw new Error("Invalid source / tokens")
+    throw new Error(`Invalid source / tokens while assembling ${l}`)
 }
-
 
 // export function _assembleLine(memory: Memory, l) {
 //     const parts = l.split(" ") //Break into parts
