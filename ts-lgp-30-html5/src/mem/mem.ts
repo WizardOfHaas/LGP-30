@@ -48,14 +48,13 @@ export class Memory {
     }
 
     /**
-     * Store data at a specific tract and sector
+     * Store data at a specific track and sector
      * @param track The track number, expected as a hexadecimal string (TrackNumber).
      * @param sector The sector number, expected as a hexadecimal string (SectorNumber).
-     * @param val 
+     * @param val The value to store
      * @param start 
      */
     set(track: TrackNumber, sector: SectorNumber, val: BitArray, start?: number) {
-        console.debug(`track: ${track} sector: ${sector} val: ${val} start: ${start}`)
         const i = this.composeIndex(track, sector)
 
         //I need to do the copy thing here

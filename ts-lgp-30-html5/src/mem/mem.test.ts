@@ -3,7 +3,7 @@
  */
 import { describe, test, beforeEach, expect } from 'vitest'
 import { Memory } from './mem'
-import { BitArray } from '../types'
+import { BitArray, SectorNumber, TrackNumber } from '../types'
 
 describe("test the mem class", () => {
     let mem: Memory
@@ -12,17 +12,28 @@ describe("test the mem class", () => {
         mem = new Memory()
     })
 
-    test("test the first memory location is clear", () => {
-        const expected = Array<BitArray>(1).fill(Array(32).fill(0))
+    test("test that the first memory location is clear", () => {
         const val = mem.get('00', '00')
-        expect(val).toEqual(expected)
+        const zeros: BitArray = new Array(32).fill(0);
+        expect(val).toEqual(zeros)
     })
 
-    // test("test the first memory location is clear", () => {
-    //     const expected = Array<BitArray>(1).fill(Array(32).fill(0))
-    //     const data = Array<BitArray>(1).fill(Array(32).fill(0))
-    //     mem.set('00', '09', data)
-    //     const val = mem.get('00', '09')
-    //     expect(val).toEqual(expected)
-    // })
+    test("test that mem set and get return expected values", () => {
+        // expect memory at '0009' to be empty
+        const track: TrackNumber = '00'
+        const sector: SectorNumber = '09'
+        const val = mem.get(track, sector)
+        const zeros: BitArray = new Array(32).fill(0);
+        expect(val).toEqual(zeros)
+        // set memory at '0009' to new value
+        const ones: BitArray = new Array(32).fill(1);
+        mem.set(track, sector, ones)
+        // read it back and expect to see the new value
+        const val2 = mem.get(track, sector)
+        expect(val2).toEqual(ones)
+        // clear the memory and expect to see zeros
+        mem.clear()
+        const val3 = mem.get(track, sector)
+        expect(val3).toEqual(zeros)
+    })
 })

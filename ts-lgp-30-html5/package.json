@@ -18,6 +18,7 @@
     "vite:preview": "vite preview",
     "vite:serve-dist": "http-server dist",
     "vite:test": "vitest",
+    "vite:coverage": "vitest run --coverage",
     "docs:clean": "rm -rf docs",
     "docs": "typedoc",
     "xprepublish": "vite build && typedoc"
@@ -30,6 +31,7 @@
     "@eslint/markdown": "^7.5.1",
     "@types/jquery": "^3.5.33",
     "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.0.6",
     "@xterm/xterm": "^5.5.0",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
