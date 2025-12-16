@@ -89,7 +89,7 @@ export function bindKeybd(lgp30: LGP30){
             key = vals[0]
         }
 
-        console.log(key)
+        // console.debug(key)
     })
 }
 

@@ -138,9 +138,9 @@ export const charMapLC = {
     "x": [1, 0, 0, 1, 1, 1]
 }
 
-export function charToBits(c: string){
+export function charToBits(c: string): BitArray{
     if(c in charMapLC){
-        //console.log(c, charMapLC[c])
+        // console.debug(c, charMapLC[c])
         return charMapLC[c]
     }else{
         return [0, 0, 0, 0, 0, 0]
