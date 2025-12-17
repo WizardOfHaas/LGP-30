@@ -2,7 +2,7 @@ import { LGP30 } from "../lgp30"
 import { decodeOrder } from "../orders/orderMap"
 import { State } from "../state"
 import { BitArray, ExecMode } from "../types"
-import { addrToHex, binToDec, halfToHex, unpackNum } from "../util"
+import { addrToHex, binToDec, unpackNum } from "../util"
 
 export function displayRegs(state: State){
     $("#c").text(state.registers.c.get().join(""))
@@ -121,6 +121,9 @@ export function bindOpButtons(lgp30: LGP30){
     })
 }
 
-function bitsToSpans(b: BitArray){
-    return b.map((b, i) => ("<span class='bit-" + i + " bit-" + (b == 0 ? "off" : "on") + "'></span>")).join("")
+function bitsToSpans(b: BitArray): string {
+    // console.debug('b', b)
+    const str = b.map((b, i) => ("<span class='bit-" + i + " bit-" + (b == 0 ? "off" : "on") + "'></span>")).join("")
+    // console.debug(str)
+    return str
 }
