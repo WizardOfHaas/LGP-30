@@ -16,10 +16,8 @@
 </head>
 
 <body>
-
     <div class="grid-container">
         <div class="grid-item">
-
             <table id="run-btns">
                 <tr>
                     <th colspan="3">
@@ -39,7 +37,6 @@
                     <td>
                         <button class="btn btn-block toggle" id="manual">MANUAL<br>INPUT</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block toggle" id="stand-by">STAND<br>BY</button>
                     </td>
@@ -59,62 +56,132 @@
                     <td>
                         <button class="btn btn-block" id="start">START</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="clear-counter">CLEAR<br>COUNTER</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="fill-ins">FILL<br>INSTRUCTION</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="ex-ins">EXECUTE<br>INSTRUCTION</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="power-on">POWER<br>ON</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="power-off">POWER<br>OFF</button>
                     </td>
                 </tr>
-
                 <tr>
                     <td>
                         <button class="btn btn-block" id="break-32">BREAK<br>POINT<br>32</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="break-16">BREAK<br>POINT<br>16</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="break-8">BREAK<br>POINT<br>8</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="break-4">BREAK<br>POINT<br>4</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="input-6b">6 BIT<br>INPUT</button>
                     </td>
-
                     <td>
                         <button class="btn btn-block" id="xfer-ctrl">TRANSFER<br>CONTROL</button>
                     </td>
                 </tr>
             </table>
-
         </div>
 
         <div class="grid-item">
-
             <table id="scope">
+                <tr id="counter">
+                    <td colspan="18"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 <tr>
-                    <td id="c-bin"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>O</td>
+                    <td>O</td>
+                    <td>O</td>
+                    <td>O</td>
+                    <td></td>
+                    <td></td>
+                    <td>T</td>
+                    <td>T</td>
+                    <td>T</td>
+                    <td>T</td>
+                    <td>T</td>
+                    <td>T</td>
+                    <td>S</td>
+                    <td>S</td>
+                    <td>S</td>
+                    <td>S</td>
+                    <td>S</td>
+                    <td>S</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr id="counter">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr id="instruction">
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -148,7 +215,14 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td id="r-bin"></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -156,6 +230,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td>1</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -163,6 +238,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td>2</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -170,19 +246,44 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>3</td>
                 </tr>
                 <tr>
-                    <td id="a-bin"></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>7</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>3</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>1</td>
+                </tr>
+                <tr id="accumulator">
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -215,91 +316,9 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <!-- <tr>
-                    <td></td>
-                    <td class="bit-markers">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>ORDER</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>TRACK</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>SECTOR</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td id="r-bin"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td class="bit-markers">
-                        <span></span>
-                        <span>1</span>
-                        <span></span>
-                        <span></span>
-                        <span>4</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>8</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>12</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>16</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>20</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>24</span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span>28</span>
-                        <span></span>
-                        <span>30</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td id="a-bin"></td>
-                </tr> -->
             </table>
-
-        </div>
-    </div>
-
+        </div> <!-- grid-item -->
+    </div> <!-- grid-container -->
 
     <div class="container-md">
         <div class="row">

@@ -7,3 +7,4 @@ dist/
 ## Ignore documentation and test coverage
 docs/
 coverage/
+public/btn-tbl.html

@@ -1,3 +1,7 @@
+root {
+    --font-size-small: 0.75rem;
+}
+
 *,
 *::before,
 *::after {
@@ -13,7 +17,6 @@ html {
     border: 1px blue solid;
     border-collapse: collapse;
 } */
-
 
 body {
     font-size: 0.75rem;
@@ -42,16 +45,19 @@ td {
     text-align: left;
 }
 
-table{
+table {
     border-collapse: collapse;
-
+    width: 100%;
+    height: var(--font-size-small);
 }
 
-
+.grid-btn:hover {
+    background-color: #0056b3;
+}
 
 /* Target buttons inside table data cells */
 td button {
-    /* width: 100%; */
+    width: 100%;
     /* Makes buttons fill the width of the cell */
     /* box-sizing: border-box; */
     /* Ensures padding doesn't break the width */
@@ -69,14 +75,16 @@ table {
     /* width: 100%; */
 }
 
-
-.bit-on, .bit-off {
+.bit-on,
+.bit-off {
     width: 14px;
     height: 15px;
     background: black;
 }
 
-#a-bin,#r-bin,#c-bin {
+#a-bin,
+#r-bin,
+#c-bin {
     border: 1px solid black;
 }
 
@@ -122,7 +130,46 @@ table {
     height: 179px;
 } */
 
-#scope td, th, tr {
+#scope td,
+th,
+tr {
+    width: 14px;
+    height: 15px;
     /* display: inline-flex; */
     /* border: 1px blue solid; */
+}
+
+table {
+    width: 80%;
+    /* Table takes up 80% of the screen width */
+    max-width: 600px;
+    /* Prevents it from getting too huge on desktops */
+    margin: 20px auto;
+    border-collapse: separate;
+    border-spacing: 10px;
+    /* Space between buttons */
+}
+
+td {
+    width: 33.33%;
+    /* Each cell is exactly 1/3 of the table */
+}
+
+button {
+    width: 100%;
+    /* Button fills the entire width of the TD */
+    aspect-ratio: 1 / 1;
+    /* Keeps the button a perfect square regardless of width */
+
+    /* font-size: 1.2rem; */
+    font-size: var(--font-size-small);
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
