@@ -94,7 +94,7 @@ export function assembleLine(memory: Memory, l: string) {
 //         const trackArg = hexToBin(parts[2].substring(0, 2), 6)
 //         const sectorArg = hexToBin(parts[2].substring(2, 4), 6)
 
-//         //console.log(trackArg, sectorArg)
+//         //console.debug(trackArg, sectorArg)
 
 //         const ins = orderNameMap[parts[1]].orderNumber
 //             .concat([0, 0])     //Spacer

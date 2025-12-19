@@ -96,7 +96,7 @@ export class Flexowriter{
 
     convert(c: string){
         if(c in this.charMapLC){
-            console.log("FLEXO:", c, this.charMapLC[c])
+//            console.debug("FLEXO:", c, this.charMapLC[c])
             return this.charMapLC[c]
         }else{
             return [0, 0, 0, 0, 0, 0]
@@ -116,7 +116,7 @@ export class Flexowriter{
 
     //Recieve a character(from LGP-30)
     async rx(b: BitArray){
-        console.log("FLEXO", b)
+        // console.debug("FLEXO", b)
 
         if(binToDec(b) == 0){ //i 0000
             await this.sendTape()

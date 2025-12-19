@@ -1,12 +1,10 @@
-import { halfToHex } from "../util"
-import { Register} from "./register"
+import { Register } from "./register"
 
 /**
  * Instruction Register class
  */
-export class RegisterR extends Register{
-	bits = 32
-	constructor(){
+export class RegisterR extends Register {
+	constructor() {
 		super(32)
 	}
 }
