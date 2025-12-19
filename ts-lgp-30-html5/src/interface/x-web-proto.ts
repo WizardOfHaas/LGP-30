@@ -4,19 +4,18 @@
 import { BitArray } from "types";
 
 /**
- * Display the bits of a BitArray in a table row
+ * Display the contents of a register into a table row
  * @param row The name of the row to display the bits in
  * @param bits The array of bits
  * @param offset The offset into the array of bits
- * @param skipChild If true, skip the first child element, skip colspan cells
+ * @param skipChild If true, skip the first child element (may be a colspan td)
  */
-export function bitsToRow(row: string, bits: BitArray, offset: number, skipChild: boolean) {
+export function displayRegister(row: string, bits: BitArray, offset: number, skipChild: boolean) {
     const tr = document.getElementById(row);
     if (!tr) {
         const msg = `${row} not found.`
         console.error(msg)
         return
-        // throw new Error(msg)
     }
     let idx = offset
     let skip = skipChild

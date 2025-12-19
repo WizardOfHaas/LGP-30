@@ -3,7 +3,7 @@ import { decodeOrder } from "../orders/orderMap"
 import { State } from "../state"
 import { BitArray, ExecMode } from "../types"
 import { addrToHex, binToDec, unpackNum } from "../util"
-import { bitsToRow } from "./web-proto"
+// import { displayRegister } from "./web-proto"
 
 export function displayRegs(state: State) {
     $("#c").text(state.registers.c.get().join(""))
@@ -20,9 +20,9 @@ export function displayRegs(state: State) {
     $("#a-bin").html(bitsToSpans(state.registers.a.get()))
 
     // (web-proto) Display the registers on the scope
-    bitsToRow('counter', state.registers.c.get(), 0, false)
-    bitsToRow('instruction', state.registers.r.get(), 12, false)
-    bitsToRow('accumulator', state.registers.a.get(), 0, false)
+    // displayRegister('counter', state.registers.c.get(), 0, false)
+    // displayRegister('instruction', state.registers.r.get(), 12, false)
+    // displayRegister('accumulator', state.registers.a.get(), 0, false)
 }
 
 export function displayMem(state: State) {
@@ -98,55 +98,29 @@ export function bindKeybd(lgp30: LGP30) {
 }
 
 export function bindOpButtons(lgp30: LGP30) {
-    // $("#start").on("click", async () => {
-    //     await lgp30.run()
-    // })
-    const startBtn = document.getElementById("start");
-    startBtn?.addEventListener("click", async () => {
+    $("#start").on("click", async () => {
         await lgp30.run()
     })
 
-    // $("#stop").on("click", async () => {
-    //     lgp30.state.running = false
-    // })
-    const stopBtn = document.getElementById("stop");
-    stopBtn?.addEventListener("click", async () => {
+    $("#stop").on("click", async () => {
         lgp30.state.running = false
     })
 
-    // $("#fill-ins").on("click", () => {
-    //     lgp30.fillIns()
-    //     displayRegs(lgp30.state)
-    // })
-    const fillInsBtn = document.getElementById("fill-ins");
-    fillInsBtn?.addEventListener("click", () => {
+    $("#fill-ins").on("click", () => {
         lgp30.fillIns()
         displayRegs(lgp30.state)
     })
 
-    // $("#ex-ins").on("click", () => {
-    //     lgp30.executeOrder()
-    // })
-    const exInsBtn = document.getElementById("ex-ins");
-    exInsBtn?.addEventListener("click", () => {
+    $("#ex-ins").on("click", () => {
         lgp30.executeOrder()
     })
 
-    // $("#clear-counter").on("click", () => {
-    //     lgp30.state.registers.c.clear()
-    //     displayRegs(lgp30.state)
-    // })
-    const clearCounterBtn = document.getElementById("clear-counter");
-    clearCounterBtn?.addEventListener("click", () => {
+    $("#clear-counter").on("click", () => {
         lgp30.state.registers.c.clear()
         displayRegs(lgp30.state)
     })
 
-    // $("#start-read").on("click", async () => {
-    //     await lgp30.rxFromBuffer()
-    // })
-    const startReadBtn = document.getElementById("start-read");
-    startReadBtn?.addEventListener("click", async () => {
+    $("#start-read").on("click", async () => {
         await lgp30.rxFromBuffer()
     })
 }
