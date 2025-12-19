@@ -124,16 +124,29 @@ export function bindOpButtons(lgp30: LGP30) {
         displayRegs(lgp30.state)
     })
 
-    $("#ex-ins").on("click", () => {
+    // $("#ex-ins").on("click", () => {
+    //     lgp30.executeOrder()
+    // })
+    const exInsBtn = document.getElementById("ex-ins");
+    exInsBtn?.addEventListener("click", () => {
         lgp30.executeOrder()
     })
 
-    $("#clear-counter").on("click", () => {
+    // $("#clear-counter").on("click", () => {
+    //     lgp30.state.registers.c.clear()
+    //     displayRegs(lgp30.state)
+    // })
+    const clearCounterBtn = document.getElementById("clear-counter");
+    clearCounterBtn?.addEventListener("click", () => {
         lgp30.state.registers.c.clear()
         displayRegs(lgp30.state)
     })
 
-    $("#start-read").on("click", async () => {
+    // $("#start-read").on("click", async () => {
+    //     await lgp30.rxFromBuffer()
+    // })
+    const startReadBtn = document.getElementById("start-read");
+    startReadBtn?.addEventListener("click", async () => {
         await lgp30.rxFromBuffer()
     })
 }
