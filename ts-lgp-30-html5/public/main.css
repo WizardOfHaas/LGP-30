@@ -75,7 +75,7 @@ div:has(>button) {
 
 #run-btns button,
 #op-btns button {
-    font-size: 0.75rem;
+    font-size: 12;
     height: 60px;
     background-color: #ac9c8c;
     color: #efdfc5;
@@ -99,7 +99,7 @@ div:has(>button) {
 #flexo-btns button {
     width: 70px;
     height: 50px;
-    font-size: 0.75rem;
+    font-size: 10;
 }
 
 button#manual-light {
@@ -152,7 +152,7 @@ button#manual-light {
 
 .bit-markers>span {
     width: 15px;
-    font-size: 0.75rem;
+    font-size: 10;
 
     border-left: 1px solid black;
     border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
@@ -175,7 +175,6 @@ button#manual-light {
     height: 40px;
     border-radius: 5px;
     text-align: center;
-    font-size: 0.75rem;
     font-weight: bolder;
     margin: 5px;
     display: inline-flex;
@@ -205,15 +204,4 @@ button#manual-light {
 #mem-holder {
     overflow-y: scroll;
     height: 512px;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    /* border: 1px red solid; */
-}
-
-html {
-    font-size: 100%;
 }
