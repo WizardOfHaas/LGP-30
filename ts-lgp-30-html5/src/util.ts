@@ -1,5 +1,6 @@
 import { decodeOrder } from "./orders/orderMap";
 import type { IState } from "./types";
+import type { BitArray } from "./types";
 
 /**
  * Number encoding/decoding stuff
@@ -89,7 +90,7 @@ export function binToHex(b) {
     return toLGPHex(d)
 }
 
-export function halfToHex(b) {
+export function halfToHex(b: BitArray) {
     const upper = b.slice(0, 2)
     const lower = b.slice(2, 6)
     return binToHex(upper) + binToHex(lower)
@@ -129,7 +130,7 @@ export async function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export function insertArrayAt(array, index, arrayToInsert) {
+export function insertArrayAt(array: BitArray, index: number, arrayToInsert: BitArray): BitArray {
     const arr = array.slice() //Break the ref
     for (let i = index; i < index + arrayToInsert.length; i++) {
         arr[i] = arrayToInsert[i - index]

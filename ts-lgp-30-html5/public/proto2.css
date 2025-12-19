@@ -151,14 +151,14 @@ table {
 }
 
 td {
-    width: 33.33%;
-    /* Each cell is exactly 1/3 of the table */
+    width: 16.66%;
+    /* Each cell is exactly 1/6 of the table */
 }
 
-button {
+th button, td button {
     width: 100%;
     /* Button fills the entire width of the TD */
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 3 / 1;
     /* Keeps the button a perfect square regardless of width */
 
     /* font-size: 1.2rem; */
@@ -167,7 +167,11 @@ button {
     background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px;
+}
+
+th button {
+    aspect-ratio: 3 / 1;
 }
 
 button:hover {

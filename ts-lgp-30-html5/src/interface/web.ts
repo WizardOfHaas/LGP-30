@@ -98,15 +98,28 @@ export function bindKeybd(lgp30: LGP30) {
 }
 
 export function bindOpButtons(lgp30: LGP30) {
-    $("#start").on("click", async () => {
+    // $("#start").on("click", async () => {
+    //     await lgp30.run()
+    // })
+    const startBtn = document.getElementById("start");
+    startBtn?.addEventListener("click", async () => {
         await lgp30.run()
     })
 
-    $("#stop").on("click", async () => {
+    // $("#stop").on("click", async () => {
+    //     lgp30.state.running = false
+    // })
+    const stopBtn = document.getElementById("stop");
+    stopBtn?.addEventListener("click", async () => {
         lgp30.state.running = false
     })
 
-    $("#fill-ins").on("click", () => {
+    // $("#fill-ins").on("click", () => {
+    //     lgp30.fillIns()
+    //     displayRegs(lgp30.state)
+    // })
+    const fillInsBtn = document.getElementById("fill-ins");
+    fillInsBtn?.addEventListener("click", () => {
         lgp30.fillIns()
         displayRegs(lgp30.state)
     })

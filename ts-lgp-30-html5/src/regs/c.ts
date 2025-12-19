@@ -1,19 +1,19 @@
 import { binToDec, halfToHex, decToBin, hexToDec } from "../util"
-import { Register} from "./register"
+import { Register } from "./register"
 
-export class RegisterC extends Register{
-	constructor(){
-		super(12)
-	}
+export class RegisterC extends Register {
+    constructor() {
+        super(12)
+    }
 
-	inc(){
-		//Increment, respectinv TTSS addressing
-		let track = binToDec(this.data.slice(0, 6))
+    inc() {
+        //Increment, respectinv TTSS addressing
+        let track = binToDec(this.data.slice(0, 6))
         let sector = binToDec(this.data.slice(6, 13))
 
         sector++
 
-        if(sector > 63){
+        if (sector > 63) {
             sector = 0
             track++
         }
@@ -21,17 +21,17 @@ export class RegisterC extends Register{
         // TODO what happens if track > 63?
 
         this.data = decToBin(track, 6).concat(decToBin(sector, 6))
-	}
+    }
 
-    getHexTrack(){
+    getHexTrack() {
         return halfToHex(this.data.slice(0, 6))
     }
 
-    getHexSector(){
+    getHexSector() {
         return halfToHex(this.data.slice(6, 13))
     }
 
-    toDec(){
+    toDec() {
         const track = hexToDec(this.getHexTrack())
         const sector = hexToDec(this.getHexSector())
 
