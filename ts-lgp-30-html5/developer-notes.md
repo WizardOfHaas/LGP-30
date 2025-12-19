@@ -51,7 +51,7 @@ npm run docs
 ```shell
 npm run cf:deploy
 # navigate to https://lgp30.marccand.workers.dev/ this is Sean's original version
-# navigate to https://lgp30.marccand.workers.dev/html5 for the html5 version
+# navigate to https://lgp30.marccand.workers.dev/index5 for the html5 version
 ```
 
 ## Build and Run (Sean)
@@ -129,6 +129,7 @@ ts-lgp-30-html5/
 │       └── test.html (sean's original web-page)
 ├── .gitignore
 ├── index.html
+├── index5.html (the html5 version)
 ├── package-lock.json
 ├── package.json
 ├── tsconfig.json
