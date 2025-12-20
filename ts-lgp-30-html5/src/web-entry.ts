@@ -2,11 +2,9 @@ import { assembleLine } from "./asm"
 import { LGP30 } from "./lgp30"
 import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, displayRegs } from "./interface/web"
 
-import $ from "jquery"
 import { Terminal } from "@xterm/xterm"
 import { bitsToChar } from "./chars"
 
-(window as any).jQuery = (window as any).$ = $
 window.LGP30 = LGP30
 
 $(window).bind('load', async () => {

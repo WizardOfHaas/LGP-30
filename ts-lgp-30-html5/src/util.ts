@@ -144,6 +144,7 @@ export function insertArrayAt(array: BitArray, index: number, arrayToInsert: Bit
  */
 
 export function dumpRegs(state: IState) {
+    if (true) return // disable for now
     console.info(
         decodeOrder(state.registers.r.get()) +
         " -> " +
