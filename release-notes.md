@@ -4,12 +4,14 @@
 
 * [Read Me](./README.md)
 * [Release Notes](./release-notes.md)
-* [Developer Notes](./ts-lgp-30/developer-notes.md)
+* [Developer Notes](./ts-lgp-30-html5/developer-notes.md)
+* [TODO](./ts-lgp-30-html5/todo.md)
 
 ## Release Summary
 
 | Version | Date     | Summary                                 |
 |---------|----------|-----------------------------------------|
+| 1.2.0   | 20251221 | cleanup jquery, html5 & inhouse styling |
 | 1.1.1   | 20251214 | Fix issues with asm                     |
 | 1.1.0   | 20251212 | Isolating LGP30 class with its own test |
 | 1.1.0   | 20251130 | Working ts-lgp-30-html5 project         |
@@ -20,6 +22,11 @@
 | 1.0.0   | 20251019 | Tidy project and folder layout.         |
 | 1.0.0   | 20250920 | Fork of Sean's original source.         |
 | 1.0.0   | 20250724 | Sean's original source.                 |
+
+## Version 1.2.0
+
+* keep jquery and remove off the global window object
+* migrate to html5, remove boostrap, and bring all the styling inhouse
 
 ## Version 1.1.1
 

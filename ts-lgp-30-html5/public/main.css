@@ -1,3 +1,22 @@
+:root {
+    --font-size-small: 0.75rem;   /* equivalent of 12pt */
+    --font-size-smaller: 0.625rem /* equivalent of 10pt */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%; /* defaults to 16pt */
+}
+
+body {
+    font-size: var(--font-size-small);
+}
+
 .hidden {
     display: none;
 }
@@ -75,7 +94,7 @@ div:has(>button) {
 
 #run-btns button,
 #op-btns button {
-    font-size: 12;
+    /* font-size: 12; */
     height: 60px;
     background-color: #ac9c8c;
     color: #efdfc5;
@@ -99,7 +118,7 @@ div:has(>button) {
 #flexo-btns button {
     width: 70px;
     height: 50px;
-    font-size: 10;
+    /* font-size: 10; */
 }
 
 button#manual-light {
@@ -152,7 +171,7 @@ button#manual-light {
 
 .bit-markers>span {
     width: 15px;
-    font-size: 10;
+    /* font-size: 10; */
 
     border-left: 1px solid black;
     border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
