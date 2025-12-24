@@ -1,25 +1,27 @@
-<html>
+<!-- <!DOCTYPE html> -->
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <title>AOC LGP-30 Emulator</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" type="text/css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" type="text/css"
         integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w=="
-        crossorigin="anonymous" />
+        crossorigin="anonymous">
 
     <script type="module" src="src/web-entry.ts"></script>
 
     <style>
-        .hidden{
-            display:none;
+        .hidden {
+            display: none;
         }
 
         table {
@@ -30,7 +32,8 @@
             background-color: red;
         }
 
-        .green, #compute.btn-green {
+        .green,
+        #compute.btn-green {
             background-color: green;
         }
 
@@ -61,41 +64,42 @@
             margin: 0px;
         }
 
-        #button-holder{
+        #button-holder {
             background-color: #af967b;
-            background-image: 
+            background-image:
                 repeating-linear-gradient(45deg, transparent 0px, #000000 1px, transparent 1px, transparent 10px),
                 repeating-linear-gradient(-45deg, transparent 0px, #000000 1px, transparent 1px, transparent 10px);
         }
 
-        #top-buttons, #bottom-buttons{
+        #top-buttons,
+        #bottom-buttons {
             padding-left: 50px;
         }
 
-        #bottom-buttons, #logo-holder{
+        #bottom-buttons,
+        #logo-holder {
             background-color: silver;
         }
 
-        #logo-holder{
+        #logo-holder {
             height: 124px;
             text-align: center;
             vertical-align: middle;
             line-height: 124px;
         }
 
-        #button-holder{
+        #button-holder {
             border: 20px solid silver;
             border-top-left-radius: 90px 200px;
             border-top-right-radius: 90px 200px;
             overflow: hidden;
         }
 
-        #buttons{
-        }
+        #buttons {}
 
         #run-btns button,
         #op-btns button {
-            font-size: 12;
+            font-size: 12px;
             height: 60px;
             background-color: #ac9c8c;
             color: #efdfc5;
@@ -108,7 +112,7 @@
             color: #efdfc5;
         }
 
-        #run-btns{
+        #run-btns {
             margin-top: 25px;
         }
 
@@ -119,7 +123,7 @@
         #flexo-btns button {
             width: 70px;
             height: 50px;
-            font-size: 10;
+            font-size: 10px;
         }
 
         button#manual-light {
@@ -128,12 +132,12 @@
             margin-right: 30px;
         }
 
-        #scope{
+        #scope {
             margin-top: 10px;
             background: #af967b;
         }
 
-        #scope-holder{
+        #scope-holder {
             height: 179px;
         }
 
@@ -154,7 +158,7 @@
             border: 1px solid black;
         }
 
-        #c-bin{
+        #c-bin {
             float: right;
             margin-right: 14px;
         }
@@ -172,7 +176,7 @@
 
         .bit-markers>span {
             width: 15px;
-            font-size: 10;
+            font-size: 10px;
 
             border-left: 1px solid black;
             border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
@@ -240,38 +244,38 @@
                                     <tr>
                                         <th colspan="3">
                                             <button class="btn btn-block" id="stop">STOP</button>
-                                            </td>
+                                        </th>
                                         <th colspan="3">
                                             <button class="btn btn-block" id="compute">COMPUTE</button>
-                                            </td>
+                                        </th>
                                     </tr>
-        
+
                                     <tr id="mode-btns">
                                         <td>
                                             <button class="btn btn-block toggle btn-on" id="normal">NORMAL</button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-block toggle" id="one-op">ONE<br />OP</button>
+                                            <button class="btn btn-block toggle" id="one-op">ONE<br>OP</button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-block toggle" id="manual">MANUAL<br />INPUT</button>
+                                            <button class="btn btn-block toggle" id="manual">MANUAL<br>INPUT</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block toggle" id="stand-by">STAND<br />BY</button>
+                                            <button class="btn btn-block toggle" id="stand-by">STAND<br>BY</button>
                                         </td>
                                         <td>
                                             <button class="btn btn-block toggle" id="opereate">OPERATE</button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-block toggle" id="stand-by-to-operate">STAND BY<br />TO
+                                            <button class="btn btn-block toggle" id="stand-by-to-operate">STAND BY<br>TO
                                                 OP</button>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
-        
+
                         <div class="row" id="bottom-buttons">
                             <div class="col-md-6">
                                 <table id="op-btns">
@@ -279,51 +283,51 @@
                                         <td>
                                             <button class="btn btn-block" id="start">START</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="clear-counter">CLEAR<br />COUNTER</button>
+                                            <button class="btn btn-block" id="clear-counter">CLEAR<br>COUNTER</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="fill-ins">FILL<br />INSTRUCTION</button>
+                                            <button class="btn btn-block" id="fill-ins">FILL<br>INSTRUCTION</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="ex-ins">EXECUTE<br />INSTRUCTION</button>
+                                            <button class="btn btn-block" id="ex-ins">EXECUTE<br>INSTRUCTION</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="power-on">POWER<br />ON</button>
+                                            <button class="btn btn-block" id="power-on">POWER<br>ON</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="power-off">POWER<br />OFF</button>
+                                            <button class="btn btn-block" id="power-off">POWER<br>OFF</button>
                                         </td>
                                     </tr>
-        
+
                                     <tr>
                                         <td>
-                                            <button class="btn btn-block" id="break-32">BREAK<br />POINT<br />32</button>
+                                            <button class="btn btn-block" id="break-32">BREAK<br>POINT<br>32</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="break-16">BREAK<br />POINT<br />16</button>
+                                            <button class="btn btn-block" id="break-16">BREAK<br>POINT<br>16</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="break-8">BREAK<br />POINT<br />8</button>
+                                            <button class="btn btn-block" id="break-8">BREAK<br>POINT<br>8</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="break-4">BREAK<br />POINT<br />4</button>
+                                            <button class="btn btn-block" id="break-4">BREAK<br>POINT<br>4</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="input-6b">6 BIT<br />INPUT</button>
+                                            <button class="btn btn-block" id="input-6b">6 BIT<br>INPUT</button>
                                         </td>
-        
+
                                         <td>
-                                            <button class="btn btn-block" id="xfer-ctrl">TRANSFER<br />CONTROL</button>
+                                            <button class="btn btn-block" id="xfer-ctrl">TRANSFER<br>CONTROL</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -334,7 +338,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <div class="col-md-5">
                         <div class="row" id="scope-holder">
                             <div class="col-md-6">
@@ -424,8 +428,8 @@
                                         <td id="a-bin"></td>
                                     </tr>
                                 </table>
-                
-                                <br />
+
+                                <br>
                             </div>
                         </div>
 
@@ -437,11 +441,13 @@
                                     <td>C</td>
                                     <td id="c"></td>
                                     <td id="c-dec"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>R</td>
                                     <td id="r"></td>
                                     <td id="r-dec"></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>A</td>
@@ -452,6 +458,8 @@
                                 <tr>
                                     <td> </td>
                                     <td>--------------|O--|T----|S----|</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </table>
                         </div>
@@ -467,7 +475,8 @@
                 </div>
 
                 <div class="row">
-                    Sean's very own LGP-30 emulator! Contribute on&nbsp;<a href="https://github.com/WizardOfHaas/LGP-30" target="_blank">GitHub</a>
+                    Sean's very own LGP-30 emulator! Contribute on&nbsp;<a href="https://github.com/WizardOfHaas/LGP-30"
+                        target="_blank">GitHub</a>
                 </div>
             </div>
         </div>
@@ -486,7 +495,7 @@
 6303 p0000
 6304 i0000
                     </textarea>-->
-                    <textarea id="asm" rows="15">
+                <textarea id="asm" rows="15">
 0000 u1000 #Jump to entry
 1000 p0000
 1001 b1000
@@ -520,35 +529,33 @@
                         <table>
                             <tr id="flexo-btns">
                                 <td>
-                                    <button class="btn btn-block toggle" id="cond-stop">COND<br />STOP</button>
+                                    <button class="btn btn-block toggle" id="flexo-cond-stop">COND<br>STOP</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-block toggle" id="start-read">START<br />READ</button>
+                                    <button class="btn btn-block toggle" id="start-read">START<br>READ</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-block toggle" id="stop-read">STOP<br />READ</button>
+                                    <button class="btn btn-block toggle" id="stop-read">STOP<br>READ</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-block toggle" id="punch-on">PUNCH<br />ON</button>
+                                    <button class="btn btn-block toggle" id="punch-on">PUNCH<br>ON</button>
                                 </td>
 
-                                <td>
                                 <td>
                                     <button class="btn btn-block toggle" id="manual-light">MANUAL</button>
                                 </td>
-                                </td>
 
                                 <td>
-                                    <button class="btn btn-block toggle" id="tape-feed">TAPE<br />FEED</button>
+                                    <button class="btn btn-block toggle" id="tape-feed">TAPE<br>FEED</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-block toggle" id="code-depete">CODE<br />DELETE</button>
+                                    <button class="btn btn-block toggle" id="code-depete">CODE<br>DELETE</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-block toggle" id="manual-input">MANUAL<br />INPUT</button>
+                                    <button class="btn btn-block toggle" id="manual-input">MANUAL<br>INPUT</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-block toggle" id="start">START<br />COMP</button>
+                                    <button class="btn btn-block toggle" id="start-comp">START<br>COMP</button>
                                 </td>
                             </tr>
                         </table>
@@ -565,18 +572,18 @@
                     <tr>
                         <td class="key-brn" id="tab">TAB</td>
                         <td class="key-blank"></td>
-                        <td class="key-brn" id="2">*<br />2</td>
-                        <td class="key-brn" id="3">"<br />3</td>
-                        <td class="key-brn" id="4">&Delta;<br />4</td>
-                        <td class="key-brn" id="5">%<br />5</td>
-                        <td class="key-brn" id="6">$<br />6</td>
-                        <td class="key-brn" id="7">&pi;<br />7</td>
-                        <td class="key-brn" id="8">&Sigma;<br />8</td>
-                        <td class="key-brn" id="9">(<br />9</td>
-                        <td class="key-brn" id="0">)<br />0</td>
-                        <td class="key-brn" id="dash">_<br />-</td>
-                        <td class="key-brn" id="color-shift">COLOR<br />SHIFT</td>
-                        <td class="key-brn" id="backspace">BACK<br />SPACE</td>
+                        <td class="key-brn" id="2">*<br>2</td>
+                        <td class="key-brn" id="3">"<br>3</td>
+                        <td class="key-brn" id="4">&Delta;<br>4</td>
+                        <td class="key-brn" id="5">%<br>5</td>
+                        <td class="key-brn" id="6">$<br>6</td>
+                        <td class="key-brn" id="7">&pi;<br>7</td>
+                        <td class="key-brn" id="8">&Sigma;<br>8</td>
+                        <td class="key-brn" id="9">(<br>9</td>
+                        <td class="key-brn" id="0">)<br>0</td>
+                        <td class="key-brn" id="dash">_<br>-</td>
+                        <td class="key-brn" id="color-shift">COLOR<br>SHIFT</td>
+                        <td class="key-brn" id="backspace">BACK<br>SPACE</td>
                     </tr>
                 </table>
 
@@ -593,14 +600,14 @@
                         <td class="key-wht" id="I">I</td>
                         <td class="key-brn" id="O">O</td>
                         <td class="key-wht" id="P">P</td>
-                        <td class="key-brn" id="plus">=<br />+</td>
-                        <td class="key-brn" id="car-ret">CAR<br />RET</td>
+                        <td class="key-brn" id="plus">=<br>+</td>
+                        <td class="key-brn" id="car-ret">CAR<br>RET</td>
                     </tr>
                 </table>
 
                 <table class="keybd">
                     <tr>
-                        <td class="key-brn" id="lower-case">LOWER<br />CASE</td>
+                        <td class="key-brn" id="lower-case-left">LOWER<br>CASE</td>
                         <td class="key-blank"></td>
                         <td class="key-wht" id="A">A</td>
                         <td class="key-wht" id="S">S</td>
@@ -611,15 +618,15 @@
                         <td class="key-brn" id="J">J</td>
                         <td class="key-brn" id="K">K</td>
                         <td class="key-brn" id="L">L</td>
-                        <td class="key-brn" id="colon">:<br />;</td>
-                        <td class="key-brn" id="cond-stop">COND<br />STOP</td>
-                        <td class="key-brn" id="lower-case">LOWER<br />CASE</td>
+                        <td class="key-brn" id="colon">:<br>;</td>
+                        <td class="key-brn" id="cond-stop">COND<br>STOP</td>
+                        <td class="key-brn" id="lower-case-right">LOWER<br>CASE</td>
                     </tr>
                 </table>
 
                 <table class="keybd">
                     <tr>
-                        <td class="key-brn" id="upper-case">UPPER<br />CASE</td>
+                        <td class="key-brn" id="upper-case-left">UPPER<br>CASE</td>
                         <td class="key-blank"></td>
                         <td class="key-half-blank"></td>
                         <td class="key-wht" id="Z">Z</td>
@@ -629,11 +636,11 @@
                         <td class="key-wht" id="B">B</td>
                         <td class="key-wht" id="N">N</td>
                         <td class="key-wht" id="M">M</td>
-                        <td class="key-brn" id="period">[<br />.</td>
-                        <td class="key-brn" id="comma">]<br />,</td>
-                        <td class="key-brn" id="slash">?<br />/</td>
+                        <td class="key-brn" id="period">[<br>.</td>
+                        <td class="key-brn" id="comma">]<br>,</td>
+                        <td class="key-brn" id="slash">?<br>/</td>
                         <td class="key-half-blank"></td>
-                        <td class="key-brn" id="upper-case">UPPER<br />CASE</td>
+                        <td class="key-brn" id="upper-case-right">UPPER<br>CASE</td>
                     </tr>
                 </table>
             </div>
