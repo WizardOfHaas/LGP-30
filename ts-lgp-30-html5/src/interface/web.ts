@@ -3,9 +3,9 @@ import { decodeOrder } from "../orders/orderMap"
 import { State } from "../state"
 import { BitArray, ExecMode } from "../types"
 import { addrToHex, binToDec, unpackNum } from "../util"
-// import { displayRegister } from "./web-proto"
 
 export function displayRegs(state: State) {
+    // TODO - group the order | track | sector
     $("#c").text(state.registers.c.get().join(""))
     $("#r").text(state.registers.r.get().join(""))
     $("#a").text(state.registers.a.get().join(""))
@@ -18,11 +18,6 @@ export function displayRegs(state: State) {
     $("#c-bin").html(bitsToSpans(state.registers.c.get()))
     $("#r-bin").html(bitsToSpans(state.registers.r.get()))
     $("#a-bin").html(bitsToSpans(state.registers.a.get()))
-
-    // (web-proto) Display the registers on the scope
-    // displayRegister('counter', state.registers.c.get(), 0, false)
-    // displayRegister('instruction', state.registers.r.get(), 12, false)
-    // displayRegister('accumulator', state.registers.a.get(), 0, false)
 }
 
 export function displayMem(state: State) {

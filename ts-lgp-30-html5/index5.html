@@ -20,12 +20,33 @@
     <script type="module" src="src/web-entry.ts"></script>
 
     <style>
+        :root {
+            --font-size-10px: 0.625rem;
+            --font-size-12px: 0.75rem;
+            --font-size-13px: 0.8125rem;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 100%;
+        }
+
+        /* body{
+            line-height: 1.5;
+        } */
+
         .hidden {
             display: none;
         }
 
         table {
             font-family: monospace;
+            line-height: 1;
         }
 
         .ip {
@@ -97,7 +118,7 @@
 
         #run-btns button,
         #op-btns button {
-            font-size: 12px;
+            font-size: var(--font-size-12px);
             height: 60px;
             background-color: #ac9c8c;
             color: #efdfc5;
@@ -121,7 +142,7 @@
         #flexo-btns button {
             width: 70px;
             height: 50px;
-            font-size: 10px;
+            font-size: var(--font-size-10px);
         }
 
         button#manual-light {
@@ -174,7 +195,7 @@
 
         .bit-markers>span {
             width: 15px;
-            font-size: 10px;
+            font-size: var(--font-size-10px);
 
             border-left: 1px solid black;
             border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
@@ -434,11 +455,26 @@
                         <div class="row" id="logo-holder">
                             <p id="logo">ROYAL PRECISION</p>
 
+                            <style>
+                                /* TODO - remove - debug only */
+                                table#dev-scope td {
+                                    /* border: 1px solid blue; */
+                                    font-size: var(--font-size-13px);
+                                    text-align: right;
+                                }
+                            </style>
+
                             <table id="dev-scope" class="hidden">
                                 <tr>
                                     <td>C</td>
                                     <td id="c"></td>
                                     <td id="c-dec"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>OOOOTTTTTTSSSSSS</td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -452,12 +488,6 @@
                                     <td id="a"></td>
                                     <td id="a-dec"></td>
                                     <td id="a-ins"></td>
-                                </tr>
-                                <tr>
-                                    <td> </td>
-                                    <td>--------------|O--|T----|S----|</td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                             </table>
                         </div>
@@ -481,6 +511,18 @@
 
         <div class="row">
             <div class="col-md-4 hidden" id="mem-holder">
+
+
+                <style>
+                    /* TODO - remove - debug only */
+                    table#mem td {
+                        /* border: 1px solid blue; */
+                        font-size: var(--font-size-13px);
+                        /* text-align: left; */
+                    }
+                </style>
+
+
                 <table id="mem"></table>
             </div>
 
@@ -566,6 +608,16 @@
             <div class="col-md-1"></div>
 
             <div class="col-md-10">
+
+                <style>
+                    /* TODO - remove - debug only */
+                    table.keybd td {
+                        font-size: var(--font-size-13px);
+                        /* text-align: left; */
+                    }
+                </style>
+
+
                 <table class="keybd">
                     <tr>
                         <td class="key-brn" id="tab">TAB</td>
