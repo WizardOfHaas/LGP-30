@@ -5,9 +5,7 @@ import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, dis
 import { Terminal } from "@xterm/xterm"
 import { bitsToChar } from "./chars"
 
-window.LGP30 = LGP30
-
-$(window).bind('load', async () => {
+$(window).on('load', async () => {
     const term = new Terminal({ cols: 40, rows: 25 })
     // Check if the element was successfully found (i.e., it is NOT null)
     const terminalElement = document.getElementById('terminal');
@@ -43,8 +41,6 @@ $(window).bind('load', async () => {
     //Ok. I'm starting to see the issue. The code is never able to go back to running as normal
     //  ...because the sendTape function just loops
     //  ...the function needs to run into COND then stop
-
-    window.lgp30 = lgp30
 
     bindModeButtons(lgp30.state)
     bindOpButtons(lgp30)
