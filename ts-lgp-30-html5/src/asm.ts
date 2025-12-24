@@ -64,7 +64,7 @@ export function assembleLine(memory: Memory, l: string) {
         return
     }
 
-    const insTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([a-z]+) ([0-9fgjkqwl]{2})([0-9fgjkqwl]{2})/g)]
+    const insTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([a-z])([0-9fgjkqwl]{2})([0-9fgjkqwl]{2})/g)]
     const constTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([0-9fgjkqwl]+)/g)]
     //This is an instruction
     if (typeof insTokens[0] !== "undefined" && insTokens[0].length == 6) {
