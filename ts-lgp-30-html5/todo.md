@@ -59,3 +59,24 @@ The existing html is 4.something with quirks mode. Migration to html5 includes t
 | 1.5rem   | 18pt         | 24px        | x-large,~1.5rem,24px                      |
 | 2rem     | 24pt         | 32px        | xx-large,~2rem,32px                       |
 |          |              |             | xxx-large,~3rem,48px                      |
+
+## Flexo Hex
+
+| dec | hex |
+|-----|-----|
+|   0 |   0 |
+|   1 |   1 |
+|   2 |   2 |
+|   3 |   3 |
+|   4 |   4 |
+|   5 |   5 |
+|   6 |   6 |
+|   7 |   7 |
+|   8 |   8 |
+|   9 |   9 |
+|  10 |   f |
+|  11 |   g |
+|  12 |   j |
+|  13 |   k |
+|  14 |   q |
+|  15 |   w |
