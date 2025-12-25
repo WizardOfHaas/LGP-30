@@ -46,7 +46,16 @@
 
         table {
             font-family: monospace;
+            font-size: var(--font-size-13px);
+            line-height: 1.2;
+        }
+
+        table#scope {
             line-height: 1;
+        }
+
+        table#dev-scope {
+            text-align: right;
         }
 
         .ip {
@@ -454,33 +463,11 @@
 
                         <div class="row" id="logo-holder">
                             <p id="logo">ROYAL PRECISION</p>
-
-                            <style>
-                                /* TODO - remove - debug only */
-                                table#dev-scope td {
-                                    /* border: 1px solid blue; */
-                                    font-size: var(--font-size-13px);
-                                    text-align: right;
-                                }
-                            </style>
-
                             <table id="dev-scope" class="hidden">
-                                <!-- <tr>
-                                    <th>Reg</th>
-                                    <th>Contents</th>
-                                    <th>Decode</th>
-                                    <th>Ins</th>
-                                </tr> -->
                                 <tr>
                                     <td>C</td>
                                     <td id="c"></td>
                                     <td id="c-dec"></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>OOOO&nbsp;&nbsp;TTTTTTSSSSSS&nbsp;&nbsp;</td>
-                                    <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -494,6 +481,12 @@
                                     <td id="a"></td>
                                     <td id="a-dec"></td>
                                     <td id="a-ins"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>-------------|O--|T----|S----|&nbsp;&nbsp;</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </table>
                         </div>
@@ -517,18 +510,6 @@
 
         <div class="row">
             <div class="col-md-4 hidden" id="mem-holder">
-
-
-                <style>
-                    /* TODO - remove - debug only */
-                    table#mem td {
-                        /* border: 1px solid blue; */
-                        font-size: var(--font-size-13px);
-                        /* text-align: left; */
-                    }
-                </style>
-
-
                 <table id="mem"></table>
             </div>
 
@@ -614,16 +595,6 @@
             <div class="col-md-1"></div>
 
             <div class="col-md-10">
-
-                <style>
-                    /* TODO - remove - debug only */
-                    table.keybd td {
-                        font-size: var(--font-size-13px);
-                        /* text-align: left; */
-                    }
-                </style>
-
-
                 <table class="keybd">
                     <tr>
                         <td class="key-brn" id="tab">TAB</td>
