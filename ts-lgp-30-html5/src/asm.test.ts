@@ -37,7 +37,7 @@ describe("test the asm module", () => {
         const zeros: BitArray = new Array(32).fill(0);
         expect(lgp30.state.memory.get('00', '00')).toEqual(zeros)
         // assemble unconditional jump to '0002' into location '0000'
-        assembleLine(lgp30.state.memory, "0000 u 0002")
+        assembleLine(lgp30.state.memory, "0000 u0002")
         // check the pattern assembled into memory
         //       ignore|order|pad| track|sector|pad
         // 000000000000| 1010| 00|000000|000010| 00
@@ -47,12 +47,12 @@ describe("test the asm module", () => {
 
     // TODO do the rest
     // test("test assembleLine", () => {
-    //     assembleLine(lgp30.state.memory, "0000 u 0002")
-    //     assembleLine(lgp30.state.memory, "0002 b 0001")
-    //     assembleLine(lgp30.state.memory, "0003 a 0010")
-    //     assembleLine(lgp30.state.memory, "0004 h 0001")
-    //     assembleLine(lgp30.state.memory, "0005 s 0009")
-    //     assembleLine(lgp30.state.memory, "0006 t 0002")
+    //     assembleLine(lgp30.state.memory, "0000 u0002")
+    //     assembleLine(lgp30.state.memory, "0002 b0001")
+    //     assembleLine(lgp30.state.memory, "0003 a0010")
+    //     assembleLine(lgp30.state.memory, "0004 h0001")
+    //     assembleLine(lgp30.state.memory, "0005 s0009")
+    //     assembleLine(lgp30.state.memory, "0006 t0002")
     //     assembleLine(lgp30.state.memory, "0009 5")
     //     assembleLine(lgp30.state.memory, "0010 1")
     // })

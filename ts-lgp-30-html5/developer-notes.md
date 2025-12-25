@@ -5,6 +5,7 @@
 * [Read Me](../README.md)
 * [Release Notes](../release-notes.md)
 * [Developer Notes](./developer-notes.md)
+* [TODO](./todo.md)
 
 ## Build and Run (Vite)
 
@@ -73,37 +74,6 @@ npm run build
 ## Run webpage (should invoke browser)
 ./src/public/test.html
 ```
-
-## TODO
-
-Categories are:
-
-* bug
-* feature
-* wish
-* tidy
-
-Newest items at top
-
-Status are:
-
-* progress
-* done
-* todo
-
-| Item                                    | Category | Status   | Note                                       |
-|-----------------------------------------|----------|----------|--------------------------------------------|
-| document and unit test mem class        | feature  | done     | npm vite:test src/mem/mem.test.ts          |
-| document and unit test asm class        | feature  | progress | npm vite:test src/asm.test.ts finish tests |
-| add typedocs                            | feature  | done     | added docs script                          |
-| write pure html5 version                | feature  | progress | remove 3rd party css and js dependencies   |
-| expand vitest tests                     | wish     | todo     | all other *.test.ts files                  |
-| write vitest tests                      | feature  | progress | index.test.ts complete                     |
-| use Vite tooling                        | feature  | done     | vite and vitest works                      |
-| compile and test with new folder layout | tidy     | done     | works as per original                      |
-| restructure folder layout               | tidy     | done     |                                            |
-| act1 in it's own folder                 | tidy     | done     |                                            |
-| original js version in its own folder   | tidy     | done     |                                            |
 
 ## TS Project Layout
 

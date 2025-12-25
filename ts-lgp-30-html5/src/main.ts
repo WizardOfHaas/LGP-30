@@ -2,15 +2,10 @@ import { assembleLine } from "./asm"
 import { LGP30 } from "./lgp30"
 import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, displayRegs } from "./interface/web"
 
-import $ from "jquery"
-
 import { Terminal } from "@xterm/xterm"
 import { bitsToChar } from "./chars"
 
-(window as any).jQuery = (window as any).$ = $
-window.LGP30 = LGP30
-
-$(window).bind('load', async () => {
+$(window).on('load', async () => {
     const term = new Terminal({ cols: 40, rows: 25 })
     // Check if the element was successfully found (i.e., it is NOT null)
     const terminalElement = document.getElementById('terminal');
@@ -46,8 +41,6 @@ $(window).bind('load', async () => {
     //Ok. I'm starting to see the issue. The code is never able to go back to running as normal
     //  ...because the sendTape function just loops
     //  ...the function needs to run into COND then stop
-
-    window.lgp30 = lgp30
 
     bindModeButtons(lgp30.state)
     bindOpButtons(lgp30)
@@ -115,5 +108,5 @@ $(window).bind('load', async () => {
 
     displayRegs(lgp30.state)
     displayMem(lgp30.state)
-    displayMem(lgp30.state)
+    displayMode(lgp30.state)
 })
