@@ -6,7 +6,7 @@ import { Terminal } from "@xterm/xterm"
 import { bitsToChar } from "./chars"
 
 $(window).on('load', async () => {
-    const term = new Terminal({cols: 40, rows: 25})
+    const term = new Terminal({ cols: 40, rows: 25 })
     // Check if the element was successfully found (i.e., it is NOT null)
     const terminalElement = document.getElementById('terminal');
     if (terminalElement) {
@@ -50,7 +50,6 @@ $(window).on('load', async () => {
         $("#dev-scope, #mem-holder, #asm-holder, #logo").toggleClass("hidden");
     })
 
-    
     const rawVal = $("#asm").val() ?? ""
     const asmVal = rawVal as string
     asmVal.split("\n").forEach((l) => {
@@ -68,46 +67,46 @@ $(window).on('load', async () => {
         displayMem(lgp30.state)
     })
 
-    $("#upload").on("click", async (e) => {
+    $("#upload").on("click", async () => {
         const input = document.createElement('input')
         input.type = 'file'
 
-        input.addEventListener("change", function(){
+        input.addEventListener("change", function () {
             const reader = new FileReader();
 
-            reader.onload = async (e) => {
+            reader.onload = async () => {
                 lgp30.toRxBuffer(reader.result as string)
             };
 
-            if(this.files != null && this.files.length > 0){
+            if (this.files != null && this.files.length > 0) {
                 reader.readAsText(this.files[0], "UTF-8");
             }
-        }, true);                
-        
+        }, true);
+
         input.click()
     })
 
-    $("#load-image").on("click", async (e) => {
+    $("#load-image").on("click", async () => {
         const input = document.createElement('input')
         input.type = 'file'
 
-        input.addEventListener("change", function(){
+        input.addEventListener("change", function () {
             const reader = new FileReader();
 
-            reader.onload = async (e) => {
+            reader.onload = async () => {
                 lgp30.loadMemoryImage(reader.result as string)
                 displayMem(lgp30.state)
             };
 
-            if(this.files != null && this.files.length > 0){
+            if (this.files != null && this.files.length > 0) {
                 reader.readAsText(this.files[0], "UTF-8");
             }
-        }, true);                
-        
+        }, true);
+
         input.click()
     })
 
     displayRegs(lgp30.state)
     displayMem(lgp30.state)
-    // displayMem(lgp30.state)
+    displayMode(lgp30.state)
 })

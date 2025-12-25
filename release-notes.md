@@ -11,7 +11,7 @@
 
 | Version | Date     | Summary                                 |
 |---------|----------|-----------------------------------------|
-| 1.2.0   | 20251221 | cleanup jquery, html5 & inhouse styling |
+| 1.2.0   | 20251221 | cleanup jquery, html5                   |
 | 1.1.1   | 20251214 | Fix issues with asm                     |
 | 1.1.0   | 20251212 | Isolating LGP30 class with its own test |
 | 1.1.0   | 20251130 | Working ts-lgp-30-html5 project         |
@@ -25,8 +25,9 @@
 
 ## Version 1.2.0
 
-* keep jquery and remove off the global window object
-* migrate to html5, remove boostrap, and bring all the styling inhouse
+* kept jquery and removed the global window object hack
+* migrated to html5
+* attempted to remove boostrap, postponed for another time.
 
 ## Version 1.1.1
 

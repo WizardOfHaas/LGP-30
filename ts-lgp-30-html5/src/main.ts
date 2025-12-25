@@ -108,5 +108,5 @@ $(window).on('load', async () => {
 
     displayRegs(lgp30.state)
     displayMem(lgp30.state)
-    displayMem(lgp30.state)
+    displayMode(lgp30.state)
 })

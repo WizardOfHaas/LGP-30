@@ -1,9 +1,35 @@
+:root {
+    --font-size-10px: 0.625rem;
+    --font-size-12px: 0.75rem;
+    --font-size-13px: 0.8125rem;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
+}
+
 .hidden {
     display: none;
 }
 
 table {
     font-family: monospace;
+    font-size: var(--font-size-13px);
+    line-height: 1.2;
+}
+
+table#scope {
+    line-height: 1;
+}
+
+table#dev-scope {
+    text-align: right;
 }
 
 .ip {
@@ -73,11 +99,9 @@ div:has(>button) {
     overflow: hidden;
 }
 
-#buttons {}
-
 #run-btns button,
 #op-btns button {
-    font-size: 12;
+    font-size: var(--font-size-12px);
     height: 60px;
     background-color: #ac9c8c;
     color: #efdfc5;
@@ -101,7 +125,7 @@ div:has(>button) {
 #flexo-btns button {
     width: 70px;
     height: 50px;
-    font-size: 10;
+    font-size: var(--font-size-10px);
 }
 
 button#manual-light {
@@ -154,7 +178,7 @@ button#manual-light {
 
 .bit-markers>span {
     width: 15px;
-    font-size: 10;
+    font-size: var(--font-size-10px);
 
     border-left: 1px solid black;
     border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 100% 1;
