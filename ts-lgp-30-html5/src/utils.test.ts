@@ -15,8 +15,8 @@ describe("test the utils class", () => {
     })
 
     test("test insertArrayAt", () => {
-        const arr = insertArrayAt([1, 2, 3, 4, 5], 2, ['a', 'b', 'c'])
-        expect(arr).toStrictEqual([1, 2, 'a', 'b', 'c']) // TODO, insert should extend the array as per below
+        const arr = insertArrayAt([1, 0, 1, 0, 1], 2, [0, 1, 0])
+        expect(arr).toStrictEqual([1, 0, 0, 1, 0]) // TODO, insert should extend the array as per below
         //expect(arr).toStrictEqual([1, 2, 'a', 'b', 'c', 4, 5])
     })
 })
