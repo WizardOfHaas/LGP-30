@@ -38,7 +38,7 @@ export default defineConfig([
       "@typescript-eslint/no-unsafe-argument": "error",
       "@typescript-eslint/no-unsafe-assignment": "error",
       "@typescript-eslint/await-thenable": "error",
-      "semi": ["error", "always"],
+      "semi": "off",
     },
   },
 
