@@ -107,7 +107,11 @@ export function bindOpButtons(lgp30: LGP30) {
     })
 
     $("#ex-ins").on("click", () => {
-        lgp30.executeOrder()
+        lgp30.executeOrder().then(() => {
+            console.debug("Order executed")
+        }).catch((e) => {
+            console.error("Error executing order:", e)
+        })
     })
 
     $("#clear-counter").on("click", () => {

@@ -90,7 +90,7 @@ c3w68'000wwwwj'
 c3wg8'0gwc0000'
 u3wlj''`)
 
-for(let i = 0; i < 63; i++){
+for (let i = 0; i < 63; i++) {
     const sector = halfToHex(decToBin(i, 6))
     // console.debug("3w", sector, decodeOrder(lgp30.state.memory.get("3w", sector)))
 }
@@ -114,27 +114,27 @@ lgp30.state.mode = "NORMAL"
  * Make this function available to the test suite
  * @param s the script to execute
  */
-export async function manualScript(s: string){
-    const ins = s.split("\n")
+export async function manualScript(s: string) {
+    const insructions = s.split("\n")
     // console.debug(ins)
 
     lgp30.state.mode = "MANUAL"
 
-    for(const i in ins){
-        const [sto, ord] = ins[i].split("'")
+    for (const instruction of insructions) {
+        const [sto, ord] = instruction.split("'")
 
-            await flexo.tx(sto) //Send over storage part
-            // console.debug(sto, '->', decodeOrder(lgp30.state.registers.a.get()))
+        await flexo.tx(sto) //Send over storage part
+        // console.debug(sto, '->', decodeOrder(lgp30.state.registers.a.get()))
 
-            lgp30.fillIns() //Setup to run sto
+        lgp30.fillIns() //Setup to run sto
 
-        if(ord && ord.length > 0){ //We have a store order, and an instruction order
+        if (ord && ord.length > 0) { //We have a store order, and an instruction order
 
             await flexo.tx(ord) //Load in next part
             // console.debug(ord, '->', decodeOrder(lgp30.state.registers.a.get()))
             dumpRegs(lgp30.state)
         }
 
-        await lgp30.step() //Run the ins
+        await lgp30.step() //Run the instruction
     }
 }
