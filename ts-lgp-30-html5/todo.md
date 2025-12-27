@@ -25,22 +25,31 @@ Status are:
 * todo
 * hold
 
-| Item                                    | Category | Status   | Note                                       |
-|-----------------------------------------|----------|----------|--------------------------------------------|
-| inhouse styles                          | wish     | todo     | remove bootstrap                           |
-| migrate to html5, inhouse styles        | tidy     | done     | use rem font size                          |
-| keep and cleanup jquery                 | tidy     | done     | remove the global window hack              |
-| document and unit test mem class        | feature  | done     | npm vite:test src/mem/mem.test.ts          |
-| document and unit test asm class        | feature  | progress | npm vite:test src/asm.test.ts finish tests |
-| add typedocs                            | feature  | done     | added docs script                          |
-| write pure html5 version                | wish     | hold     | remove all 3rd party js, css dependencies  |
-| expand vitest tests                     | wish     | todo     | all other *.test.ts files                  |
-| write vitest tests                      | feature  | progress | index.test.ts complete                     |
-| use Vite tooling                        | feature  | done     | vite and vitest works                      |
-| compile and test with new folder layout | tidy     | done     | works as per original                      |
-| restructure folder layout               | tidy     | done     |                                            |
-| act1 in it's own folder                 | tidy     | done     |                                            |
-| original js version in its own folder   | tidy     | done     |                                            |
+| Item                                    | Category | Status   | Note                                          |
+|-----------------------------------------|----------|----------|-----------------------------------------------|
+| Fix Track and SectorNumber types        | bug      | progress | untype and use number for internal processing |
+| inhouse styles                          | wish     | todo     | remove bootstrap                              |
+| migrate to html5, inhouse styles        | tidy     | done     | use rem font size                             |
+| keep and cleanup jquery                 | tidy     | done     | remove the global window hack                 |
+| document and unit test mem class        | feature  | done     | npm vite:test src/mem/mem.test.ts             |
+| document and unit test asm class        | feature  | progress | npm vite:test src/asm.test.ts finish tests    |
+| add typedocs                            | feature  | done     | added docs script                             |
+| write pure html5 version                | wish     | hold     | remove all 3rd party js, css dependencies     |
+| expand vitest tests                     | wish     | todo     | all other *.test.ts files                     |
+| write vitest tests                      | feature  | progress | index.test.ts complete                        |
+| use Vite tooling                        | feature  | done     | vite and vitest works                         |
+| compile and test with new folder layout | tidy     | done     | works as per original                         |
+| restructure folder layout               | tidy     | done     |                                               |
+| act1 in it's own folder                 | tidy     | done     |                                               |
+| original js version in its own folder   | tidy     | done     |                                               |
+
+## TrackNumber SectorNumber detyping
+
+It's a bit of a mistake to have the internals of the machine use a human number notation when by nature it uses pure binary. For all internal operations, the track and sector shall be passed as `number`. The values shall be converted to and from `flexohex` at the user interface level.
+
+### flexohex
+
+I made that word up. It's the flexowriter version of hexadecimal.
 
 ## HTML5 Migration
 
@@ -64,21 +73,30 @@ The existing html is 4.something with quirks mode. Migrate to html5 and fix layo
 
 ## Flexo Hex
 
-| dec | hex |
-|-----|-----|
-|   0 |   0 |
-|   1 |   1 |
-|   2 |   2 |
-|   3 |   3 |
-|   4 |   4 |
-|   5 |   5 |
-|   6 |   6 |
-|   7 |   7 |
-|   8 |   8 |
-|   9 |   9 |
-|  10 |   f |
-|  11 |   g |
-|  12 |   j |
-|  13 |   k |
-|  14 |   q |
-|  15 |   w |
+| dec | hex | flx |
+|-----|-----|-----|
+|   0 |   0 |   0 |
+|   1 |   1 |   1 |
+|   2 |   2 |   2 |
+|   3 |   3 |   3 |
+|   4 |   4 |   4 |
+|   5 |   5 |   5 |
+|   6 |   6 |   6 |
+|   7 |   7 |   7 |
+|   8 |   8 |   8 |
+|   9 |   9 |   9 |
+|  10 |   a |   f |
+|  11 |   b |   g |
+|  12 |   c |   j |
+|  13 |   d |   k |
+|  14 |   e |   q |
+|  15 |   f |   w |
+
+## 6 Bit Range
+
+| base   | range               |
+|--------|---------------------|
+| 2      | 000000 < n < 111111 |
+| 10     | 00     < n < 63     |
+| 16 hex | 00     < n < 3f     |
+| 16 flx | 00     < n < 3w     |

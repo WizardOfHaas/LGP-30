@@ -2,13 +2,14 @@
   "compilerOptions": {
     "lib": [
       "ESNext",
-      "dom"
+      "DOM"
     ],
     "isolatedModules": true,
     "esModuleInterop": true,
     "target": "ESNext",
     "strict": true,
     "allowJs": true,
+    "checkJs": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "noEmit": true,
@@ -18,9 +19,11 @@
     "outDir": "dist/",
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
-    "jsx": "react",
     "moduleResolution": "node"
   },
+  "include": [
+    "src/**/*.ts"
+  ],
   "exclude": [
     "**/*.test.ts"
   ]
