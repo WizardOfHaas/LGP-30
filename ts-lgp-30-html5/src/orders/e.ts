@@ -1,8 +1,9 @@
-import type { BitArray, SectorNumber, IState, TrackNumber } from "../types";
+import type { BitArray, IState } from "../types";
+import type { TrackNumber, SectorNumber } from "../types/numbers";
 import { IOrder } from "./order";
 
 //Extract: regs.a &= mem[TTSS]
-export class OrderE implements IOrder{
+export class OrderE implements IOrder {
     name = "e"
     orderNumber = [1, 0, 0, 1] as BitArray
 
@@ -11,7 +12,6 @@ export class OrderE implements IOrder{
         state.registers.a.set(
             state.registers.a.get().map((v, i) => v * arg[i]) as BitArray
         )
-
         state.registers.c.inc()
         return state
     }

@@ -1,5 +1,6 @@
 import { binToDec, halfToHex, decToBin, hexToDec } from "../util"
 import { Register } from "./register"
+import type { BitArray } from "../types"
 
 export class RegisterC extends Register {
     constructor() {
@@ -22,6 +23,16 @@ export class RegisterC extends Register {
 
         this.data = decToBin(track, 6).concat(decToBin(sector, 6))
     }
+
+    getTrack() :BitArray {
+        return this.get(0, 6)
+    }
+
+    getSector() :BitArray {
+        return this.get(6, 13)
+    }
+
+
 
     getHexTrack() {
         return halfToHex(this.data.slice(0, 6))

@@ -14,11 +14,10 @@ export abstract class Register {
 		this.data = new Array<1 | 0>(this.bits).fill(0)
 	}
 
-	get(start = 0, end = 0):BitArray {
+	get(start = 0, end = 0): BitArray {
 		if (end == 0) {
 			end = this.bits
 		}
-
 		return this.data.slice(start, end)
 	}
 
@@ -30,15 +29,15 @@ export abstract class Register {
 		this.data = new Array<1 | 0>(this.bits).fill(0)
 	}
 
-	getOrder() :BitArray {
+	getOrder(): BitArray {
 		return this.get(12, 16)
 	}
 
-	getTrack() :BitArray {
+	getTrack(): BitArray {
 		return this.get(18, 24)
 	}
 
-	getSector() :BitArray {
+	getSector(): BitArray {
 		return this.get(24, 30)
 	}
 

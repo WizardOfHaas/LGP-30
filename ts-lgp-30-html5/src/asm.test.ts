@@ -2,7 +2,8 @@
  * unit test for asm class
  */
 import { describe, test, beforeEach, expect } from 'vitest'
-import { BitArray, SectorNumber, TrackNumber } from './types'
+import type { BitArray } from "./types";
+import { asTrack, asSector } from "./types/numbers";
 import { assembleLine } from './asm'
 import { LGP30 } from "./lgp30"
 
@@ -16,8 +17,8 @@ describe("test the asm module", () => {
 
     test("test assemble a single line with constant", () => {
         // expect memory at '0009' to be zeros
-        const track: TrackNumber = '00'
-        const sector: SectorNumber = '09'
+        const track = asTrack('00')
+        const sector = asSector('09')
         const val = lgp30.state.memory.get(track, sector)
         const zeros: BitArray = new Array(32).fill(0);
         expect(val).toEqual(zeros)
@@ -35,14 +36,14 @@ describe("test the asm module", () => {
     test("test assemble unconditional jump order to '0002' into location '0000'", () => {
         // check pre-assembly memory
         const zeros: BitArray = new Array(32).fill(0);
-        expect(lgp30.state.memory.get('00', '00')).toEqual(zeros)
+        expect(lgp30.state.memory.get(asTrack('00'), asSector('00'))).toEqual(zeros)
         // assemble unconditional jump to '0002' into location '0000'
         assembleLine(lgp30.state.memory, "0000 u0002")
         // check the pattern assembled into memory
         //       ignore|order|pad| track|sector|pad
         // 000000000000| 1010| 00|000000|000010| 00
         const expected = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
-        expect(lgp30.state.memory.get('00', '00')).toEqual(expected)
+        expect(lgp30.state.memory.get(asTrack('00'), asSector('00'))).toEqual(expected)
     })
 
     // TODO do the rest

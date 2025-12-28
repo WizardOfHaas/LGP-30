@@ -1,8 +1,9 @@
-import type { BitArray, SectorNumber, IState, TrackNumber } from "../types";
+import type { BitArray, IState } from "../types";
+import type { TrackNumber, SectorNumber } from "../types/numbers";
 import { IOrder } from "./order";
 
 //Clear and Store: mem[track:sector] = regs.a, regs.a = 0
-export class OrderC implements IOrder{
+export class OrderC implements IOrder {
     name = "c"
     orderNumber = [1, 1, 0, 1] as BitArray
 

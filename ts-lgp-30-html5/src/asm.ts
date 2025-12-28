@@ -1,3 +1,4 @@
+import { asTrack, asSector } from "./types/numbers";
 import { charToBits } from "./chars";
 import { Memory } from "./mem/mem";
 import { decToHex, hexToBin } from "./util";
@@ -23,14 +24,14 @@ import { decToHex, hexToBin } from "./util";
  */
 export function assembleLine(memory: Memory, l: string) {
     const assembleCode = (memory: Memory, tokens: string[]) => {
-        const track = tokens[1]
-        const sector = tokens[2]
+        const track = asTrack(tokens[1])
+        const sector = asSector(tokens[2])
         const order = tokens[3]
         const trackArg = tokens[4]
         const sectorArg = tokens[5]
         // make a switch for hex/dec later. For now, hard code to dec
-        const hexTrack = decToHex(track)
-        const hexSector = decToHex(sector)
+        // const hexTrack = decToHex(track)
+        // const hexSector = decToHex(sector)
         const hexTrackArg = decToHex(trackArg)
         const hexSectorArg = decToHex(sectorArg)
         //Go char by char, and drop any comments
@@ -44,23 +45,23 @@ export function assembleLine(memory: Memory, l: string) {
             .concat(hexToBin(hexTrackArg, 6)) //Track arg
             .concat(hexToBin(hexSectorArg, 6)) //Sector arg
             .concat([0, 0]) //Spacer
-        memory.set(hexTrack, hexSector, ins)
+        memory.set(track, sector, ins)
     }
 
     const assembleConstant = (memory: Memory, tokens: string[]) => {
-        const track = tokens[1]
-        const sector = tokens[2]
+        const track = asTrack(tokens[1])
+        const sector = asSector(tokens[2])
         const constant = tokens[3]
         // make a switch for hex/dec later. For now, hard code to dec
-        const hexTrack = decToHex(track)
-        const hexSector = decToHex(sector)
+        // const hexTrack = decToHex(track)
+        // const hexSector = decToHex(sector)
         const hexConstant = decToHex(constant)
         const val = hexToBin(hexConstant, 32)
-        memory.set(hexTrack, hexSector, val)
+        memory.set(track, sector, val)
     }
 
     // empty lines are valid, ignore them.
-    if (!l || l.trim().length === 0){
+    if (!l || l.trim().length === 0) {
         return
     }
 
