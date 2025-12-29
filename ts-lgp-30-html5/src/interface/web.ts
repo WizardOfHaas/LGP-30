@@ -23,7 +23,6 @@ export function displayRegs(state: State) {
 export function displayMem(state: State) {
     $("#mem").html("")
     const ip = state.registers.c.toDec()
-
     state.memory.data.forEach((m, i) => {
         if (binToDec(m) != 0) {
             $("#mem").append($(

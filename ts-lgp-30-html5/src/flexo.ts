@@ -6,7 +6,7 @@ type TConfig = {
     onRx?: () => Promise<void>
 }
 
-export class Flexowriter{
+export class Flexowriter {
     codeToChar = [ //Thanks SIMH!
         -1  , 'z', '0', ' ', '>', 'b', '1', '-',
         '<' , 'y', '2', '+', '|', 'r', '3', ';',
@@ -83,47 +83,42 @@ export class Flexowriter{
     tapeBuffer: string[]
     tapeRunning: boolean
 
-    constructor(config?: TConfig){
-        if(typeof config !== "undefined"){
+    constructor(config?: TConfig) {
+        if (typeof config !== "undefined") {
             this.config = config
-        }else{
+        } else {
             this.config = {}
         }
-
         this.tapeBuffer = []
         this.tapeRunning = false
     }
 
-    convert(c: string){
-        if(c in this.charMapLC){
-//            console.debug("FLEXO:", c, this.charMapLC[c])
+    convert(c: string) {
+        if (c in this.charMapLC) {
             return this.charMapLC[c]
-        }else{
+        } else {
             return [0, 0, 0, 0, 0, 0]
         }
     }
 
     //Send a character(to LGP-30)
-    async tx(s: string){
+    async tx(s: string) {
         s.split("").forEach(async (c) => {
             const bits = this.convert(c)
-
-            if(typeof this.config.onTx !== "undefined"){
+            if (typeof this.config.onTx !== "undefined") {
                 await this.config.onTx(bits)
             }
         })
     }
 
     //Recieve a character(from LGP-30)
-    async rx(b: BitArray){
-        // console.debug("FLEXO", b)
-
-        if(binToDec(b) == 0){ //i 0000
+    async rx(b: BitArray) {
+        if (binToDec(b) == 0) { //i 0000
             await this.sendTape()
         }
     }
 
-    async sendTape(){
+    async sendTape() {
         //This needs to send out until COND-STOP, then terminate and send run signal to LGP-30
         /*while(this.tapeBuffer.length > 0){
             const c = this.tapeBuffer.shift()
@@ -134,14 +129,13 @@ export class Flexowriter{
         }*/
 
         const n = this.tapeBuffer.findIndex((d) => (d == "'")) //Find next COND-STOP
-        
-        if(n){
+        if (n) {
             //Slice it off
             //Send it
         }
     }
 
-    loadTape(t: string){
+    loadTape(t: string) {
         this.tapeBuffer = this.tapeBuffer.concat(t.split(""))
     }
 }

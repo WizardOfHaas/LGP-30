@@ -1,6 +1,7 @@
-import { binToDec, halfToHex, decToBin, hexToDec } from "../util"
+import { halfToHex, hexToDec } from "../util"
 import { Register } from "./register"
 import type { BitArray } from "../types"
+import { asSector, asTrack, toBits } from "../types/numbers"
 
 export class RegisterC extends Register {
     constructor() {
@@ -9,30 +10,27 @@ export class RegisterC extends Register {
 
     inc() {
         //Increment, respectinv TTSS addressing
-        let track = binToDec(this.data.slice(0, 6))
-        let sector = binToDec(this.data.slice(6, 13))
-
+        let track = asTrack(this.getTrack())
+        let sector = asSector(this.getSector())
         sector++
-
         if (sector > 63) {
-            sector = 0
+            sector = asSector(0)
             track++
         }
-
         // TODO what happens if track > 63?
-
-        this.data = decToBin(track, 6).concat(decToBin(sector, 6))
+        const trackBits = toBits(track)
+        const sectorBits = toBits(sector)
+        const newBits = trackBits.concat(sectorBits)
+        this.data = newBits
     }
 
-    getTrack() :BitArray {
+    getTrack(): BitArray {
         return this.get(0, 6)
     }
 
-    getSector() :BitArray {
+    getSector(): BitArray {
         return this.get(6, 13)
     }
-
-
 
     getHexTrack() {
         return halfToHex(this.data.slice(0, 6))
@@ -45,7 +43,6 @@ export class RegisterC extends Register {
     toDec() {
         const track = hexToDec(this.getHexTrack())
         const sector = hexToDec(this.getHexSector())
-
         return parseInt(track.toString() + (sector < 10 ? "0" : "") + sector.toString())
     }
 }

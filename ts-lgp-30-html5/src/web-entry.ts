@@ -24,7 +24,6 @@ $(window).on('load', async () => {
             displayMode(lgp30.state)
         },
         onTx: async (b) => {
-            // console.debug(b, bitsToChar(b))
             term.write(bitsToChar(b))
         }
     })

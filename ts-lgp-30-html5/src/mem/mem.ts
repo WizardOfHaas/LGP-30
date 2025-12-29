@@ -18,7 +18,7 @@ export class Memory {
      * The internal size of the memory.
      * @private
      */
-    private locations: number = 6363 //Wastes space, but makes TTSS addressing easier
+    private locations: number = 4096 //Wastes space, but makes TTSS addressing easier
 
     /**
      * Construct and initialise an instance of Memory
@@ -70,7 +70,7 @@ export class Memory {
      * @returns The composed linear index as a numerical value (number).
      */
     private composeIndex(track: TrackNumber, sector: SectorNumber): number {
-        return track * 100 + sector
+        return track * 64 + sector
 
         //        return parseInt(hexToDec(track) + "" + (hexToDec(sector) < 10 ? "0" + hexToDec(sector) : hexToDec(sector)))
     }

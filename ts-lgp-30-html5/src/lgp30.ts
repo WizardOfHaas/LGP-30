@@ -50,19 +50,15 @@ export class LGP30 {
         if (orderId in orderIdMap) {
             const nextState = await orderIdMap[orderId].eval(this.state, track, sector)
             this.state = nextState
-
             if (typeof this.config.onStep !== "undefined") {
                 this.config.onStep()
             }
-
             await delay(100)
         }
-
         //Do I have anything in the tx buffer? Then we better send it out!
         while (this.state.txBuffer.length > 0) {
             //It's a FIFO buffer, so grab the first entry
             const txBits = this.state.txBuffer.shift()
-
             if (txBits) { //Make sure we get a return, since shift is (T | undefined)
                 await this.tx(txBits) //Handle transmit logic
             }
@@ -71,7 +67,6 @@ export class LGP30 {
 
     async step() {
         await this.executeOrder() //Execute order in R, transition to new state
-
         dumpRegs(this.state) //Show it
     }
 
@@ -79,17 +74,13 @@ export class LGP30 {
         if (this.state.running == true) {
             return //Break if the machine is already in a running state
         }
-
         this.state.running = true //Mark us as running
-
         //Loop until we are kicked from the running state, by either Z or I
         while (this.state.running == true) {
             if (this.state.mode == "NORMAL") {
                 this.fetchOrder() //Fetch ins into R
-
                 await this.step()
             }
-
             if (this.state.mode == "ONE-OP") {
                 this.fetchOrder()
                 await this.step()
@@ -161,10 +152,8 @@ export class LGP30 {
     async rxFromBuffer() {
         while (this.state.rxBuffer.length > 0) {
             const b = this.state.rxBuffer.shift()
-
             if (b) {
                 const res = await this.rx(b)
-
                 if (binToDec(res) == 32) {
                     //break; //I break for COND-STOP
                 }
@@ -191,20 +180,17 @@ export class LGP30 {
     loadMemoryImage(s: string) {
         s.split("\n").forEach((d) => {
             const [id, val] = d.split(":")
-
             this.state.memory.data[id] = val.split("").map((n) => (parseInt(n, 2)))
         })
     }
 
     dumpMemoryImage() {
         const dump: string[] = []
-
         this.state.memory.data.forEach((d, i) => {
             if (binToDec(d) != 0) {
                 dump.push(i + ":" + d.join(""))
             }
         })
-
         return dump.join("\n")
     }
 }

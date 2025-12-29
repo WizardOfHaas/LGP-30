@@ -5,7 +5,6 @@ import { decToBin, dumpRegs, halfToHex } from "./util"
 
 const lgp30 = new LGP30({
     onTx: async (b) => {
-        // console.debug(b)
     }
 })
 
@@ -92,7 +91,6 @@ u3wlj''`)
 
 for (let i = 0; i < 63; i++) {
     const sector = halfToHex(decToBin(i, 6))
-    // console.debug("3w", sector, decodeOrder(lgp30.state.memory.get("3w", sector)))
 }
 
 lgp30.state.mode = "NORMAL"
@@ -108,33 +106,21 @@ lgp30.state.mode = "NORMAL"
 //flexo.loadTape(fs.readFileSync("./p104.tx").toString())
 //await flexo.sendTape()
 
-//console.debug(lgp30.state.memory.get("10", "00"))
-
 /**
  * Make this function available to the test suite
  * @param s the script to execute
  */
 export async function manualScript(s: string) {
     const insructions = s.split("\n")
-    // console.debug(ins)
-
     lgp30.state.mode = "MANUAL"
-
     for (const instruction of insructions) {
         const [sto, ord] = instruction.split("'")
-
         await flexo.tx(sto) //Send over storage part
-        // console.debug(sto, '->', decodeOrder(lgp30.state.registers.a.get()))
-
         lgp30.fillIns() //Setup to run sto
-
         if (ord && ord.length > 0) { //We have a store order, and an instruction order
-
             await flexo.tx(ord) //Load in next part
-            // console.debug(ord, '->', decodeOrder(lgp30.state.registers.a.get()))
             dumpRegs(lgp30.state)
         }
-
         await lgp30.step() //Run the instruction
     }
 }
