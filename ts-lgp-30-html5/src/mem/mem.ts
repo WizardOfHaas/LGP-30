@@ -1,6 +1,5 @@
 import type { BitArray } from "../types";
 import type { TrackNumber, SectorNumber } from "../types/numbers";
-import { hexToDec } from "../util"
 
 /**
  * Memory emulation class
