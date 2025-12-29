@@ -30,6 +30,20 @@
             "type": "node"
         },
         {
+            "name": "run lgp30.test.ts",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "vite:test",
+                "src/lgp30.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
             "name": "run mem/mem.test.ts",
             "request": "launch",
             "runtimeArgs": [
