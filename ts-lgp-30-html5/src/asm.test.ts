@@ -46,6 +46,20 @@ describe("test the asm module", () => {
         expect(lgp30.state.memory.get(asTrack('00'), asSector('00'))).toEqual(expected)
     })
 
+    test("test assemble unconditional jump order to '1000' into location '0000'", () => {
+        // check pre-assembly memory
+        const zeros: BitArray = new Array(32).fill(0);
+        expect(lgp30.state.memory.get(asTrack('00'), asSector('00'))).toEqual(zeros)
+        // assemble unconditional jump to '0002' into location '0000'
+        assembleLine(lgp30.state.memory, "0000 u1000")
+        // check the pattern assembled into memory
+        //       ignore|ord |xx| track|sector|xx
+        // 000000000000|1010|00|001010|000000|00
+        const expected = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        expect(lgp30.state.memory.get(asTrack('00'), asSector('00'))).toEqual(expected)
+    })
+
+
     // TODO do the rest
     // test("test assembleLine", () => {
     //     assembleLine(lgp30.state.memory, "0000 u0002")

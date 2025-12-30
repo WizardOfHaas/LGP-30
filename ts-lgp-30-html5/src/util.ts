@@ -10,6 +10,7 @@ export function binToDec(b) {
 }
 
 export function decToBin(d, n) {
+    // console.debug('decToBin d', d, 'n', n);
     const bits = d.toString(2).split("").map(Number)
 
     if (n == undefined) {
@@ -116,9 +117,13 @@ export function unpackNum(w) {
     return (w[0] == 1 ? -1 : 1) * binToDec(w.slice(1))
 }
 
-export function addrToHex(d: number) {
+/**
+ * Converts a decimal number to a 4 character flexidecimal string.
+ * @param d the number to convert in the range of 0-4095
+ * @returns the flexidecimal string representation of the number
+ */
+export function addrToHex(d: number): string {
     const s = String(d).padStart(4, '0')
-
     return halfToHex(decToBin(parseInt(s.substring(0, 2)), 6)) + halfToHex(decToBin(parseInt(s.substring(2, 4)), 6))
 }
 
@@ -144,7 +149,7 @@ export function insertArrayAt(array: BitArray, index: number, arrayToInsert: Bit
  */
 
 export function dumpRegs(state: IState) {
-    if (true) return // disable for now
+    if (false) return // disable for now
     console.info(
         decodeOrder(state.registers.r.get()) +
         " -> " +

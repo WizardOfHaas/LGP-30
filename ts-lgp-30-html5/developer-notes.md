@@ -112,3 +112,7 @@ Why this layout (short):
 * dist/ is the compile output (ignored in git) deployed to apache servers.
 * public/ holds the ico file and is bundled to dist when built.
 * src/ contains all project and test TS files.
+
+## Web Resources
+
+* <https://t-lcarchive.org/lgp-30/>

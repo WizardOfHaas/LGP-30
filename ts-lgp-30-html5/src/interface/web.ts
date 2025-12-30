@@ -21,10 +21,12 @@ export function displayRegs(state: State) {
 }
 
 export function displayMem(state: State) {
+//    console.debug('displayMem registers.c', state.registers.c);
     $("#mem").html("")
     const ip = state.registers.c.toDec()
     state.memory.data.forEach((m, i) => {
         if (binToDec(m) != 0) {
+//            console.debug('ip:', ip, 'i:', i);
             $("#mem").append($(
                 "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + addrToHex(i) + ":</td>" +
                 //"<td>" + m.join("") + "</td>" +
@@ -107,7 +109,7 @@ export function bindOpButtons(lgp30: LGP30) {
 
     $("#ex-ins").on("click", () => {
         lgp30.executeOrder().then(() => {
-            console.debug("Order executed")
+            console.debug("Order executed successfully")
         }).catch((e) => {
             console.error("Error executing order:", e)
         })

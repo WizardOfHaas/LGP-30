@@ -27,8 +27,8 @@ export function assembleLine(memory: Memory, l: string) {
         const track = asTrack(tokens[1])
         const sector = asSector(tokens[2])
         const order = tokens[3]
-        const trackArg = asTrack(tokens[4])
-        const sectorArg = asSector(tokens[5])
+        const trackArg = asTrack(tokens[4]) // this should be a decimal number
+        const sectorArg = asSector(tokens[5]) // this should be a decimal number
         // make a switch for hex/dec later. For now, hard code to dec
         // const hexTrack = decToHex(track)
         // const hexSector = decToHex(sector)
