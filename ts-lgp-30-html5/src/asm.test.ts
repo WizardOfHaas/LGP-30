@@ -60,6 +60,45 @@ describe("test the asm module", () => {
     })
 
 
+
+    test('test the example program', () => {
+        assembleLine(lgp30.state.memory, '0000 u1000 #Jump to entry')
+        // 000000000000|1010|00|001010|000000|00
+        expect(lgp30.state.memory.get(asTrack('00'), asSector('00'))).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+        assembleLine(lgp30.state.memory, '1000 p0000')
+        // 000000000000|1000|00|000000|000000|00
+        expect(lgp30.state.memory.get(asTrack('10'), asSector('00'))).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+        assembleLine(lgp30.state.memory, '1001 b1000')
+        // 000000000000|0001|00|001010|000000|00
+        expect(lgp30.state.memory.get(asTrack('10'), asSector('01'))).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+        assembleLine(lgp30.state.memory, '1002 a2005 #Add up 1 to track')
+        // 000000000000|1110|00|010100|000101|00
+        expect(lgp30.state.memory.get(asTrack('10'), asSector('02'))).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0])
+
+
+
+        assembleLine(lgp30.state.memory, '1003 y1000 #Modify p')
+        assembleLine(lgp30.state.memory, '1004 b2002 #Sets A to (2002)')
+        assembleLine(lgp30.state.memory, '1005 a2001 #Adds (2001) to A')
+        assembleLine(lgp30.state.memory, '1006 h2002 #Saves results in (2002)')
+        assembleLine(lgp30.state.memory, '1007 s2003 #Subtracts 5 from A')
+        assembleLine(lgp30.state.memory, '1008 t1000 #Tests, and jumps to top of loop')
+        assembleLine(lgp30.state.memory, '1009 z0000 #Stop')
+        assembleLine(lgp30.state.memory, '2001 1 #Counter start')
+        // 000000000000|0000|00|000000|000000|01
+        // [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]
+        expect(lgp30.state.memory.get(asTrack('20'), asSector('01'))).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
+
+        assembleLine(lgp30.state.memory, '2003 64 #Counter stop')
+        assembleLine(lgp30.state.memory, '2005 256 #Track = 1. This is our incrementer')
+    })
+
+
+
+
     // TODO do the rest
     // test("test assembleLine", () => {
     //     assembleLine(lgp30.state.memory, "0000 u0002")
@@ -71,4 +110,10 @@ describe("test the asm module", () => {
     //     assembleLine(lgp30.state.memory, "0009 5")
     //     assembleLine(lgp30.state.memory, "0010 1")
     // })
+
+
+
+
+
+
 })

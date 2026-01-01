@@ -20,15 +20,18 @@ export function displayRegs(state: State) {
     $("#a-bin").html(bitsToSpans(state.registers.a.get()))
 }
 
+// todo show the address and operand as t|s
 export function displayMem(state: State) {
 //    console.debug('displayMem registers.c', state.registers.c);
     $("#mem").html("")
     const ip = state.registers.c.toDec()
     state.memory.data.forEach((m, i) => {
         if (binToDec(m) != 0) {
-            console.debug('ip:', ip, 'i:', i);
+            // console.debug('ip:', ip, 'i:', i);
+            const i4: string = (i).toString().padStart(4, '0');
+
             $("#mem").append($(
-                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + addrToHex(i) + ":</td>" +
+                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + /*addrToHex(*/i4/*)*/ + ":</td>" +
                 //"<td>" + m.join("") + "</td>" +
                 "<td>" +
                 m.slice(0, 12).join("") + "|" +
@@ -38,8 +41,9 @@ export function displayMem(state: State) {
                 m.slice(24, 30).join("") + "|" +
                 m.slice(30, 32).join("") +
                 "</td>" +
-                "<td>(" + binToDec(m) + ")</td>" +
-                "<td>" + decodeOrder(m) + "</td>" +
+                // "<td>(" + binToDec(m) + ")</td>" +
+                "<td>&nbsp;" + decodeOrder(m) + "</td>" +
+                "<td>"+"</td>"+ // if the order is a constant, show the constant
                 "</tr>"
             ))
         }

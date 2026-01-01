@@ -12,11 +12,12 @@ import { OrderZ } from "./z"
 import { OrderP } from "./p"
 import { OrderI } from "./i"
 import { BitArray } from "../types"
-import { halfToHex } from "../util"
+// import { halfToHex } from "../util"
 import { OrderE } from "./e"
 import { OrderD } from "./d"
 import { OrderM } from "./m"
 import { OrderN } from "./n"
+import { asTrack, asSector } from '../types/numbers'
 
 const orders = [
     new OrderB(),
@@ -48,10 +49,13 @@ orders.forEach((o) => {
 
 export function decodeOrder(r: BitArray) {
     const orderId = r.slice(12, 16).join("")
-    const track = halfToHex(r.slice(18, 24))
-    const sector = halfToHex(r.slice(24, 30))
+    const track = asTrack/* halfToHex*/(r.slice(18, 24)) // here
+    const sector = asSector/* halfToHex*/(r.slice(24, 30))
     if (orderId in orderIdMap) {
-        return orderIdMap[orderId].name + " " + track + sector
+
+const result: string = (track * 64 + sector).toString().padStart(4, '0');
+return orderIdMap[orderId].name + result
+//        return orderIdMap[orderId].name + " " + (track*64 + sector)
     }
     return "        " //Spacer, since this is for pretty printing
 }
