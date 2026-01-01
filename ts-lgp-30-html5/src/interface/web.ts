@@ -26,7 +26,7 @@ export function displayMem(state: State) {
     const ip = state.registers.c.toDec()
     state.memory.data.forEach((m, i) => {
         if (binToDec(m) != 0) {
-//            console.debug('ip:', ip, 'i:', i);
+            console.debug('ip:', ip, 'i:', i);
             $("#mem").append($(
                 "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + addrToHex(i) + ":</td>" +
                 //"<td>" + m.join("") + "</td>" +

@@ -9,7 +9,7 @@ describe("test SixBitNumber type and functions", () => {
     test("asSixBit throws on invalid number", () => {
         expect(() => asSixBit(-1)).toThrow();
         expect(() => asSixBit(64)).toThrow();
-        expect(() => asSixBit('40')).toThrow();
+        expect(() => asSixBit('64')).toThrow();
     });
 
     test("test asSixBit from number", () => {
@@ -22,13 +22,13 @@ describe("test SixBitNumber type and functions", () => {
         expect(toBinary(sixtyThree)).toBe('111111')
     })
 
-    test("test asSixBit from string of flexodecimal", () => {
-        const zero = asSixBit('00')
-        expectTypeOf(zero).toEqualTypeOf<SixBitNumber>();
-        expect(zero).toBe(0)
-        const sixtyThree = asSixBit('3w')
-        expect(sixtyThree).toBe(63)
-    })
+    // test("test asSixBit from string of flexodecimal", () => {
+    //     const zero = asSixBit('00')
+    //     expectTypeOf(zero).toEqualTypeOf<SixBitNumber>();
+    //     expect(zero).toBe(0)
+    //     const sixtyThree = asSixBit('3w')
+    //     expect(sixtyThree).toBe(63)
+    // })
 
     test("test asSixBit from bits", () => {
         const zero = asSixBit([0, 0, 0, 0, 0, 0])
@@ -47,7 +47,7 @@ describe("test TrackNumber type and functions", () => {
     test("asTrack throws on invalid number", () => {
         expect(() => asTrack(-1)).toThrow();
         expect(() => asTrack(64)).toThrow();
-        expect(() => asTrack('40')).toThrow();
+        expect(() => asTrack('64')).toThrow();
     });
 
     test("test asTrack from number", () => {
@@ -58,13 +58,21 @@ describe("test TrackNumber type and functions", () => {
         expect(sixtyThree).toBe(63)
     })
 
-    test("test asTrack from string of flexodecimal", () => {
+    test("test asTrack from string", () => {
         const zero = asTrack('00')
         expectTypeOf(zero).toEqualTypeOf<TrackNumber>();
         expect(zero).toBe(0)
-        const sixtyThree = asTrack('3w')
+        const sixtyThree = asTrack('63')
         expect(sixtyThree).toBe(63)
     })
+
+    // test("test asTrack from string of flexodecimal", () => {
+    //     const zero = asTrack('00')
+    //     expectTypeOf(zero).toEqualTypeOf<TrackNumber>();
+    //     expect(zero).toBe(0)
+    //     const sixtyThree = asTrack('3w')
+    //     expect(sixtyThree).toBe(63)
+    // })
 })
 
 describe("test SectorNumber type and functions", () => {
@@ -72,7 +80,7 @@ describe("test SectorNumber type and functions", () => {
     test("asSector throws on invalid number", () => {
         expect(() => asSector(-1)).toThrow();
         expect(() => asSector(64)).toThrow();
-        expect(() => asSector('40')).toThrow();
+        expect(() => asSector('64')).toThrow();
     });
 
     test("test asSector from number", () => {
@@ -82,12 +90,19 @@ describe("test SectorNumber type and functions", () => {
         const sixtyThree = asSector(63)
         expect(sixtyThree).toBe(63)
     })
-
-    test("test asSector from string of flexodecimal", () => {
+    test("test asSector from string", () => {
         const zero = asSector('00')
         expectTypeOf(zero).toEqualTypeOf<SectorNumber>();
         expect(zero).toBe(0)
-        const sixtyThree = asTrack('3w')
+        const sixtyThree = asSector('63')
         expect(sixtyThree).toBe(63)
     })
+
+    // test("test asSector from string of flexodecimal", () => {
+    //     const zero = asSector('00')
+    //     expectTypeOf(zero).toEqualTypeOf<SectorNumber>();
+    //     expect(zero).toBe(0)
+    //     const sixtyThree = asTrack('3w')
+    //     expect(sixtyThree).toBe(63)
+    // })
 })

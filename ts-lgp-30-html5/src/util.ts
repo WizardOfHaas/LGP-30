@@ -12,12 +12,12 @@ export function binToDec(b) {
 export function decToBin(d, n) {
     // console.debug('decToBin d', d, 'n', n);
     const bits = d.toString(2).split("").map(Number)
-
     if (n == undefined) {
         return bits
     }
-
-    return Array(n - bits.length).fill(0).concat(bits)
+    const arrayLength = n - bits.length
+    if (arrayLength < 0) { throw new Error(`arrayLength ${arrayLength} < 0`) }
+    return Array(arrayLength).fill(0).concat(bits)
 }
 
 export function hexToDec(h) {

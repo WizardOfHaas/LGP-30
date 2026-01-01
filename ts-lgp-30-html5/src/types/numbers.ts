@@ -22,7 +22,8 @@ export function asSixBit(n: number | string | BitArray): SixBitNumber {
     }
     if (typeof n === "string") {
         // convert flexidecimal string → number
-        const value = parseFlexi(n) // parseInt(n, 16);
+        // const value = parseFlexi(n) // parseInt(n, 16);
+        const value = parseInt(n) // parseInt(n, 16);
 
         return asSixBit(value); // validate here
     }
