@@ -2,7 +2,7 @@ import { LGP30 } from "../lgp30"
 import { decodeOrder } from "../orders/orderMap"
 import { State } from "../state"
 import { BitArray, ExecMode } from "../types"
-import { addrToHex, binToDec, unpackNum } from "../util"
+import { binToDec, unpackNum } from "../util"
 
 export function displayRegs(state: State) {
     // TODO - group the order | track | sector
@@ -10,29 +10,26 @@ export function displayRegs(state: State) {
     $("#r").text(state.registers.r.get().join(""))
     $("#a").text(state.registers.a.get().join(""))
 
-    $("#c-dec").text(state.registers.c.toDec())
+    $("#c-dec").text(state.registers.c.toTTSS())
     $("#r-dec").text(decodeOrder(state.registers.r.get()))
     $("#a-dec").text(unpackNum(state.registers.a.get()))
-    $("#a-ins").text(decodeOrder(state.registers.a.get()))
-
+    // $("#a-ins").text(decodeOrder(state.registers.a.get()))
+    // display to the scope
     $("#c-bin").html(bitsToSpans(state.registers.c.get()))
     $("#r-bin").html(bitsToSpans(state.registers.r.get()))
     $("#a-bin").html(bitsToSpans(state.registers.a.get()))
 }
 
-// todo show the address and operand as t|s
 export function displayMem(state: State) {
-//    console.debug('displayMem registers.c', state.registers.c);
     $("#mem").html("")
     const ip = state.registers.c.toDec()
     state.memory.data.forEach((m, i) => {
         if (binToDec(m) != 0) {
-            // console.debug('ip:', ip, 'i:', i);
             const i4: string = (i).toString().padStart(4, '0');
-
+            const trackStr = Math.floor(i / 64).toString().padStart(2, '0')
+            const sectorStr = (i % 64).toString().padStart(2, '0')
             $("#mem").append($(
-                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + /*addrToHex(*/i4/*)*/ + ":</td>" +
-                //"<td>" + m.join("") + "</td>" +
+                "<tr" + (i == ip ? " class='ip'" : "") + "><td>" + trackStr + sectorStr + ":</td>" +
                 "<td>" +
                 m.slice(0, 12).join("") + "|" +
                 m.slice(12, 16).join("") + "|" +
@@ -41,9 +38,8 @@ export function displayMem(state: State) {
                 m.slice(24, 30).join("") + "|" +
                 m.slice(30, 32).join("") +
                 "</td>" +
-                // "<td>(" + binToDec(m) + ")</td>" +
                 "<td>&nbsp;" + decodeOrder(m) + "</td>" +
-                "<td>"+"</td>"+ // if the order is a constant, show the constant
+                "<td></td>" + // if the order is a constant, show the constant
                 "</tr>"
             ))
         }

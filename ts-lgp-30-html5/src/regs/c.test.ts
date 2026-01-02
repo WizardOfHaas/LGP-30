@@ -22,16 +22,16 @@ describe("Register C", () => {
     })
 
     test('test toDec', () => {
-        // the math is screwy
-        // I would think 1000 as track and sector would be
-        // 
-        expect(c.data).toStrictEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-        // 10|00
-        // 001010|000000
-        // [0,0,1,0,1,0,0,0,0,0,0,0]
-        c.set([0,0,1,0,1,0,0,0,0,0,0,0])
-        // console.debug(c.toDec())
-        expect(c.toDec()).toBe(10 * 64 + 0)
+        // 10|10
+        // 001010|001010
+        c.set([0,0,1,0,1,0,0,0,1,0,1,0])
+        expect(c.toDec()).toBe(10 * 64 + 10)
     })
 
+    test('test toTTSS', () => {
+        // 10|10
+        // 001010|001010
+        c.set([0,0,1,0,1,0,0,0,1,0,1,0])
+        expect(c.toTTSS()).toBe('1010')
+    })
 })

@@ -41,9 +41,12 @@ export class RegisterC extends Register {
     }
 
     toDec() {
-        // const track = hexToDec(this.getHexTrack())
-        // const sector = hexToDec(this.getHexSector())
-        // return parseInt(track.toString() + (sector < 10 ? "0" : "") + sector.toString())
-    return asTrack(this.getTrack()) * 64 + asSector(this.getSector())
+        return asTrack(this.getTrack()) * 64 + asSector(this.getSector())
+    }
+
+    toTTSS(): string {
+        const trackStr = asTrack(this.getTrack()).toString().padEnd(2, '0')
+        const sectorStr = asSector(this.getSector()).toString().padEnd(2, '0')
+        return trackStr + sectorStr
     }
 }
