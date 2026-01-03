@@ -5,7 +5,13 @@ import type { BitArray } from "./types";
 /**
  * Number encoding/decoding stuff
  */
-export function binToDec(b) {
+
+/**
+ * Convert an array of bits to a decimal number
+ * @param b The array of bits
+ * @returns The bits interpreted as a decimal number
+ */
+export function binToDec(b: BitArray): number {
     return parseInt(b.join(""), 2);
 }
 
@@ -101,19 +107,25 @@ export function isHex(c) {
     return c == 0 || Number(c) || ["f", "g", "j", "k", "q", "w", "l"].includes(c)
 }
 
-//Encode literal number
-export function packNum(d) {
+/**
+ * Encode literal number (used for the registers)
+ * @param d the signed number
+ * @returns an array of bits that represent the number where the first bit is the sign
+ */
+export function packNum(d: number): BitArray {
     const w = decToBin(Math.abs(d), 32)
-
     if (d < 0) {
         w[0] = 1
     }
-
     return w
 }
 
-//Decode literal number
-export function unpackNum(w) {
+/**
+ * Decode literal number (used for the registers)
+ * @param w An array of bits where the first bit is the sign
+ * @returns The bits as a signed decimal number
+ */
+export function unpackNum(w: BitArray): number {
     return (w[0] == 1 ? -1 : 1) * binToDec(w.slice(1))
 }
 
