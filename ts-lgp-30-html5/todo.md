@@ -25,29 +25,31 @@ Status are:
 * todo
 * hold
 
-| Item                                    | Category | Status   | Note                                          |
-|-----------------------------------------|----------|----------|-----------------------------------------------|
-| Fix Track and SectorNumber types        | bug      | progress | untype and use number for internal processing |
-| inhouse styles                          | wish     | todo     | remove bootstrap                              |
-| migrate to html5, inhouse styles        | tidy     | done     | use rem font size                             |
-| keep and cleanup jquery                 | tidy     | done     | remove the global window hack                 |
-| document and unit test mem class        | feature  | done     | npm vite:test src/mem/mem.test.ts             |
-| document and unit test asm class        | feature  | progress | npm vite:test src/asm.test.ts finish tests    |
-| add typedocs                            | feature  | done     | added docs script                             |
-| write pure html5 version                | wish     | hold     | remove all 3rd party js, css dependencies     |
-| expand vitest tests                     | wish     | todo     | all other *.test.ts files                     |
-| write vitest tests                      | feature  | progress | index.test.ts complete                        |
-| use Vite tooling                        | feature  | done     | vite and vitest works                         |
-| compile and test with new folder layout | tidy     | done     | works as per original                         |
-| restructure folder layout               | tidy     | done     |                                               |
-| act1 in it's own folder                 | tidy     | done     |                                               |
-| original js version in its own folder   | tidy     | done     |                                               |
+| Item                                    | Category | Status   | Note                                       |
+|-----------------------------------------|----------|----------|--------------------------------------------|
+| Fix Track and SectorNumber types        | bug      | done     | improve type for internal processing       |
+| inhouse styles                          | wish     | todo     | remove bootstrap                           |
+| migrate to html5, inhouse styles        | tidy     | done     | use rem font size                          |
+| keep and cleanup jquery                 | tidy     | done     | remove the global window hack              |
+| document and unit test mem class        | feature  | done     | npm vite:test src/mem/mem.test.ts          |
+| document and unit test asm class        | feature  | progress | npm vite:test src/asm.test.ts finish tests |
+| add typedocs                            | feature  | done     | added docs script                          |
+| write pure html5 version                | wish     | hold     | remove all 3rd party js, css dependencies  |
+| expand vitest tests                     | wish     | todo     | all other *.test.ts files                  |
+| write vitest tests                      | feature  | progress | index.test.ts complete                     |
+| use Vite tooling                        | feature  | done     | vite and vitest works                      |
+| compile and test with new folder layout | tidy     | done     | works as per original                      |
+| restructure folder layout               | tidy     | done     |                                            |
+| act1 in it's own folder                 | tidy     | done     |                                            |
+| original js version in its own folder   | tidy     | done     |                                            |
 
-## TrackNumber SectorNumber detyping
+## Fix TrackNumber SectorNumber types
 
-It's a bit of a mistake to have the internals of the machine use a human number notation when by nature it uses pure binary. For all internal operations, the track and sector shall be passed as `number`. The values shall be converted to and from `flexohex` at the user interface level.
+The internals of the machine is not flexodecimal (see below)
+So it doesn't make sense to use a human number representation for registers, tracks, and sectors.
+I've changed TrackNumber and SectorNumber to a six bit number type and provided conversion contructors to take a number as a string, a pure number or a series of bits.
 
-### flexohex
+### flexodecimal
 
 I made that word up. It's the flexowriter version of hexadecimal.
 
