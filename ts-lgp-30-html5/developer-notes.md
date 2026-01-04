@@ -99,7 +99,7 @@ ts-lgp-30-html5/
 │       └── test.html (sean's original web-page)
 ├── .gitignore
 ├── index.html
-├── index5.html (the html5 version)
+├── index-dev.html (development version only)
 ├── package-lock.json
 ├── package.json
 ├── tsconfig.json

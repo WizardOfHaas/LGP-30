@@ -11,6 +11,7 @@
 
 | Version | Date     | Summary                                 |
 |---------|----------|-----------------------------------------|
+| 1.3.0   | 20260104 | adopt html5 by default                  |
 | 1.2.1   | 20251226 | fix a design choice for track / sector  |
 | 1.2.0   | 20251221 | cleanup jquery, html5                   |
 | 1.1.1   | 20251214 | Fix issues with asm                     |
@@ -23,6 +24,10 @@
 | 1.0.0   | 20251019 | Tidy project and folder layout.         |
 | 1.0.0   | 20250920 | Fork of Sean's original source.         |
 | 1.0.0   | 20250724 | Sean's original source.                 |
+
+## Version 1.3.0
+
+* adopt the html5 changes by default
 
 ## Version 1.2.1
 
