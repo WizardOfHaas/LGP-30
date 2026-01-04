@@ -138,21 +138,18 @@ export const charMapLC = {
     "x": [1, 0, 0, 1, 1, 1]
 }
 
-export function charToBits(c: string): BitArray{
-    if(c in charMapLC){
-        // console.debug(c, charMapLC[c])
+export function charToBits(c: string): BitArray {
+    if (c in charMapLC) {
         return charMapLC[c]
-    }else{
+    } else {
         return [0, 0, 0, 0, 0, 0]
     }
 }
 
-export function bitsToChar(b: BitArray){
+export function bitsToChar(b: BitArray) {
     const code = binToDec(b)
-    
-    if(typeof codeMapLC[code] !== "undefined" && codeMapLC[code] != null){
+    if (typeof codeMapLC[code] !== "undefined" && codeMapLC[code] != null) {
         return codeMapLC[code]
     }
-
     return ""
 }

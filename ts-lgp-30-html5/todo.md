@@ -27,6 +27,7 @@ Status are:
 
 | Item                                    | Category | Status   | Note                                       |
 |-----------------------------------------|----------|----------|--------------------------------------------|
+| Fix Track and SectorNumber types        | bug      | done     | improve type for internal processing       |
 | inhouse styles                          | wish     | todo     | remove bootstrap                           |
 | migrate to html5, inhouse styles        | tidy     | done     | use rem font size                          |
 | keep and cleanup jquery                 | tidy     | done     | remove the global window hack              |
@@ -41,6 +42,16 @@ Status are:
 | restructure folder layout               | tidy     | done     |                                            |
 | act1 in it's own folder                 | tidy     | done     |                                            |
 | original js version in its own folder   | tidy     | done     |                                            |
+
+## Fix TrackNumber SectorNumber types
+
+The internals of the machine is not flexodecimal (see below)
+So it doesn't make sense to use a human number representation for registers, tracks, and sectors.
+I've changed TrackNumber and SectorNumber to a six bit number type and provided conversion contructors to take a number as a string, a pure number or a series of bits.
+
+### flexodecimal
+
+I made that word up. It's the flexowriter version of hexadecimal.
 
 ## HTML5 Migration
 
@@ -64,21 +75,30 @@ The existing html is 4.something with quirks mode. Migrate to html5 and fix layo
 
 ## Flexo Hex
 
-| dec | hex |
-|-----|-----|
-|   0 |   0 |
-|   1 |   1 |
-|   2 |   2 |
-|   3 |   3 |
-|   4 |   4 |
-|   5 |   5 |
-|   6 |   6 |
-|   7 |   7 |
-|   8 |   8 |
-|   9 |   9 |
-|  10 |   f |
-|  11 |   g |
-|  12 |   j |
-|  13 |   k |
-|  14 |   q |
-|  15 |   w |
+| dec | hex | flx |
+|-----|-----|-----|
+|   0 |   0 |   0 |
+|   1 |   1 |   1 |
+|   2 |   2 |   2 |
+|   3 |   3 |   3 |
+|   4 |   4 |   4 |
+|   5 |   5 |   5 |
+|   6 |   6 |   6 |
+|   7 |   7 |   7 |
+|   8 |   8 |   8 |
+|   9 |   9 |   9 |
+|  10 |   a |   f |
+|  11 |   b |   g |
+|  12 |   c |   j |
+|  13 |   d |   k |
+|  14 |   e |   q |
+|  15 |   f |   w |
+
+## 6 Bit Range
+
+| base   | range               |
+|--------|---------------------|
+| 2      | 000000 < n < 111111 |
+| 10     | 00     < n < 63     |
+| 16 hex | 00     < n < 3f     |
+| 16 flx | 00     < n < 3w     |

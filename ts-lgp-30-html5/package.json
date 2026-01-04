@@ -1,6 +1,6 @@
 {
   "name": "lgp30",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "index.ts",
   "type": "module",
   "repository": {
@@ -33,7 +33,7 @@
     "@types/node": "^24.10.1",
     "@vitest/coverage-v8": "^4.0.6",
     "@xterm/xterm": "^5.5.0",
-    "eslint": "^9.39.1",
+    "eslint": "^9.39.2",
     "globals": "^16.5.0",
     "http-server": "^14.1.1",
     "jquery": "^3.7.1",

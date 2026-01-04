@@ -1,3 +1,4 @@
+import { asTrack, asSector, toBits } from "./types/numbers";
 import { charToBits } from "./chars";
 import { Memory } from "./mem/mem";
 import { decToHex, hexToBin } from "./util";
@@ -23,16 +24,14 @@ import { decToHex, hexToBin } from "./util";
  */
 export function assembleLine(memory: Memory, l: string) {
     const assembleCode = (memory: Memory, tokens: string[]) => {
-        const track = tokens[1]
-        const sector = tokens[2]
+        const track = asTrack(tokens[1])
+        const sector = asSector(tokens[2])
         const order = tokens[3]
-        const trackArg = tokens[4]
-        const sectorArg = tokens[5]
+        const trackArg = asTrack(tokens[4]) // this should be a decimal number
+        const sectorArg = asSector(tokens[5]) // this should be a decimal number
         // make a switch for hex/dec later. For now, hard code to dec
-        const hexTrack = decToHex(track)
-        const hexSector = decToHex(sector)
-        const hexTrackArg = decToHex(trackArg)
-        const hexSectorArg = decToHex(sectorArg)
+        // const hexTrack = decToHex(track)
+        // const hexSector = decToHex(sector)
         //Go char by char, and drop any comments
         //  I need to debug the packing here...
         const orderVal = order.split("").map((c) => { //This DOES   need to do address conversion to avoid tape style packing
@@ -41,29 +40,27 @@ export function assembleLine(memory: Memory, l: string) {
         }).flat()
         const ins = orderVal
             .concat([0, 0]) //Spacer between order/junk and address args
-            .concat(hexToBin(hexTrackArg, 6)) //Track arg
-            .concat(hexToBin(hexSectorArg, 6)) //Sector arg
+            .concat(toBits(trackArg)) //Track arg
+            .concat(toBits(sectorArg)) //Sector arg
             .concat([0, 0]) //Spacer
-        memory.set(hexTrack, hexSector, ins)
+        memory.set(track, sector, ins)
     }
 
     const assembleConstant = (memory: Memory, tokens: string[]) => {
-        const track = tokens[1]
-        const sector = tokens[2]
+        const track = asTrack(tokens[1])
+        const sector = asSector(tokens[2])
         const constant = tokens[3]
         // make a switch for hex/dec later. For now, hard code to dec
-        const hexTrack = decToHex(track)
-        const hexSector = decToHex(sector)
+        // const hexTrack = decToHex(track)
+        // const hexSector = decToHex(sector)
         const hexConstant = decToHex(constant)
         const val = hexToBin(hexConstant, 32)
-        memory.set(hexTrack, hexSector, val)
+        memory.set(track, sector, val)
     }
-
     // empty lines are valid, ignore them.
-    if (!l || l.trim().length === 0){
+    if (!l || l.trim().length === 0) {
         return
     }
-
     const insTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([a-z])([0-9fgjkqwl]{2})([0-9fgjkqwl]{2})/g)]
     const constTokens = [...l.matchAll(/^([0-9fgjkqwl]{2})([0-9fgjkqwl]{2}) ([0-9fgjkqwl]+)/g)]
     //This is an instruction
@@ -77,40 +74,3 @@ export function assembleLine(memory: Memory, l: string) {
     }
     throw new Error(`Invalid source / tokens while assembling ${l}`)
 }
-
-// export function _assembleLine(memory: Memory, l) {
-//     const parts = l.split(" ") //Break into parts
-
-//     if (parts.length < 2) {
-//         return
-//     }
-
-//     const track = parts[0].substring(0, 2)
-//     const sector = parts[0].substring(2, 4)
-
-//     if (parts[1] in orderNameMap && parts.length > 2) { //This is an order
-
-//         //This part is interpreted wring(IE: 10 -> 0f instead of 10)
-//         const trackArg = hexToBin(parts[2].substring(0, 2), 6)
-//         const sectorArg = hexToBin(parts[2].substring(2, 4), 6)
-
-//         //console.debug(trackArg, sectorArg)
-
-//         const ins = orderNameMap[parts[1]].orderNumber
-//             .concat([0, 0])     //Spacer
-//             .concat(trackArg)   //Trac
-//             .concat(sectorArg)  //Sector
-//             .concat([0, 0])     //Spacer
-//         memory.set(track, sector, ins)
-//     } else if (track != "" && sector != "") { //This is a constant
-//         const chars = parts[1].split("")
-//         if (chars[0] == "b") {
-//             chars.shift()
-//             memory.set(track, sector, chars)
-//         } else {
-//             const w = hexToBin(parts[1], 31)
-
-//             memory.set(track, sector, w)
-//         }
-//     }
-// }

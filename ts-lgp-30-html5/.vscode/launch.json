@@ -1,8 +1,6 @@
 {
     "version": "0.2.0",
     "configurations": [
-
-
         {
             "name": "run asm.test.ts",
             "request": "launch",
@@ -10,6 +8,34 @@
                 "run",
                 "vite:test",
                 "src/asm.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "run index.test.ts",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "vite:test",
+                "src/index.test.ts"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "run lgp30.test.ts",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "vite:test",
+                "src/lgp30.test.ts"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

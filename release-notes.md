@@ -11,6 +11,7 @@
 
 | Version | Date     | Summary                                 |
 |---------|----------|-----------------------------------------|
+| 1.2.1   | 20251226 | fix a design choice for track / sector  |
 | 1.2.0   | 20251221 | cleanup jquery, html5                   |
 | 1.1.1   | 20251214 | Fix issues with asm                     |
 | 1.1.0   | 20251212 | Isolating LGP30 class with its own test |
@@ -22,6 +23,14 @@
 | 1.0.0   | 20251019 | Tidy project and folder layout.         |
 | 1.0.0   | 20250920 | Fork of Sean's original source.         |
 | 1.0.0   | 20250724 | Sean's original source.                 |
+
+## Version 1.2.1
+
+* fix the design choice to define types for TrackNumber and SectorNumber. these should be number types.
+  * use `number` for all parameter passing.
+  * range check the value of `number`
+  * add formatters that convert `number` to and from `string` as decimal and flex (flexowrite hex).
+  * improved lint for typescript
 
 ## Version 1.2.0
 

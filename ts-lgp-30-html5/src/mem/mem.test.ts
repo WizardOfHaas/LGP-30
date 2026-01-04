@@ -3,7 +3,8 @@
  */
 import { describe, test, beforeEach, expect } from 'vitest'
 import { Memory } from './mem'
-import { BitArray, SectorNumber, TrackNumber } from '../types'
+import type { BitArray } from "../types";
+import { asTrack, asSector } from "../types/numbers";
 
 describe("test the mem class", () => {
     let mem: Memory
@@ -13,15 +14,15 @@ describe("test the mem class", () => {
     })
 
     test("test that the first memory location is clear", () => {
-        const val = mem.get('00', '00')
+        const val = mem.get(asTrack('00'), asSector('00'))
         const zeros: BitArray = new Array(32).fill(0);
         expect(val).toEqual(zeros)
     })
 
     test("test that mem set and get return expected values", () => {
         // expect memory at '0009' to be empty
-        const track: TrackNumber = '00'
-        const sector: SectorNumber = '09'
+        const track = asTrack('00')
+        const sector = asSector('09')
         const val = mem.get(track, sector)
         const zeros: BitArray = new Array(32).fill(0);
         expect(val).toEqual(zeros)

@@ -1,5 +1,5 @@
-import type { BitArray, TrackNumber, SectorNumber } from "../types"
-import { hexToDec } from "../util"
+import type { BitArray } from "../types";
+import type { TrackNumber, SectorNumber } from "../types/numbers";
 
 /**
  * Memory emulation class
@@ -17,7 +17,7 @@ export class Memory {
      * The internal size of the memory.
      * @private
      */
-    private locations: number = 6363 //Wastes space, but makes TTSS addressing easier
+    private locations: number = 4096 //Wastes space, but makes TTSS addressing easier
 
     /**
      * Construct and initialise an instance of Memory
@@ -56,14 +56,9 @@ export class Memory {
      */
     set(track: TrackNumber, sector: SectorNumber, val: BitArray, start?: number) {
         const i = this.composeIndex(track, sector)
-
         //I need to do the copy thing here
         const w = this.data[i].slice()
-
-        w.splice(
-            typeof start !== "undefined" ? start : 32 - val.length, val.length, ...val
-        )
-
+        w.splice(typeof start !== "undefined" ? start : 32 - val.length, val.length, ...val)
         this.data[i] = w
     }
 
@@ -74,6 +69,8 @@ export class Memory {
      * @returns The composed linear index as a numerical value (number).
      */
     private composeIndex(track: TrackNumber, sector: SectorNumber): number {
-        return parseInt(hexToDec(track) + "" + (hexToDec(sector) < 10 ? "0" + hexToDec(sector) : hexToDec(sector)))
+        return track * 64 + sector
+
+        //        return parseInt(hexToDec(track) + "" + (hexToDec(sector) < 10 ? "0" + hexToDec(sector) : hexToDec(sector)))
     }
 }

@@ -11,13 +11,13 @@ import { OrderY } from "./y"
 import { OrderZ } from "./z"
 import { OrderP } from "./p"
 import { OrderI } from "./i"
-import { Register } from "../regs/register"
 import { BitArray } from "../types"
-import { addrToHex, binToDec, halfToHex } from "../util"
+// import { halfToHex } from "../util"
 import { OrderE } from "./e"
 import { OrderD } from "./d"
 import { OrderM } from "./m"
 import { OrderN } from "./n"
+import { asTrack, asSector } from '../types/numbers'
 
 const orders = [
     new OrderB(),
@@ -38,26 +38,29 @@ const orders = [
     new OrderN()
 ]
 
-export const orderIdMap: {[id: string]: IOrder} = {}
-export const orderNameMap: {[id: string]: IOrder} = {}
+export const orderIdMap: { [id: string]: IOrder } = {}
+export const orderNameMap: { [id: string]: IOrder } = {}
 
 orders.forEach((o) => {
     const bitId = o.orderNumber.map((b) => b.toString()).join("")
-
     orderIdMap[bitId] = o
     orderNameMap[o.name] = o
 })
 
-export function decodeOrder(r: BitArray){
+/** 
+ * Decode an array of bits to an order and it's operand.
+ * The operand is in the format TTSS with leading zero
+ * @param r the bits to decode
+ * @returns the order and operand as a string
+ * @todo I suspect this could be somewhere else
+ */
+export function decodeOrder(r: BitArray): string {
     const orderId = r.slice(12, 16).join("")
-    const track = halfToHex(r.slice(18, 24))
-    const sector = halfToHex(r.slice(24, 30))
-
-    const addr = r.slice(18, 30)
-
-    if(orderId in orderIdMap){
-        return orderIdMap[orderId].name + " " + track + sector
+    const track = asTrack(r.slice(18, 24))
+    const sector = asSector(r.slice(24, 30))
+    if (orderId in orderIdMap) {
+        const result: string = track.toString().padStart(2, '0') + sector.toString().padStart(2, '0')
+        return orderIdMap[orderId].name + result
     }
-
-    return "        " //Spacer, sicne this is for pretty printing
+    return "        " //Spacer, since this is for pretty printing
 }
