@@ -1,0 +1,10 @@
+## Ignore node modules
+node_modules/
+
+## Ignore build artifacts
+dist/
+
+## Ignore documentation and test coverage
+docs/
+coverage/
+public/btn-tbl.html

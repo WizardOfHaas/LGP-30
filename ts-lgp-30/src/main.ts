@@ -3,17 +3,14 @@ import { LGP30 } from "./lgp30"
 import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, displayRegs } from "./interface/web"
 
 import $ from "jquery"
-import { decodeOrder } from "./orders/orderMap"
-import { binToDec, dumpRegs } from "./util"
-import { Flexowriter } from "./flexo"
 import { Terminal } from "@xterm/xterm"
-import { bitsToChar, charMapLC } from "./chars"
+import { bitsToChar } from "./chars"
 
 window.jQuery = window.$ = $
 window.LGP30 = LGP30
 
 $(window).bind('load', async () => {
-    const term = new Terminal({cols: 40, rows: 25})
+    const term = new Terminal({ cols: 40, rows: 25 })
     term.open(document.getElementById('terminal'));
 
     const lgp30 = new LGP30({
@@ -64,42 +61,42 @@ $(window).bind('load', async () => {
         displayMem(lgp30.state)
     })
 
-    $("#upload").on("click", async (e) => {
+    $("#upload").on("click", async () => {
         const input = document.createElement('input')
         input.type = 'file'
 
-        input.addEventListener("change", function(){
+        input.addEventListener("change", function () {
             const reader = new FileReader();
 
-            reader.onload = async (e) => {
+            reader.onload = async () => {
                 lgp30.toRxBuffer(reader.result as string)
             };
 
-            if(this.files != null && this.files.length > 0){
+            if (this.files != null && this.files.length > 0) {
                 reader.readAsText(this.files[0], "UTF-8");
             }
-        }, true);                
-        
+        }, true);
+
         input.click()
     })
 
-    $("#load-image").on("click", async (e) => {
+    $("#load-image").on("click", async () => {
         const input = document.createElement('input')
         input.type = 'file'
 
-        input.addEventListener("change", function(){
+        input.addEventListener("change", function () {
             const reader = new FileReader();
 
-            reader.onload = async (e) => {
+            reader.onload = async () => {
                 lgp30.loadMemoryImage(reader.result as string)
                 displayMem(lgp30.state)
             };
 
-            if(this.files != null && this.files.length > 0){
+            if (this.files != null && this.files.length > 0) {
                 reader.readAsText(this.files[0], "UTF-8");
             }
-        }, true);                
-        
+        }, true);
+
         input.click()
     })
 
@@ -107,27 +104,3 @@ $(window).bind('load', async () => {
     displayMem(lgp30.state)
     displayMem(lgp30.state)
 })
-
-async function manualScript(s: string){
-    const ins = s.split("\n")
-
-    lgp30.state.mode = "MANUAL"
-
-    for(const i in ins){
-        const [sto, ord] = ins[i].split("'")
-
-            await flexo.tx(sto) //Send over storage part
-            //console.log(sto, '->', decodeOrder(lgp30.state.registers.a.get()))
-
-            lgp30.fillIns() //Setup to run sto
-
-        if(ord && ord.length > 0){ //We have a store order, and an instruction order
-
-            await flexo.tx(ord) //Load in next part
-            //console.log(ord, '->', decodeOrder(lgp30.state.registers.a.get()))
-            //dumpRegs(lgp30.state)
-        }
-
-        await lgp30.step() //Run the ins
-    }
-}

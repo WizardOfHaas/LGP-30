@@ -8,8 +8,8 @@ export class RegisterC extends Register{
 
 	inc(){
 		//Increment, respectinv TTSS addressing
-		var track = binToDec(this.data.slice(0, 6))
-        var sector = binToDec(this.data.slice(6, 13))
+		let track = binToDec(this.data.slice(0, 6))
+        let sector = binToDec(this.data.slice(6, 13))
 
         sector++
 
@@ -17,6 +17,8 @@ export class RegisterC extends Register{
             sector = 0
             track++
         }
+
+        // TODO what happens if track > 63?
 
         this.data = decToBin(track, 6).concat(decToBin(sector, 6))
 	}

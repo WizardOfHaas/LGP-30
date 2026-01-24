@@ -1,21 +1,29 @@
 import { decodeOrder } from "./orders/orderMap";
 import type { IState } from "./types";
+import type { BitArray } from "./types";
 
 /**
  * Number encoding/decoding stuff
  */
-export function binToDec(b) {
+
+/**
+ * Convert an array of bits to a decimal number
+ * @param b The array of bits
+ * @returns The bits interpreted as a decimal number
+ */
+export function binToDec(b: BitArray): number {
     return parseInt(b.join(""), 2);
 }
 
 export function decToBin(d, n) {
+    // console.debug('decToBin d', d, 'n', n);
     const bits = d.toString(2).split("").map(Number)
-
     if (n == undefined) {
         return bits
     }
-
-    return Array(n - bits.length).fill(0).concat(bits)
+    const arrayLength = n - bits.length
+    if (arrayLength < 0) { throw new Error(`arrayLength ${arrayLength} < 0`) }
+    return Array(arrayLength).fill(0).concat(bits)
 }
 
 export function hexToDec(h) {
@@ -41,11 +49,41 @@ export function toStdHex(h) {
     return h.split("").map((c) => (c in chars ? chars[c] : c)).join("")
 }
 
+
+
+/**
+ * Applies a specific character substitution cipher to an input string, primarily targeting
+ * lowercase hexadecimal characters (a-f) for conversion into a proprietary character set.
+ *
+ * The substitutions are fixed:
+ * - 'a' becomes 'f'
+ * - 'b' becomes 'g'
+ * - 'c' becomes 'j'
+ * - 'd' becomes 'k'
+ * - 'e' becomes 'q'
+ * - 'f' becomes 'w'
+ *
+ * All other characters (e.g., numbers, 'g'-'z', uppercase letters) remain unchanged.
+ *
+ * @category Utility
+ * @param s The input string, often expected to be a hexadecimal or alphanumeric string, to be transformed.
+ * @returns The resulting string after applying the character substitutions.
+ *
+ * @example
+ * // Returns "1f2g3j4k"
+ * toLGPHex("1a2b3c4d");
+ *
+ * @example
+ * // Returns "qwerty"
+ * toLGPHex("eerty");
+ *
+ * @example
+ * // Returns "12345" (No 'a'-'f' present)
+ * toLGPHex("12345");
+ */
 export function toLGPHex(s) {
     const chars = { "a": "f", "b": "g", "c": "j", "d": "k", "e": "q", "f": "w" }
-
     const lgpHex = s.split("").map((c) => (c in chars ? chars[c] : c)).join("")
-
     return lgpHex
 }
 
@@ -59,10 +97,9 @@ export function binToHex(b) {
     return toLGPHex(d)
 }
 
-export function halfToHex(b) {
+export function halfToHex(b: BitArray) {
     const upper = b.slice(0, 2)
     const lower = b.slice(2, 6)
-
     return binToHex(upper) + binToHex(lower)
 }
 
@@ -70,25 +107,35 @@ export function isHex(c) {
     return c == 0 || Number(c) || ["f", "g", "j", "k", "q", "w", "l"].includes(c)
 }
 
-//Encode literal number
-export function packNum(d) {
+/**
+ * Encode literal number (used for the registers)
+ * @param d the signed number
+ * @returns an array of bits that represent the number where the first bit is the sign
+ */
+export function packNum(d: number): BitArray {
     const w = decToBin(Math.abs(d), 32)
-
     if (d < 0) {
         w[0] = 1
     }
-
     return w
 }
 
-//Decode literal number
-export function unpackNum(w) {
+/**
+ * Decode literal number (used for the registers)
+ * @param w An array of bits where the first bit is the sign
+ * @returns The bits as a signed decimal number
+ */
+export function unpackNum(w: BitArray): number {
     return (w[0] == 1 ? -1 : 1) * binToDec(w.slice(1))
 }
 
-export function addrToHex(d: number) {
+/**
+ * Converts a decimal number to a 4 character flexidecimal string.
+ * @param d the number to convert in the range of 0-4095
+ * @returns the flexidecimal string representation of the number
+ */
+export function addrToHex(d: number): string {
     const s = String(d).padStart(4, '0')
-
     return halfToHex(decToBin(parseInt(s.substring(0, 2)), 6)) + halfToHex(decToBin(parseInt(s.substring(2, 4)), 6))
 }
 
@@ -100,7 +147,7 @@ export async function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export function insertArrayAt(array, index, arrayToInsert) {
+export function insertArrayAt(array: BitArray, index: number, arrayToInsert: BitArray): BitArray {
     const arr = array.slice() //Break the ref
     for (let i = index; i < index + arrayToInsert.length; i++) {
         arr[i] = arrayToInsert[i - index]
@@ -114,7 +161,8 @@ export function insertArrayAt(array, index, arrayToInsert) {
  */
 
 export function dumpRegs(state: IState) {
-    console.log(
+    if (true) return // disable for now
+    console.info(
         decodeOrder(state.registers.r.get()) +
         " -> " +
         state.registers.c.get(0, 6).join("") + " " + state.registers.c.get(6, 12).join("") + "(" + state.registers.c.getHexTrack() + ":" + state.registers.c.getHexSector() + ")" +
