@@ -8,7 +8,7 @@ export class OrderU implements IOrder {
     name = "u"
     orderNumber = [1, 0, 1, 0] as BitArray
 
-    async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
+    eval(state: IState, track: TrackNumber, sector: SectorNumber) {
         const trackBits = toBits(track)
         const sectorBits = toBits(sector)
         const newBits = trackBits.concat(sectorBits)

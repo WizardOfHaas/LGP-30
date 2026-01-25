@@ -143,9 +143,8 @@ export function addrToHex(d: number): string {
  * Generic timing functions
  */
 
-export async function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-}
+// export function delay(ms: number) {
+// }
 
 export function insertArrayAt(array: BitArray, index: number, arrayToInsert: BitArray): BitArray {
     const arr = array.slice() //Break the ref

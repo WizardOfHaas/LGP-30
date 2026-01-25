@@ -74,7 +74,7 @@ export function bindKeybd(lgp30: LGP30) {
         "BACK SPACE": () => ""
     }
 
-    $(".keybd td").on("click", async (e) => {
+    $(".keybd td").on("click", (e) => {
         const vals = e.target.innerHTML.split("<br>")
 
         const id = vals.join(" ")
@@ -94,11 +94,11 @@ export function bindKeybd(lgp30: LGP30) {
 }
 
 export function bindOpButtons(lgp30: LGP30) {
-    $("#start").on("click", async () => {
-        await lgp30.run()
+    $("#start").on("click", () => {
+        lgp30.run()
     })
 
-    $("#stop").on("click", async () => {
+    $("#stop").on("click", () => {
         lgp30.state.running = false
     })
 
@@ -120,8 +120,8 @@ export function bindOpButtons(lgp30: LGP30) {
         displayRegs(lgp30.state)
     })
 
-    $("#start-read").on("click", async () => {
-        await lgp30.rxFromBuffer()
+    $("#start-read").on("click", () => {
+        lgp30.rxFromBuffer()
     })
 }
 

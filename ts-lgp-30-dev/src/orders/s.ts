@@ -8,7 +8,7 @@ export class OrderS implements IOrder {
     name = "s"
     orderNumber = [1, 1, 1, 1] as BitArray
 
-    async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
+    eval(state: IState, track: TrackNumber, sector: SectorNumber) {
         state.registers.a.set(this.sub(state.registers.a.get(), state.memory.get(track, sector)))
         state.registers.c.inc()
         return state

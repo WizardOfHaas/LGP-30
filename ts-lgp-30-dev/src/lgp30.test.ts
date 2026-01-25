@@ -13,7 +13,7 @@ describe('test lgp30 module', () => {
     })
 
     flexo = new Flexowriter({
-      onTx: async (b) => await lgp30.rx(b)
+      onTx: (b) => lgp30.rx(b)
     })
   })
 
@@ -23,9 +23,9 @@ describe('test lgp30 module', () => {
     expect(lgp30.state.memory).toBeDefined()
   })
 
-  test('Flexowriter connects to LGP30', async () => {
+  test('Flexowriter connects to LGP30', () => {
     const mockData = 'test'
-    await flexo.tx(mockData)
+    flexo.tx(mockData)
     expect(lgp30.state.registers.a).toBeDefined()
   })
 

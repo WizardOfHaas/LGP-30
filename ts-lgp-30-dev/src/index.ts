@@ -3,13 +3,13 @@ import { LGP30 } from "./lgp30"
 import { decToBin, dumpRegs, halfToHex } from "./util"
 
 const lgp30 = new LGP30({
-    onTx: async (b) => {
+    onTx: (b) => {
     }
 })
 
 const flexo = new Flexowriter({
-    onTx: async (b) => {
-        return await lgp30.rx(b)
+    onTx: (b) => {
+        return lgp30.rx(b)
     }
 })
 
@@ -71,7 +71,7 @@ u3wlj''
  */
 
 //Load in bootstrap for p104.tx
-await manualScript(`000c3wl8'000u3w00'
+manualScript(`000c3wl8'000u3w00'
 c3wlj'p0000'
 c3w20'i0000'
 c3w24'0gwc0000'
@@ -93,33 +93,33 @@ for (let i = 0; i < 63; i++) {
 }
 
 lgp30.state.mode = "NORMAL"
-//await lgp30.run() //THis hangs... but it should bail
+//lgp30.run() //THis hangs... but it should bail
 
 //LGP-30 halts and goes to manual input
 
 //Run manual input with COND-STOP
-/*"c3200'h1234'".split("").forEach(async (c) => {
-    await flexo.tx(c)
+/*"c3200'h1234'".split("").forEach((c) => {
+    flexo.tx(c)
 })*/
 
 //flexo.loadTape(fs.readFileSync("./p104.tx").toString())
-//await flexo.sendTape()
+//flexo.sendTape()
 
 /**
  * Make this function available to the test suite
  * @param s the script to execute
  */
-export async function manualScript(s: string) {
+export function manualScript(s: string) {
     const insructions = s.split("\n")
     lgp30.state.mode = "MANUAL"
     for (const instruction of insructions) {
         const [sto, ord] = instruction.split("'")
-        await flexo.tx(sto) //Send over storage part
+        flexo.tx(sto) //Send over storage part
         lgp30.fillIns() //Setup to run sto
         if (ord && ord.length > 0) { //We have a store order, and an instruction order
-            await flexo.tx(ord) //Load in next part
+            flexo.tx(ord) //Load in next part
             dumpRegs(lgp30.state)
         }
-        await lgp30.step() //Run the instruction
+        lgp30.step() //Run the instruction
     }
 }

@@ -5,7 +5,7 @@ import { bindKeybd, bindModeButtons, bindOpButtons, displayMem, displayMode, dis
 import { Terminal } from "@xterm/xterm"
 import { bitsToChar } from "./chars"
 
-$(window).on('load', async () => {
+$(window).on('load', () => {
     const term = new Terminal({ cols: 40, rows: 25 })
     // Check if the element was successfully found (i.e., it is NOT null)
     const terminalElement = document.getElementById('terminal');
@@ -23,17 +23,17 @@ $(window).on('load', async () => {
             displayMem(lgp30.state)
             displayMode(lgp30.state)
         },
-        onTx: async (b) => {
+        onTx: (b) => {
             term.write(bitsToChar(b))
         }
     })
 
-    term.onKey(async (d) => {
+    term.onKey((d) => {
         term.write(d.key)
 
         //This is where I need to show depressed keys
 
-        await lgp30.rxChar(d.key)
+        lgp30.rxChar(d.key)
         displayRegs(lgp30.state)
     })
 
@@ -66,14 +66,14 @@ $(window).on('load', async () => {
         displayMem(lgp30.state)
     })
 
-    $("#upload").on("click", async () => {
+    $("#upload").on("click", () => {
         const input = document.createElement('input')
         input.type = 'file'
 
         input.addEventListener("change", function () {
             const reader = new FileReader();
 
-            reader.onload = async () => {
+            reader.onload = () => {
                 lgp30.toRxBuffer(reader.result as string)
             };
 
@@ -85,14 +85,14 @@ $(window).on('load', async () => {
         input.click()
     })
 
-    $("#load-image").on("click", async () => {
+    $("#load-image").on("click", () => {
         const input = document.createElement('input')
         input.type = 'file'
 
         input.addEventListener("change", function () {
             const reader = new FileReader();
 
-            reader.onload = async () => {
+            reader.onload = () => {
                 lgp30.loadMemoryImage(reader.result as string)
                 displayMem(lgp30.state)
             };
@@ -108,4 +108,9 @@ $(window).on('load', async () => {
     displayRegs(lgp30.state)
     displayMem(lgp30.state)
     displayMode(lgp30.state)
+
+    // trigger a new instruction at the top of the drum
+    // at 3600RPM this would be 60 times a second or every 16.66ms
+    // const timerId = setInterval(() => lgp30.run2(), 16);
+    // console.log('started to-of-drum trigger, id:', timerId)
 })

@@ -8,7 +8,7 @@ export class OrderT implements IOrder {
     name = "t"
     orderNumber = [1, 0, 1, 1] as BitArray
 
-    async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
+    eval(state: IState, track: TrackNumber, sector: SectorNumber) {
         const trackBits = toBits(track)
         const sectorBits = toBits(sector)
         if (state.registers.a.get()[0] == 1) { //Test sign bit

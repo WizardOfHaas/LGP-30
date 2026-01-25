@@ -7,7 +7,7 @@ import { asTrack, asSector } from "./types/numbers"
 
 type TConfig = {
     onStep?: () => void
-    onTx?: (b: BitArray) => Promise<void>
+    onTx?: (b: BitArray) => void
 }
 
 /**
@@ -39,7 +39,7 @@ export class LGP30 {
         this.state.registers.r.set(this.state.memory.get(track, sector))
     }
 
-    async executeOrder() {
+    executeOrder() {
         //Extract and compose order bit id
         const orderId = this.state.registers.r.getOrder().join("")
         // const track = this.state.registers.r.getHexTrack()
@@ -48,29 +48,36 @@ export class LGP30 {
         const sector = asSector(this.state.registers.r.getSector())
 
         if (orderId in orderIdMap) {
-            const nextState = await orderIdMap[orderId].eval(this.state, track, sector)
+            const nextState = orderIdMap[orderId].eval(this.state, track, sector)
             this.state = nextState
             if (typeof this.config.onStep !== "undefined") {
                 this.config.onStep()
             }
-            await delay(100)
+            // delay(100)
         }
         //Do I have anything in the tx buffer? Then we better send it out!
         while (this.state.txBuffer.length > 0) {
             //It's a FIFO buffer, so grab the first entry
             const txBits = this.state.txBuffer.shift()
             if (txBits) { //Make sure we get a return, since shift is (T | undefined)
-                await this.tx(txBits) //Handle transmit logic
+                this.tx(txBits) //Handle transmit logic
             }
         }
     }
 
-    async step() {
-        await this.executeOrder() //Execute order in R, transition to new state
+    step() {
+        this.executeOrder() //Execute order in R, transition to new state
         dumpRegs(this.state) //Show it
     }
 
-    async run() {
+    // run2() {
+    //     if (this.state.running) {
+    //         this.fetchOrder()
+    //         this.step()
+    //     }
+    // }
+
+    run() {
         if (this.state.running == true) {
             return //Break if the machine is already in a running state
         }
@@ -79,11 +86,11 @@ export class LGP30 {
         while (this.state.running == true) {
             if (this.state.mode == "NORMAL") {
                 this.fetchOrder() //Fetch ins into R
-                await this.step()
+                this.step()
             }
             if (this.state.mode == "ONE-OP") {
                 this.fetchOrder()
-                await this.step()
+                this.step()
                 this.state.running = false //STOP IT!
             }
 
@@ -106,7 +113,7 @@ export class LGP30 {
         this.state.registers.r.set(this.state.registers.a.get())
     }
 
-    async _rx(b: BitArray) {
+    _rx(b: BitArray) {
         //Check mode
         //If manual: handle manual input to A
         //if(this.state.mode == "MANUAL"){
@@ -121,13 +128,13 @@ export class LGP30 {
      *      Will I need to implement something like a loop for waiting?
      */
 
-    async rx(b: BitArray): Promise<BitArray> {
+    rx(b: BitArray): BitArray {
         //Check mode
         //If manual: handle manual input to A
         if (this.state.mode == "MANUAL") {
             if (binToDec(b) == 32) { //Handle COND-STOP. This is the signal to process w/e was just shifted into A
                 this.state.setMode("NORMAL") //Go into normal mode
-                await this.run() //Block and run
+                this.run() //Block and run
                 return b
             } else {
                 this.state.registers.a.shiftIn(b.slice(0, this.state.inputBits))
@@ -138,9 +145,9 @@ export class LGP30 {
         return [0, 0, 0, 0, 0, 0]
     }
 
-    async rxChar(c: string) {
+    rxChar(c: string) {
         const b = charToBits(c)
-        await this.rx(b)
+        this.rx(b)
     }
 
     toRxBuffer(s: string) { //Then I need a hook to process the next block in buffer
@@ -149,11 +156,11 @@ export class LGP30 {
     }
 
     //This will rx from buffer until it's empty
-    async rxFromBuffer() {
+    rxFromBuffer() {
         while (this.state.rxBuffer.length > 0) {
             const b = this.state.rxBuffer.shift()
             if (b) {
-                const res = await this.rx(b)
+                const res = this.rx(b)
                 if (binToDec(res) == 32) {
                     //break; //I break for COND-STOP
                 }
@@ -163,9 +170,9 @@ export class LGP30 {
         }
     }
 
-    async tx(b: BitArray) {
+    tx(b: BitArray) {
         if (typeof this.config.onTx !== "undefined") {
-            await this.config.onTx(b)
+            this.config.onTx(b)
         }
     }
 

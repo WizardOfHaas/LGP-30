@@ -8,7 +8,7 @@ export class OrderZ implements IOrder {
     name = "z"
     orderNumber = [0, 0, 0, 0] as BitArray
 
-    async eval(state: IState, track: TrackNumber, sector: SectorNumber) {
+    eval(state: IState, track: TrackNumber, sector: SectorNumber) {
         //Breakpoints not currently implemented, so treat breaking-stop as a NOP
         if (track === asTrack('00') && sector === asSector('00')) {
             state.running = false

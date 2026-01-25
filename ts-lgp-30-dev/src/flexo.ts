@@ -2,8 +2,8 @@ import { BitArray } from "./types"
 import { binToDec } from "./util"
 
 type TConfig = {
-    onTx?: (b: BitArray) => Promise<BitArray>
-    onRx?: () => Promise<void>
+    onTx?: (b: BitArray) => BitArray
+    onRx?: () => void
 }
 
 export class Flexowriter {
@@ -102,29 +102,29 @@ export class Flexowriter {
     }
 
     //Send a character(to LGP-30)
-    async tx(s: string) {
-        s.split("").forEach(async (c) => {
+    tx(s: string) {
+        s.split("").forEach((c) => {
             const bits = this.convert(c)
             if (typeof this.config.onTx !== "undefined") {
-                await this.config.onTx(bits)
+                this.config.onTx(bits)
             }
         })
     }
 
     //Recieve a character(from LGP-30)
-    async rx(b: BitArray) {
+    rx(b: BitArray) {
         if (binToDec(b) == 0) { //i 0000
-            await this.sendTape()
+            this.sendTape()
         }
     }
 
-    async sendTape() {
+    sendTape() {
         //This needs to send out until COND-STOP, then terminate and send run signal to LGP-30
         /*while(this.tapeBuffer.length > 0){
             const c = this.tapeBuffer.shift()
 
             if(c){
-                await this.tx(c)
+                this.tx(c)
             }
         }*/
 

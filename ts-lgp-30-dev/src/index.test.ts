@@ -14,7 +14,7 @@ describe('LGP30 Emulator', () => {
     })
 
     flexo = new Flexowriter({
-      onTx: async (b) => await lgp30.rx(b)
+      onTx: (b) => lgp30.rx(b)
     })
   })
 
@@ -24,16 +24,16 @@ describe('LGP30 Emulator', () => {
     expect(lgp30.state.memory).toBeDefined()
   })
 
-  test('Flexowriter connects to LGP30', async () => {
+  test('Flexowriter connects to LGP30', () => {
     const mockData = 'test'
-    await flexo.tx(mockData)
+    flexo.tx(mockData)
     expect(lgp30.state.registers.a).toBeDefined()
   })
 
   describe('manualScript', () => {
-    test('handles empty script', async () => {
+    test('handles empty script', () => {
       const script = ''
-      await expect(manualScript(script)).resolves.not.toThrow()
+      expect(() => manualScript(script)).not.toThrow()
     })
 
 
@@ -43,9 +43,9 @@ describe('LGP30 Emulator', () => {
 
 // Expected: "MANUAL"
 // Received: "NORMAL"    
-//     test('splits instructions correctly', async () => {
+//     test('splits instructions correctly', () => {
 //       const script = `000c3wl8'000u3w00'`
-//       await manualScript(script)
+//       manualScript(script)
 //       expect(lgp30.state.mode).toBe('MANUAL')
 //     })
 
@@ -59,9 +59,9 @@ describe('LGP30 Emulator', () => {
 
 // + Received:
 // "z 0000"
-//     test('processes storage and order parts', async () => {
+//     test('processes storage and order parts', () => {
 //       const script = `c3wlj'p0000'`
-//       await manualScript(script)
+//       manualScript(script)
 //       expect(decodeOrder(lgp30.state.registers.a.get())).toMatch(/p0000/)
 //     })
 
@@ -71,9 +71,9 @@ describe('LGP30 Emulator', () => {
 // AssertionError: expected 'NORMAL' to be 'MANUAL' // Object.is equality
 // Expected: "MANUAL"
 // Received: "NORMAL"
-// test('handles multi-line scripts', async () => {
+// test('handles multi-line scripts', () => {
 //   const script = `000c3wl8'000u3w00'\nc3wlj'p0000'`
-//   await manualScript(script)
+//   manualScript(script)
 //   expect(lgp30.state.mode).toBe('MANUAL')
 // })
   })
