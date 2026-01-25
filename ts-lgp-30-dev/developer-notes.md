@@ -11,7 +11,7 @@
 
 ```shell
 ## Change to the project directory
-cd ts-lgp-30-html5
+cd ts-lgp-30-dev
 
 ## Install tools
 npm i
@@ -78,7 +78,7 @@ npm run build
 ## TS Project Layout
 
 ```text
-ts-lgp-30-html5/
+ts-lgp-30-dev/
 ├── .github/
 │   └── workflows/
 │       └── main.yml

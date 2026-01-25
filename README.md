@@ -6,8 +6,8 @@ This is my attempt at an LGP-30 emulator that can run in a browser.
 
 * [Read Me](./README.md)
 * [Release Notes](./release-notes.md)
-* [Developer Notes](./ts-lgp-30-html5/developer-notes.md)
-* [TODO](./ts-lgp-30-html5/todo.md)
+* [Developer Notes](./ts-lgp-30-dev/developer-notes.md)
+* [TODO](./ts-lgp-30-dev/todo.md)
 
 ## GitHub
 

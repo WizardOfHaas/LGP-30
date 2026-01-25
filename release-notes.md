@@ -4,13 +4,14 @@
 
 * [Read Me](./README.md)
 * [Release Notes](./release-notes.md)
-* [Developer Notes](./ts-lgp-30-html5/developer-notes.md)
-* [TODO](./ts-lgp-30-html5/todo.md)
+* [Developer Notes](./ts-lgp-30-dev/developer-notes.md)
+* [TODO](./ts-lgp-30-dev/todo.md)
 
 ## Release Summary
 
 | Version | Date     | Summary                                 |
 |---------|----------|-----------------------------------------|
+| 1.4.0   | 20260125 | removed all async/await                 |
 | 1.3.0   | 20260104 | adopt html5 by default                  |
 | 1.2.1   | 20251226 | fix a design choice for track / sector  |
 | 1.2.0   | 20251221 | cleanup jquery, html5                   |
@@ -24,6 +25,11 @@
 | 1.0.0   | 20251019 | Tidy project and folder layout.         |
 | 1.0.0   | 20250920 | Fork of Sean's original source.         |
 | 1.0.0   | 20250724 | Sean's original source.                 |
+
+## Version 1.4.0
+
+* renamed my folder to ts-lgp3-dev
+* removed all async/await and implemented a clock timer to simulate the clock track on the drum
 
 ## Version 1.3.0
 
