@@ -111,6 +111,6 @@ $(window).on('load', () => {
 
     // trigger a new instruction at the top of the drum
     // at 3600RPM this would be 60 times a second or every 16.66ms
-    // const timerId = setInterval(() => lgp30.run2(), 16);
-    // console.log('started to-of-drum trigger, id:', timerId)
+    const timerId = setInterval(() => lgp30.run2(), 16);
+    console.log('started to-of-drum trigger, id:', timerId)
 })

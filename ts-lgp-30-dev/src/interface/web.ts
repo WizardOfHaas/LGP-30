@@ -95,7 +95,8 @@ export function bindKeybd(lgp30: LGP30) {
 
 export function bindOpButtons(lgp30: LGP30) {
     $("#start").on("click", () => {
-        lgp30.run()
+        // lgp30.run()
+        lgp30.state.running = true
     })
 
     $("#stop").on("click", () => {

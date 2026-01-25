@@ -70,12 +70,12 @@ export class LGP30 {
         dumpRegs(this.state) //Show it
     }
 
-    // run2() {
-    //     if (this.state.running) {
-    //         this.fetchOrder()
-    //         this.step()
-    //     }
-    // }
+    run2() {
+        if (this.state.running) {
+            this.fetchOrder()
+            this.step()
+        }
+    }
 
     run() {
         if (this.state.running == true) {
