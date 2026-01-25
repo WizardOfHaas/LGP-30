@@ -29,7 +29,7 @@
 ## Version 1.4.0
 
 * renamed my folder to ts-lgp3-dev
-* removed all async/await and implemented a clock timer to simulate the clock track on the drum
+* removed all async/await and implemented an interval timer to simulate the start of instruction signal from the drum
 
 ## Version 1.3.0
 
