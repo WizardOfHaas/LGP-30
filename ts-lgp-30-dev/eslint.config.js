@@ -33,13 +33,15 @@ export default defineConfig([
     },
     // Spread the type-checked rules directly into this block
     rules: {
+      // js rules
+      "eqeqeq": ["warn", "smart"],
+      "semi": "off",
       ...tseslint.plugin.configs['recommended-type-checked'].rules,
       // Specific rules to catch assignability (TS2345) issues:
       "@typescript-eslint/no-unsafe-argument": "error",
       "@typescript-eslint/no-unsafe-assignment": "error",
       "@typescript-eslint/await-thenable": "error",
        '@typescript-eslint/no-unused-vars': 'warn',
-      "semi": "off",
       "@typescript-eslint/require-await": "error",
       "@typescript-eslint/no-misused-promises": "error",
       "@typescript-eslint/no-unsafe-call": "off",

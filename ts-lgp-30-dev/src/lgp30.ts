@@ -74,6 +74,9 @@ export class LGP30 {
         if (this.state.running) {
             this.fetchOrder()
             this.step()
+            if (this.state.mode === "ONE-OP") {
+                this.state.running = false
+            }
         }
     }
 
