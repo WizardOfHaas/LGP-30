@@ -27,10 +27,8 @@ export function asSixBit(n: number | string | BitArray): SixBitNumber {
 
         return asSixBit(value); // validate here
     }
-    if (n < 0 || n > 0b111111 || Number.isNaN(n)) {
-        throw new Error("Not a 6‑bit number");
-    }
-    return n as SixBitNumber;
+    // n will only ever be 6 bits
+    return (n & 0b111111) as SixBitNumber;
 }
 
 // Overload signatures

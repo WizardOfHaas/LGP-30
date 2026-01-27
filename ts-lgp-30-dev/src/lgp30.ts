@@ -1,6 +1,6 @@
 import { State } from "./state"
 import { orderIdMap } from "./orders/orderMap"
-import { binToDec, delay, dumpRegs } from "./util"
+import { binToDec, dumpRegs } from "./util"
 import { BitArray } from "./types"
 import { charToBits } from "./chars"
 import { asTrack, asSector } from "./types/numbers"
